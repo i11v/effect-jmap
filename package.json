@@ -1,0 +1,45 @@
+{
+  "name": "effect-jmap",
+  "version": "0.1.0",
+  "description": "A TypeScript library implementing RFC 8621 JMAP for Mail using the Effect ecosystem",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm run build:clean && tsc",
+    "build:clean": "rm -rf dist",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "jmap",
+    "mail",
+    "email",
+    "effect",
+    "typescript",
+    "rfc8621"
+  ],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.17.0",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@effect/platform": "^0.91.1",
+    "effect": "^3.17.14"
+  }
+}
