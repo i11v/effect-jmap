@@ -22,7 +22,7 @@
 
     "strict": true,
     "verbatimModuleSyntax": true,
-    "isolatedDeclarations": true,
+    // "isolatedDeclarations": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
