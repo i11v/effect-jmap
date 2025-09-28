@@ -1,10 +1,12 @@
 import { Context, Effect, Layer } from 'effect'
 import { HttpClient } from '@effect/platform'
 import { JMAPClientService } from '../core/JMAPClient.ts'
-import { Request, Invocation } from '../core/Types.ts'
+import type { JMAPClientInterface } from '../core/JMAPClient.ts'
+import { Invocation } from '../core/Types.ts'
 import { JMAPMethodError, NetworkError, AuthenticationError, SessionError } from '../core/Errors.ts'
+import { extractMethodResponse } from '../core/ResponseUtils.ts'
 import {
-  Mailbox as MailboxType,
+  type Mailbox as MailboxType,
   MailboxGetArguments,
   MailboxGetResponse,
   MailboxSetArguments,
@@ -14,7 +16,7 @@ import {
   MailboxQueryChangesArguments,
   MailboxQueryChangesResponse,
   MailboxMutable,
-  MailboxFilterCondition,
+  type MailboxRole,
   StandardRoles,
   MailboxHelpers
 } from '../schemas/Mailbox.ts'
@@ -31,9 +33,9 @@ export interface MailboxService {
   readonly get: (
     args: MailboxGetArguments
   ) => Effect.Effect<
-    MailboxGetResponse,
+    Schema.Schema.Type<typeof MailboxGetResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -42,9 +44,9 @@ export interface MailboxService {
   readonly set: (
     args: MailboxSetArguments
   ) => Effect.Effect<
-    MailboxSetResponse,
+    Schema.Schema.Type<typeof MailboxSetResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -53,9 +55,9 @@ export interface MailboxService {
   readonly query: (
     args: MailboxQueryArguments
   ) => Effect.Effect<
-    MailboxQueryResponse,
+    Schema.Schema.Type<typeof MailboxQueryResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -64,9 +66,9 @@ export interface MailboxService {
   readonly queryChanges: (
     args: MailboxQueryChangesArguments
   ) => Effect.Effect<
-    MailboxQueryChangesResponse,
+    Schema.Schema.Type<typeof MailboxQueryChangesResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -75,9 +77,9 @@ export interface MailboxService {
   readonly getAll: (
     accountId: string
   ) => Effect.Effect<
-    MailboxType[],
+    readonly MailboxType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -85,11 +87,11 @@ export interface MailboxService {
    */
   readonly findByRole: (
     accountId: string,
-    role: string
+    role: MailboxRole | null
   ) => Effect.Effect<
-    MailboxType[],
+    readonly MailboxType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -99,9 +101,9 @@ export interface MailboxService {
     accountId: string,
     parentId?: Id
   ) => Effect.Effect<
-    MailboxType[],
+    readonly MailboxType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -113,7 +115,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     MailboxType,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -126,7 +128,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     MailboxType | null,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 
   /**
@@ -136,9 +138,9 @@ export interface MailboxService {
     accountId: string,
     mailboxIds: Id[]
   ) => Effect.Effect<
-    Id[],
+    readonly Id[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient
   >
 }
 
@@ -151,47 +153,6 @@ export const MailboxService = Context.GenericTag<MailboxService>('MailboxService
  * Live implementation of Mailbox Service
  */
 const makeMailboxServiceLive = (): MailboxService => {
-  const extractMethodResponse = <T>(
-    response: any,
-    methodName: string,
-    callId: string,
-    schema: Schema.Schema<T>
-  ): Effect.Effect<T, JMAPMethodError> => {
-    if (!response.methodResponses) {
-      return Effect.fail(
-        JMAPMethodError.fromMethodError(
-          { type: 'invalidArguments', description: 'No method responses in JMAP response' },
-          callId
-        )
-      )
-    }
-
-    const methodResponse = response.methodResponses.find(
-      ([name, _, id]: [string, any, string]) => name === methodName && id === callId
-    )
-
-    if (!methodResponse) {
-      return Effect.fail(
-        JMAPMethodError.fromMethodError(
-          { type: 'serverFail', description: `Method response not found for ${methodName}` },
-          callId
-        )
-      )
-    }
-
-    const [, result] = methodResponse
-
-    return Schema.decodeUnknown(schema)(result).pipe(
-      Effect.catchAll(error =>
-        Effect.fail(
-          JMAPMethodError.fromMethodError(
-            { type: 'serverFail', description: `Invalid response format: ${error}` },
-            callId
-          )
-        )
-      )
-    )
-  }
 
   const get: MailboxService['get'] = (args) =>
     Effect.gen(function* () {
@@ -203,11 +164,6 @@ const makeMailboxServiceLive = (): MailboxService => {
         args,
         callId
       ]
-
-      const request: Request = {
-        using: ['urn:ietf:params:jmap:core', 'urn:ietf:params:jmap:mail'],
-        methodCalls: [methodCall]
-      }
 
       const response = yield* client.batch([methodCall])
       return yield* extractMethodResponse(response, 'Mailbox/get', callId, MailboxGetResponse)
@@ -272,7 +228,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       const queryResult = yield* query({
         accountId,
         filter: {
-          role: role as any
+          role: role
         }
       })
 
@@ -297,7 +253,7 @@ const makeMailboxServiceLive = (): MailboxService => {
         return allMailboxes.filter(m => m.parentId === null)
       }
 
-      return MailboxHelpers.getChildren(parentId, allMailboxes)
+      return MailboxHelpers.getChildren(parentId, Array.from(allMailboxes))
     })
 
   const create: MailboxService['create'] = (accountId, mailbox) =>
@@ -318,7 +274,14 @@ const makeMailboxServiceLive = (): MailboxService => {
         )
       }
 
-      return result.created![tempId]
+      const createdMailbox = result.created?.[tempId]
+      if (!createdMailbox) {
+        yield* Effect.fail(
+          JMAPMethodError.fromMethodError({ type: 'serverFail', description: 'Created mailbox not found in response' }, `create-${tempId}`)
+        )
+      }
+
+      return createdMailbox as MailboxType
     })
 
   const update: MailboxService['update'] = (accountId, mailboxId, updates) =>
@@ -436,7 +399,7 @@ export const MailboxOperations = {
       const created: MailboxType[] = []
 
       for (const name of path) {
-        const mailbox = yield* service.create(accountId, {
+        const mailbox: MailboxType = yield* service.create(accountId, {
           name,
           parentId,
           sortOrder: Common.createUnsignedInt(0)

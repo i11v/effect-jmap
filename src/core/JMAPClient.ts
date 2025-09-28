@@ -1,7 +1,7 @@
 import { Context, Effect, Layer, Schedule, Duration } from 'effect'
 import { HttpClient, HttpClientRequest, HttpBody } from '@effect/platform'
 import { Session, Request, Response, Invocation } from './Types.ts'
-import { SessionError, NetworkError, AuthenticationError, JMAPMethodError, Errors } from './Errors.ts'
+import { SessionError, NetworkError, AuthenticationError, JMAPMethodError, MethodError, Errors } from './Errors.ts'
 import * as Schema from 'effect/Schema'
 
 /**
@@ -215,7 +215,7 @@ const makeJMAPClientLive = (config: JMAPClientConfig): JMAPClientInterface => {
     // Check for method errors in response
     for (const [methodName, result, callId] of jmapResponse.methodResponses) {
       if (methodName === 'error') {
-        const methodError = result as any // Should be MethodError but we'll validate it
+        const methodError = result as MethodError
         yield* Effect.fail(JMAPMethodError.fromMethodError(methodError, callId))
       }
     }

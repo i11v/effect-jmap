@@ -524,7 +524,7 @@ export const EmailHelpers = {
 
     // Look for text/plain content
     for (const [partId, bodyValue] of Object.entries(email.bodyValues)) {
-      if (email.textBody?.some(part => (part as any)?.partId === partId)) {
+      if (email.textBody?.some(part => part.partId === partId)) {
         return bodyValue.value
       }
     }
@@ -539,7 +539,7 @@ export const EmailHelpers = {
 
     // Look for text/html content
     for (const [partId, bodyValue] of Object.entries(email.bodyValues)) {
-      if (email.htmlBody?.some(part => (part as any)?.partId === partId)) {
+      if (email.htmlBody?.some(part => part.partId === partId)) {
         return bodyValue.value
       }
     }
