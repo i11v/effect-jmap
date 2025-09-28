@@ -82,28 +82,110 @@ export const JMAPFixtures = {
       size: 2048,
       receivedAt: "2024-01-15T10:30:00Z",
       messageId: ["<message-1@example.com>"],
-      inReplyTo: null,
-      references: null,
       sender: [{ name: "John Doe", email: "john@example.com" }],
       from: [{ name: "John Doe", email: "john@example.com" }],
       to: [{ name: "Test User", email: "test@example.com" }],
-      cc: null,
-      bcc: null,
-      replyTo: null,
-      subject: "Test Email",
+      subject: "Test Email 1",
       sentAt: "2024-01-15T10:29:00Z",
       hasAttachment: false,
       preview: "This is a test email for our JMAP implementation...",
       bodyValues: {
-        "part-1": {
-          value: "This is a test email for our JMAP implementation.",
+        "1": {
+          value: "This is the email content for email 1.",
           isEncodingProblem: false,
           isTruncated: false
         }
       },
-      textBody: [{ partId: "part-1", type: "text/plain" }],
+      textBody: [{ partId: "1", type: "text/plain", size: 256 }],
       htmlBody: [],
       attachments: []
+    },
+    {
+      id: "email-2",
+      blobId: "blob-2",
+      threadId: "thread-2",
+      mailboxIds: { "mailbox-1": true },
+      keywords: { "$flagged": true },
+      size: 4096,
+      receivedAt: "2024-01-16T14:20:00Z",
+      messageId: ["<message-2@example.com>"],
+      sender: [{ name: "Jane Smith", email: "jane@example.com" }],
+      from: [{ name: "Jane Smith", email: "jane@example.com" }],
+      to: [{ name: "Test User", email: "test@example.com" }],
+      subject: "Test Email 2",
+      sentAt: "2024-01-16T14:19:00Z",
+      hasAttachment: true,
+      preview: "Second test email with attachment...",
+      bodyValues: {
+        "1": {
+          value: "This is the second test email with an attachment.",
+          isEncodingProblem: false,
+          isTruncated: false
+        },
+        "2": {
+          value: "<p>This is <strong>HTML</strong> content.</p>",
+          isEncodingProblem: false,
+          isTruncated: false
+        }
+      },
+      textBody: [{ partId: "1", type: "text/plain", size: 512 }],
+      htmlBody: [{ partId: "2", type: "text/html", size: 256 }],
+      attachments: [
+        {
+          blobId: "attachment-1",
+          type: "application/pdf",
+          name: "document.pdf",
+          size: 2048
+        }
+      ]
     }
   ]
+}
+
+// Email-specific mock responses
+export const sampleEmails = JMAPFixtures.emails
+
+export const mockEmailGetResponse = {
+  accountId: "test-account",
+  state: "state-123",
+  list: sampleEmails,
+  notFound: []
+}
+
+export const mockEmailSetResponse = {
+  accountId: "test-account",
+  oldState: "state-123",
+  newState: "state-124",
+  updated: {
+    "email-1": sampleEmails[0]
+  },
+  destroyed: ["email-1", "email-2"]
+}
+
+export const mockEmailQueryResponse = {
+  accountId: "test-account",
+  queryState: "query-state-123",
+  canCalculateChanges: true,
+  position: 0,
+  ids: ["email-1"],
+  total: 1,
+  limit: 10
+}
+
+export const mockEmailCopyResponse = {
+  fromAccountId: "source-account",
+  accountId: "target-account",
+  newState: "state-125",
+  created: {
+    "temp1": sampleEmails[0]
+  }
+}
+
+export const mockEmailImportResponse = {
+  accountId: "test-account",
+  oldState: "state-125",
+  newState: "state-126",
+  created: {
+    "import1": sampleEmails[0]
+  }
 }

@@ -1,8 +1,8 @@
 import { Context, Effect, Layer } from 'effect'
 import { HttpClient } from '@effect/platform'
-import { JMAPClient } from '../core/JMAPClient.js'
-import { Request, Invocation } from '../core/Types.js'
-import { JMAPMethodError, NetworkError, AuthenticationError, SessionError } from '../core/Errors.js'
+import { JMAPClientService } from '../core/JMAPClient.ts'
+import { Request, Invocation } from '../core/Types.ts'
+import { JMAPMethodError, NetworkError, AuthenticationError, SessionError } from '../core/Errors.ts'
 import {
   Mailbox as MailboxType,
   MailboxGetArguments,
@@ -17,8 +17,8 @@ import {
   MailboxFilterCondition,
   StandardRoles,
   MailboxHelpers
-} from '../schemas/Mailbox.js'
-import { Id, Common } from '../schemas/Common.js'
+} from '../schemas/Mailbox.ts'
+import { Id, Common } from '../schemas/Common.ts'
 import * as Schema from 'effect/Schema'
 
 /**
@@ -195,7 +195,7 @@ const makeMailboxServiceLive = (): MailboxService => {
 
   const get: MailboxService['get'] = (args) =>
     Effect.gen(function* () {
-      const client = yield* JMAPClient
+      const client = yield* JMAPClientService
       const callId = `mailbox-get-${Date.now()}`
 
       const methodCall: Invocation = [
@@ -215,7 +215,7 @@ const makeMailboxServiceLive = (): MailboxService => {
 
   const set: MailboxService['set'] = (args) =>
     Effect.gen(function* () {
-      const client = yield* JMAPClient
+      const client = yield* JMAPClientService
       const callId = `mailbox-set-${Date.now()}`
 
       const methodCall: Invocation = [
@@ -230,7 +230,7 @@ const makeMailboxServiceLive = (): MailboxService => {
 
   const query: MailboxService['query'] = (args) =>
     Effect.gen(function* () {
-      const client = yield* JMAPClient
+      const client = yield* JMAPClientService
       const callId = `mailbox-query-${Date.now()}`
 
       const methodCall: Invocation = [
@@ -245,7 +245,7 @@ const makeMailboxServiceLive = (): MailboxService => {
 
   const queryChanges: MailboxService['queryChanges'] = (args) =>
     Effect.gen(function* () {
-      const client = yield* JMAPClient
+      const client = yield* JMAPClientService
       const callId = `mailbox-queryChanges-${Date.now()}`
 
       const methodCall: Invocation = [

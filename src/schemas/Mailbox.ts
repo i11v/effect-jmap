@@ -1,5 +1,5 @@
 import { Schema } from 'effect'
-import { Id, UnsignedInt, JMAPDate, Rights } from './Common.js'
+import { Id, UnsignedInt } from './Common.ts'
 
 /**
  * JMAP Mailbox schemas - RFC 8621 Section 2

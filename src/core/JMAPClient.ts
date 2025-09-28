@@ -1,7 +1,7 @@
 import { Context, Effect, Layer, Schedule, Duration } from 'effect'
 import { HttpClient, HttpClientRequest, HttpBody } from '@effect/platform'
-import { Session, Request, Response, Invocation } from './Types.js'
-import { SessionError, NetworkError, AuthenticationError, JMAPMethodError, Errors } from './Errors.js'
+import { Session, Request, Response, Invocation } from './Types.ts'
+import { SessionError, NetworkError, AuthenticationError, JMAPMethodError, Errors } from './Errors.ts'
 import * as Schema from 'effect/Schema'
 
 /**
@@ -21,7 +21,7 @@ export interface JMAPClientConfig {
 /**
  * JMAP Client Service Interface
  */
-export interface JMAPClient {
+export interface JMAPClientInterface {
   /**
    * Get the current session information
    */
@@ -50,9 +50,14 @@ export interface JMAPClient {
 }
 
 /**
+ * Alias for backwards compatibility
+ */
+export type JMAPClient = JMAPClientInterface
+
+/**
  * JMAP Client Service Tag
  */
-export const JMAPClient = Context.GenericTag<JMAPClient>('JMAPClient')
+export const JMAPClientService = Context.GenericTag<JMAPClient>('JMAPClientService')
 
 /**
  * Internal session state management
@@ -65,7 +70,7 @@ interface SessionState {
 /**
  * Live implementation of JMAP Client
  */
-const makeJMAPClientLive = (config: JMAPClientConfig): JMAPClient => {
+const makeJMAPClientLive = (config: JMAPClientConfig): JMAPClientInterface => {
   let sessionState: SessionState | null = null
 
   const defaultHeaders = {
@@ -162,7 +167,7 @@ const makeJMAPClientLive = (config: JMAPClientConfig): JMAPClient => {
 
     const httpRequest = HttpClientRequest.post(session.apiUrl).pipe(
       HttpClientRequest.setHeaders(defaultHeaders),
-      HttpClientRequest.setBody(HttpBody.text(requestBody)),
+      HttpClientRequest.setBody(HttpBody.text(requestBody, 'application/json')),
       config.timeout ? HttpClientRequest.setUrlParam('timeout', config.timeout.toString()) : (req) => req
     )
 
@@ -294,7 +299,7 @@ const makeJMAPClientLive = (config: JMAPClientConfig): JMAPClient => {
  * Live layer for JMAP Client
  */
 export const JMAPClientLive = (config: JMAPClientConfig): Layer.Layer<JMAPClient, never, HttpClient.HttpClient> =>
-  Layer.succeed(JMAPClient, makeJMAPClientLive(config))
+  Layer.succeed(JMAPClientService, makeJMAPClientLive(config))
 
 /**
  * Default configuration creator

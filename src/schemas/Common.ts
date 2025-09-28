@@ -30,7 +30,7 @@ export type UnsignedInt = Schema.Schema.Type<typeof UnsignedInt>
  * JMAP Date - UTC date string in ISO 8601 format
  */
 export const JMAPDate = Schema.String.pipe(
-  Schema.pattern(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/),
+  Schema.pattern(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
   Schema.brand('JMAPDate')
 )
 
