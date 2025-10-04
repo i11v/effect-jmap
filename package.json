@@ -17,6 +17,7 @@
   "scripts": {
     "build": "pnpm run build:clean && tsc",
     "build:clean": "rm -rf dist",
+    "ci": "pnpm typecheck && pnpm test && pnpm build",
     "dev": "tsc --watch",
     "test": "vitest",
     "test:watch": "vitest --watch",
