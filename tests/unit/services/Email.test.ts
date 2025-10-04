@@ -410,6 +410,22 @@ describe('Email Service', () => {
       expect(result).toHaveLength(1)
       expect(result[0].bodyValues).toBeDefined()
     })
+
+    it('should get single email content', () => {
+      const result = runTest(
+        Effect.gen(function* () {
+          const service = yield* EmailService
+          return yield* service.getEmailContent(
+            'test-account',
+            Common.createId('email1'),
+            10240
+          )
+        })
+      )
+
+      expect(result).toBeDefined()
+      expect(result?.bodyValues).toBeDefined()
+    })
   })
 })
 
@@ -423,8 +439,17 @@ describe('EmailOperations', () => {
     Effect.runSync(Effect.provide(effect, TestLayers))
 
   it('should get recent inbox emails', () => {
-    const result = runTest(EmailOperations.getRecentInboxEmails('test-account', 5))
+    const result = runTest(EmailOperations.getRecentInboxEmails('test-account', Common.createId('inbox'), 5))
     expect(result).toBeDefined()
+  })
+
+  it('should get recent inbox emails with content', () => {
+    const result = runTest(EmailOperations.getRecentInboxEmailsWithContent('test-account', Common.createId('inbox'), 5))
+    expect(result).toBeDefined()
+    // Should return emails with body content when available
+    if (result.length > 0) {
+      expect(result[0].bodyValues).toBeDefined()
+    }
   })
 
   it('should get email thread', () => {

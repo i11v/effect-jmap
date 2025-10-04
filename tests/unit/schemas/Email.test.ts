@@ -104,6 +104,29 @@ describe('Email Schema', () => {
       expect(result.disposition).toBe('attachment')
       expect(result.name).toBe('photo.png')
     })
+
+    it('should validate body part with null values', () => {
+      const bodyPart = {
+        partId: '3',
+        blobId: 'blob789',
+        size: Common.createUnsignedInt(1024),
+        type: 'text/plain',
+        charset: null,
+        disposition: null,
+        cid: null,
+        name: null,
+        language: null,
+        location: null
+      }
+
+      const result = Schema.decodeUnknownSync(EmailBodyPart)(bodyPart)
+      expect(result.charset).toBeNull()
+      expect(result.disposition).toBeNull()
+      expect(result.cid).toBeNull()
+      expect(result.name).toBeNull()
+      expect(result.language).toBeNull()
+      expect(result.location).toBeNull()
+    })
   })
 
   describe('EmailBody', () => {
@@ -190,6 +213,22 @@ describe('Email Schema', () => {
       const result = Schema.decodeUnknownSync(EmailAttachment)(attachment)
       expect(result.cid).toBe('image1@example.com')
       expect(result.isInline).toBe(true)
+    })
+
+    it('should validate attachment with null values', () => {
+      const attachment = {
+        blobId: 'blob789',
+        type: 'application/pdf',
+        name: null,
+        size: Common.createUnsignedInt(102400),
+        cid: null,
+        disposition: null
+      }
+
+      const result = Schema.decodeUnknownSync(EmailAttachment)(attachment)
+      expect(result.name).toBeNull()
+      expect(result.cid).toBeNull()
+      expect(result.disposition).toBeNull()
     })
 
     it('should require blobId, type, and size', () => {
@@ -581,6 +620,63 @@ describe('EmailHelpers', () => {
       }
       const keywordArray = EmailHelpers.keywordsToArray(keywords)
       expect(keywordArray).toEqual(['$seen', 'important'])
+    })
+  })
+
+  describe('new content helpers', () => {
+    it('should get formatted content', () => {
+      const email = createTestEmail()
+      const formattedContent = EmailHelpers.getFormattedContent(email)
+
+      expect(formattedContent.text).toBe('This is the email content')
+      expect(formattedContent.html).toBeUndefined() // No HTML body in test email
+      expect(formattedContent.hasContent).toBe(true)
+      expect(formattedContent.isTruncated).toBe(false)
+      expect(formattedContent.hasEncodingProblem).toBe(false)
+    })
+
+    it('should get all body content', () => {
+      const email = createTestEmail()
+      const allContent = EmailHelpers.getAllBodyContent(email)
+
+      expect(allContent['1']).toBeDefined()
+      expect(allContent['1'].value).toBe('This is the email content')
+      expect(allContent['1'].type).toBe('text/plain')
+      expect(allContent['2']).toBeDefined()
+      expect(allContent['2'].value).toBe('<p>HTML content</p>')
+    })
+
+    it('should handle email with truncated content', () => {
+      const email = {
+        ...createTestEmail(),
+        bodyValues: {
+          '1': {
+            value: 'Truncated content...',
+            isTruncated: true,
+            isEncodingProblem: false
+          }
+        }
+      }
+
+      const formattedContent = EmailHelpers.getFormattedContent(email)
+      expect(formattedContent.isTruncated).toBe(true)
+      expect(formattedContent.hasEncodingProblem).toBe(false)
+    })
+
+    it('should handle email with encoding problems', () => {
+      const email = {
+        ...createTestEmail(),
+        bodyValues: {
+          '1': {
+            value: 'Content with encoding issues',
+            isTruncated: false,
+            isEncodingProblem: true
+          }
+        }
+      }
+
+      const formattedContent = EmailHelpers.getFormattedContent(email)
+      expect(formattedContent.hasEncodingProblem).toBe(true)
     })
   })
 })

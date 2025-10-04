@@ -218,6 +218,19 @@ export interface EmailService {
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
     JMAPClientInterface | HttpClient.HttpClient
   >;
+
+  /**
+   * Get a single email with full content by ID
+   */
+  readonly getEmailContent: (
+    accountId: string,
+    emailId: Id,
+    maxBodyValueBytes?: number,
+  ) => Effect.Effect<
+    EmailType | null,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
 }
 
 /**
@@ -352,7 +365,7 @@ const makeEmailServiceLive = (): EmailService => {
         properties: options.properties,
       });
 
-      return getResult.list;
+      return getResult.list.filter((email): email is EmailType => email.blobId != null);
     });
 
   const search: EmailService["search"] = (
@@ -387,7 +400,7 @@ const makeEmailServiceLive = (): EmailService => {
         properties: options.properties,
       });
 
-      return getResult.list;
+      return getResult.list.filter((email): email is EmailType => email.blobId != null);
     });
 
   const getUnread: EmailService["getUnread"] = (accountId, mailboxId, limit) =>
@@ -417,7 +430,7 @@ const makeEmailServiceLive = (): EmailService => {
         properties: StandardProperties.METADATA,
       });
 
-      return getResult.list;
+      return getResult.list.filter((email): email is EmailType => email.blobId != null);
     });
 
   const markRead: EmailService["markRead"] = (accountId, emailIds, read) =>
@@ -566,13 +579,28 @@ const makeEmailServiceLive = (): EmailService => {
         accountId,
         ids: emailIds,
         properties: undefined, // Get all properties
+        fetchTextBodyValues: true,
+        fetchHTMLBodyValues: true,
         fetchAllBodyValues: true,
         maxBodyValueBytes: maxBodyValueBytes
           ? Common.createUnsignedInt(maxBodyValueBytes)
           : undefined,
       });
 
-      return result.list;
+      return result.list.filter((email): email is EmailType => email.blobId != null);
+    });
+
+  /**
+   * Get a single email with full content by ID
+   */
+  const getEmailContent = (
+    accountId: string,
+    emailId: Id,
+    maxBodyValueBytes?: number,
+  ) =>
+    Effect.gen(function* () {
+      const emails = yield* getWithContent(accountId, [emailId], maxBodyValueBytes);
+      return emails[0] || null;
     });
 
   return {
@@ -590,6 +618,7 @@ const makeEmailServiceLive = (): EmailService => {
     move,
     updateKeywords,
     getWithContent,
+    getEmailContent,
   };
 };
 
@@ -608,13 +637,13 @@ export const EmailOperations = {
   /**
    * Get recent emails from inbox
    */
-  getRecentInboxEmails: (accountId: string, limit: number = 10) =>
+  getRecentInboxEmails: (accountId: string, inboxId: Id, limit: number = 10) =>
     Effect.gen(function* () {
       const service = yield* EmailService;
       const emails = yield* service.query({
         accountId,
         filter: {
-          inMailbox: Common.createId("inbox"), // This would need to be the actual inbox ID
+          inMailbox: inboxId,
         },
         sort: [{ property: "receivedAt", isAscending: false }],
         limit: Common.createUnsignedInt(limit),
@@ -631,6 +660,28 @@ export const EmailOperations = {
       });
 
       return result.list;
+    }),
+
+  /**
+   * Get recent emails from inbox with full content
+   */
+  getRecentInboxEmailsWithContent: (accountId: string, inboxId: Id, limit: number = 10) =>
+    Effect.gen(function* () {
+      const service = yield* EmailService;
+      const emails = yield* service.query({
+        accountId,
+        filter: {
+          inMailbox: inboxId,
+        },
+        sort: [{ property: "receivedAt", isAscending: false }],
+        limit: Common.createUnsignedInt(limit),
+      });
+
+      if (emails.ids.length === 0) {
+        return [];
+      }
+
+      return yield* service.getWithContent(accountId, Array.from(emails.ids));
     }),
 
   /**
@@ -704,9 +755,11 @@ export const EmailOperations = {
         const newMailboxIds: Record<Id, boolean> = {};
 
         // Remove from all current mailboxes
-        for (const mailboxId of Object.keys(email.mailboxIds)) {
-          if (email.mailboxIds[mailboxId as Id]) {
-            newMailboxIds[mailboxId as Id] = false;
+        if (email.mailboxIds) {
+          for (const mailboxId of Object.keys(email.mailboxIds)) {
+            if (email.mailboxIds[mailboxId as Id]) {
+              newMailboxIds[mailboxId as Id] = false;
+            }
           }
         }
 
@@ -753,9 +806,11 @@ export const EmailOperations = {
         const newMailboxIds: Record<Id, boolean> = {};
 
         // Remove from current mailboxes
-        for (const mailboxId of Object.keys(email.mailboxIds)) {
-          if (email.mailboxIds[mailboxId as Id]) {
-            newMailboxIds[mailboxId as Id] = false;
+        if (email.mailboxIds) {
+          for (const mailboxId of Object.keys(email.mailboxIds)) {
+            if (email.mailboxIds[mailboxId as Id]) {
+              newMailboxIds[mailboxId as Id] = false;
+            }
           }
         }
 

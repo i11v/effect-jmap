@@ -27,10 +27,10 @@ export const UnsignedInt = Schema.Number.pipe(
 export type UnsignedInt = Schema.Schema.Type<typeof UnsignedInt>
 
 /**
- * JMAP Date - UTC date string in ISO 8601 format
+ * JMAP Date - ISO 8601 date string (UTC or with timezone offset)
  */
 export const JMAPDate = Schema.String.pipe(
-  Schema.pattern(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+  Schema.pattern(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?(Z|[+-]\d{2}:\d{2})$/),
   Schema.brand('JMAPDate')
 )
 
@@ -73,7 +73,7 @@ export type Blob = Schema.Schema.Type<typeof Blob>
  * JMAP AddressList - represents email addresses
  */
 export const EmailAddress = Schema.Struct({
-  name: Schema.optional(Schema.String),
+  name: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
   email: Schema.String.pipe(
     Schema.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
   )

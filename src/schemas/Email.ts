@@ -33,13 +33,13 @@ export const EmailBodyPart = Schema.Struct({
   blobId: Schema.optional(Schema.String),
   size: Schema.optional(UnsignedInt),
   headers: Schema.optional(EmailHeaders),
-  name: Schema.optional(Schema.String),
+  name: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
   type: Schema.optional(Schema.String),
-  charset: Schema.optional(Schema.String),
-  disposition: Schema.optional(Schema.String),
-  cid: Schema.optional(Schema.String),
-  language: Schema.optional(Schema.Array(Schema.String)),
-  location: Schema.optional(Schema.String),
+  charset: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  disposition: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  cid: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  language: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
+  location: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
   subParts: Schema.optional(Schema.Array(Schema.Any)) // Simplified to break circular reference
 })
 
@@ -84,10 +84,10 @@ export type EmailBodyValues = Schema.Schema.Type<typeof EmailBodyValues>
 export const EmailAttachment = Schema.Struct({
   blobId: Schema.String,
   type: Schema.String,
-  name: Schema.optional(Schema.String),
+  name: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
   size: UnsignedInt,
-  cid: Schema.optional(Schema.String),
-  disposition: Schema.optional(Schema.String),
+  cid: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  disposition: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
   isInline: Schema.optional(Schema.Boolean)
 })
 
@@ -104,30 +104,68 @@ export const Email = Schema.Struct({
     key: Id,
     value: Schema.Boolean
   }),
-  keywords: Schema.optional(Keywords),
+  keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined),
   size: UnsignedInt,
   receivedAt: JMAPDate,
-  sentAt: Schema.optional(JMAPDate),
-  messageId: Schema.optional(Schema.Array(Schema.String)),
-  inReplyTo: Schema.optional(Schema.Array(Schema.String)),
-  references: Schema.optional(Schema.Array(Schema.String)),
-  sender: Schema.optional(Schema.Array(EmailAddress)),
-  from: Schema.optional(Schema.Array(EmailAddress)),
-  to: Schema.optional(Schema.Array(EmailAddress)),
-  cc: Schema.optional(Schema.Array(EmailAddress)),
-  bcc: Schema.optional(Schema.Array(EmailAddress)),
-  replyTo: Schema.optional(Schema.Array(EmailAddress)),
-  subject: Schema.optional(Schema.String),
-  textBody: Schema.optional(Schema.Array(EmailBodyPart)),
-  htmlBody: Schema.optional(Schema.Array(EmailBodyPart)),
-  attachments: Schema.optional(Schema.Array(EmailAttachment)),
-  hasAttachment: Schema.optional(Schema.Boolean),
-  preview: Schema.optional(Schema.String),
-  bodyValues: Schema.optional(EmailBodyValues),
-  headers: Schema.optional(EmailHeaders)
+  sentAt: Schema.Union(JMAPDate, Schema.Null, Schema.Undefined),
+  messageId: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
+  inReplyTo: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
+  references: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
+  sender: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  from: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  to: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  cc: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  bcc: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  replyTo: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  subject: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  textBody: Schema.Union(Schema.Array(EmailBodyPart), Schema.Null, Schema.Undefined),
+  htmlBody: Schema.Union(Schema.Array(EmailBodyPart), Schema.Null, Schema.Undefined),
+  attachments: Schema.Union(Schema.Array(EmailAttachment), Schema.Null, Schema.Undefined),
+  hasAttachment: Schema.Union(Schema.Boolean, Schema.Null, Schema.Undefined),
+  preview: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  bodyValues: Schema.Union(EmailBodyValues, Schema.Null, Schema.Undefined),
+  headers: Schema.Union(EmailHeaders, Schema.Null, Schema.Undefined)
 })
 
 export type Email = Schema.Schema.Type<typeof Email>
+
+/**
+ * Partial Email object for responses where specific properties are requested
+ * All fields except 'id' are optional to handle partial responses from Email/get
+ */
+export const PartialEmail = Schema.Struct({
+  id: Id,
+  blobId: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  threadId: Schema.Union(Id, Schema.Null, Schema.Undefined),
+  mailboxIds: Schema.Union(Schema.Record({
+    key: Id,
+    value: Schema.Boolean
+  }), Schema.Null, Schema.Undefined),
+  keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined),
+  size: Schema.Union(UnsignedInt, Schema.Null, Schema.Undefined),
+  receivedAt: Schema.Union(JMAPDate, Schema.Null, Schema.Undefined),
+  sentAt: Schema.Union(JMAPDate, Schema.Null, Schema.Undefined),
+  messageId: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
+  inReplyTo: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
+  references: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
+  sender: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  from: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  to: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  cc: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  bcc: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  replyTo: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
+  subject: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  textBody: Schema.Union(Schema.Array(EmailBodyPart), Schema.Null, Schema.Undefined),
+  htmlBody: Schema.Union(Schema.Array(EmailBodyPart), Schema.Null, Schema.Undefined),
+  attachments: Schema.Union(Schema.Array(EmailAttachment), Schema.Null, Schema.Undefined),
+  hasAttachment: Schema.Union(Schema.Boolean, Schema.Null, Schema.Undefined),
+  preview: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  bodyValues: Schema.Union(EmailBodyValues, Schema.Null, Schema.Undefined),
+  headers: Schema.Union(EmailHeaders, Schema.Null, Schema.Undefined)
+})
+
+export type PartialEmail = Schema.Schema.Type<typeof PartialEmail>
+
 
 /**
  * Email filter conditions for query operations
@@ -161,11 +199,11 @@ export type EmailFilterCondition = Schema.Schema.Type<typeof EmailFilterConditio
  * Email properties that can be set during creation/update
  */
 export const EmailMutable = Schema.Struct({
-  mailboxIds: Schema.optional(Schema.Record({
+  mailboxIds: Schema.Union(Schema.Record({
     key: Id,
     value: Schema.Boolean
-  })),
-  keywords: Schema.optional(Keywords)
+  }), Schema.Null, Schema.Undefined),
+  keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined)
 })
 
 export type EmailMutable = Schema.Schema.Type<typeof EmailMutable>
@@ -192,7 +230,7 @@ export type EmailGetArguments = Schema.Schema.Type<typeof EmailGetArguments>
 export const EmailGetResponse = Schema.Struct({
   accountId: Schema.String,
   state: Schema.String,
-  list: Schema.Array(Email),
+  list: Schema.Array(Schema.Union(Email, PartialEmail)),
   notFound: Schema.Array(Id)
 })
 
@@ -330,7 +368,7 @@ export const EmailCopyArguments = Schema.Struct({
         key: Id,
         value: Schema.Boolean
       }),
-      keywords: Schema.optional(Keywords)
+      keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined)
     })
   }),
   onSuccessDestroyOriginal: Schema.optional(Schema.Boolean),
@@ -373,7 +411,7 @@ export const EmailImportArguments = Schema.Struct({
         key: Id,
         value: Schema.Boolean
       }),
-      keywords: Schema.optional(Keywords),
+      keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined),
       receivedAt: Schema.optional(JMAPDate)
     })
   })
@@ -544,6 +582,85 @@ export const EmailHelpers = {
       }
     }
     return undefined
+  },
+
+  /**
+   * Get formatted email content with both text and HTML
+   */
+  getFormattedContent: (email: Email): {
+    text?: string;
+    html?: string;
+    hasContent: boolean;
+    isTruncated: boolean;
+    hasEncodingProblem: boolean;
+  } => {
+    const textContent = EmailHelpers.getTextContent(email)
+    const htmlContent = EmailHelpers.getHTMLContent(email)
+
+    let isTruncated = false
+    let hasEncodingProblem = false
+
+    if (email.bodyValues) {
+      for (const bodyValue of Object.values(email.bodyValues)) {
+        if (bodyValue.isTruncated) isTruncated = true
+        if (bodyValue.isEncodingProblem) hasEncodingProblem = true
+      }
+    }
+
+    const result: {
+      text?: string;
+      html?: string;
+      hasContent: boolean;
+      isTruncated: boolean;
+      hasEncodingProblem: boolean;
+    } = {
+      hasContent: Boolean(textContent || htmlContent),
+      isTruncated,
+      hasEncodingProblem,
+    }
+
+    if (textContent !== undefined) {
+      result.text = textContent
+    }
+    if (htmlContent !== undefined) {
+      result.html = htmlContent
+    }
+
+    return result
+  },
+
+  /**
+   * Get all body part content indexed by partId
+   */
+  getAllBodyContent: (email: Email): Record<string, {
+    value: string;
+    type?: string;
+    isTruncated?: boolean;
+    isEncodingProblem?: boolean;
+  }> => {
+    if (!email.bodyValues) return {}
+
+    const allContent: Record<string, any> = {}
+
+    for (const [partId, bodyValue] of Object.entries(email.bodyValues)) {
+      // Find the corresponding body part to get the type
+      let partType: string | undefined
+
+      const textPart = email.textBody?.find(part => part.partId === partId)
+      const htmlPart = email.htmlBody?.find(part => part.partId === partId)
+
+      if (textPart) partType = textPart.type || 'text/plain'
+      if (htmlPart) partType = htmlPart.type || 'text/html'
+
+      allContent[partId] = {
+        value: bodyValue.value,
+        type: partType,
+        isTruncated: bodyValue.isTruncated,
+        isEncodingProblem: bodyValue.isEncodingProblem,
+      }
+    }
+
+    return allContent
   },
 
   /**
