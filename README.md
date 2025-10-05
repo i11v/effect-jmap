@@ -6,8 +6,6 @@ A TypeScript implementation of the [JMAP](https://jmap.io) protocol for Mail (RF
 
 - Implements RFC 8621 JMAP for Mail with session discovery and batch optimization
 - Built on Effect-TS for type-safe error handling and composable operations
-- Fully API-agnostic - no hardcoded endpoints or environment variables
-- All configuration passed as parameters
 
 ## Installation
 
