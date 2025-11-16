@@ -16,6 +16,7 @@ import {
   EmailSetResponse,
   EmailQueryArguments,
   EmailQueryResponse,
+  EmailImportResult,
   EmailHelpers,
   StandardProperties
 } from '../../../src/schemas/Email.ts'
@@ -678,5 +679,65 @@ describe('EmailHelpers', () => {
       const formattedContent = EmailHelpers.getFormattedContent(email)
       expect(formattedContent.hasEncodingProblem).toBe(true)
     })
+  })
+})
+
+describe('EmailImportResult Schema', () => {
+  it('should validate minimal import result', () => {
+    const minimalResult = {
+      id: 'email-1',
+      blobId: 'blob-1',
+      threadId: 'thread-1',
+      size: 2048
+    }
+
+    const result = Schema.decodeUnknownSync(EmailImportResult)(minimalResult)
+    expect(result).toEqual(minimalResult)
+  })
+
+  it('should require all four fields', () => {
+    const incomplete = {
+      id: 'email-1',
+      blobId: 'blob-1',
+      threadId: 'thread-1'
+      // missing size
+    }
+
+    expect(() => Schema.decodeUnknownSync(EmailImportResult)(incomplete)).toThrow()
+  })
+
+  it('should validate size as UnsignedInt', () => {
+    const validResult = {
+      id: 'email-1',
+      blobId: 'blob-1',
+      threadId: 'thread-1',
+      size: 0
+    }
+
+    const result = Schema.decodeUnknownSync(EmailImportResult)(validResult)
+    expect(result.size).toBe(0)
+  })
+
+  it('should reject negative size', () => {
+    const invalidResult = {
+      id: 'email-1',
+      blobId: 'blob-1',
+      threadId: 'thread-1',
+      size: -1
+    }
+
+    expect(() => Schema.decodeUnknownSync(EmailImportResult)(invalidResult)).toThrow()
+  })
+
+  it('should validate with realistic values', () => {
+    const realisticResult = {
+      id: 'Stsa939i3TdZ',
+      blobId: 'Gd139e27a3dcfd0396d00f7a4de5b7741a05d476e',
+      threadId: 'AFBcvanPaqmg',
+      size: 114
+    }
+
+    const result = Schema.decodeUnknownSync(EmailImportResult)(realisticResult)
+    expect(result).toEqual(realisticResult)
   })
 })

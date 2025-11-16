@@ -10,6 +10,7 @@ import {
   AuthenticationError,
   SessionError,
 } from "../core/Errors.ts";
+import { CAPABILITY_SETS } from "../core/Capabilities.ts";
 import { extractMethodResponse } from "../core/ResponseUtils.ts";
 import { BodyUtils } from "../core/EmailUtils.ts";
 import { updateFilter } from "../core/TypeUtils.ts";
@@ -249,7 +250,7 @@ const makeEmailServiceLive = (): EmailService => {
 
       const methodCall: Invocation = ["Email/get", args, callId];
 
-      const response = yield* client.batch([methodCall]);
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL]);
       return yield* extractMethodResponse(
         response,
         "Email/get",
@@ -265,7 +266,7 @@ const makeEmailServiceLive = (): EmailService => {
 
       const methodCall: Invocation = ["Email/set", args, callId];
 
-      const response = yield* client.batch([methodCall]);
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL]);
       return yield* extractMethodResponse(
         response,
         "Email/set",
@@ -281,7 +282,7 @@ const makeEmailServiceLive = (): EmailService => {
 
       const methodCall: Invocation = ["Email/query", args, callId];
 
-      const response = yield* client.batch([methodCall]);
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL]);
       return yield* extractMethodResponse(
         response,
         "Email/query",
@@ -297,7 +298,7 @@ const makeEmailServiceLive = (): EmailService => {
 
       const methodCall: Invocation = ["Email/queryChanges", args, callId];
 
-      const response = yield* client.batch([methodCall]);
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL]);
       return yield* extractMethodResponse(
         response,
         "Email/queryChanges",
@@ -313,7 +314,7 @@ const makeEmailServiceLive = (): EmailService => {
 
       const methodCall: Invocation = ["Email/copy", args, callId];
 
-      const response = yield* client.batch([methodCall]);
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL]);
       return yield* extractMethodResponse(
         response,
         "Email/copy",
@@ -329,7 +330,7 @@ const makeEmailServiceLive = (): EmailService => {
 
       const methodCall: Invocation = ["Email/import", args, callId];
 
-      const response = yield* client.batch([methodCall]);
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL]);
       return yield* extractMethodResponse(
         response,
         "Email/import",

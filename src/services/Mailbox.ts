@@ -5,6 +5,7 @@ import type { JMAPClientInterface } from '../core/JMAPClient.ts'
 import { Invocation } from '../core/Types.ts'
 import { JMAPMethodError, NetworkError, AuthenticationError, SessionError } from '../core/Errors.ts'
 import { extractMethodResponse } from '../core/ResponseUtils.ts'
+import { CAPABILITY_SETS } from '../core/Capabilities.ts'
 import {
   type Mailbox as MailboxType,
   MailboxGetArguments,
@@ -165,7 +166,7 @@ const makeMailboxServiceLive = (): MailboxService => {
         callId
       ]
 
-      const response = yield* client.batch([methodCall])
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL])
       return yield* extractMethodResponse(response, 'Mailbox/get', callId, MailboxGetResponse)
     })
 
@@ -180,7 +181,7 @@ const makeMailboxServiceLive = (): MailboxService => {
         callId
       ]
 
-      const response = yield* client.batch([methodCall])
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL])
       return yield* extractMethodResponse(response, 'Mailbox/set', callId, MailboxSetResponse)
     })
 
@@ -195,7 +196,7 @@ const makeMailboxServiceLive = (): MailboxService => {
         callId
       ]
 
-      const response = yield* client.batch([methodCall])
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL])
       return yield* extractMethodResponse(response, 'Mailbox/query', callId, MailboxQueryResponse)
     })
 
@@ -210,7 +211,7 @@ const makeMailboxServiceLive = (): MailboxService => {
         callId
       ]
 
-      const response = yield* client.batch([methodCall])
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL])
       return yield* extractMethodResponse(response, 'Mailbox/queryChanges', callId, MailboxQueryChangesResponse)
     })
 

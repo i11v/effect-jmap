@@ -1,6 +1,20 @@
 import { Effect, Layer, TestContext } from 'effect'
 import { JMAPClientService, JMAPClient } from '../../src/core/JMAPClient.ts'
-import { JMAPFixtures, sampleEmails, mockEmailGetResponse, mockEmailSetResponse, mockEmailQueryResponse, mockEmailCopyResponse, mockEmailImportResponse } from '../fixtures/jmap-responses.ts'
+import {
+  JMAPFixtures,
+  sampleEmails,
+  mockEmailGetResponse,
+  mockEmailSetResponse,
+  mockEmailQueryResponse,
+  mockEmailCopyResponse,
+  mockEmailImportResponse,
+  sampleEmailSubmissions,
+  mockEmailSubmissionGetResponse,
+  mockEmailSubmissionSetResponse,
+  mockEmailSubmissionQueryResponse,
+  mockEmailSubmissionQueryChangesResponse,
+  mockEmailSubmissionChangesResponse
+} from '../fixtures/jmap-responses.ts'
 
 /**
  * Test utilities for Effect-based testing
@@ -203,6 +217,97 @@ const mockJMAPClient: JMAPClient = {
       return Effect.succeed({
         methodResponses: [
           ['Email/import', mockEmailImportResponse, methodCalls[0][2]]
+        ]
+      })
+    }
+
+    // EmailSubmission methods
+    if (methodName === 'EmailSubmission/get') {
+      const args = methodCalls[0][1] as any
+
+      // If no IDs specified (null), return all submissions
+      if (args.ids === null || args.ids === undefined) {
+        return Effect.succeed({
+          methodResponses: [
+            ['EmailSubmission/get', mockEmailSubmissionGetResponse, methodCalls[0][2]]
+          ]
+        })
+      }
+
+      // Filter submissions based on requested IDs
+      const requestedIds = args.ids
+      const filteredSubmissions = sampleEmailSubmissions.filter(submission =>
+        requestedIds.includes(submission.id)
+      )
+
+      return Effect.succeed({
+        methodResponses: [
+          ['EmailSubmission/get', {
+            ...mockEmailSubmissionGetResponse,
+            list: filteredSubmissions
+          }, methodCalls[0][2]]
+        ]
+      })
+    }
+
+    if (methodName === 'EmailSubmission/set') {
+      const args = methodCalls[0][1] as any
+      const createdSubmissions: Record<string, any> = {}
+
+      // Handle create - return minimal result matching Fastmail behavior
+      if (args.create) {
+        Object.entries(args.create).forEach(([tempId, submission]: [string, any]) => {
+          createdSubmissions[tempId] = {
+            id: `submission-${Date.now()}`,
+            sendAt: submission.sendAt || new Date().toISOString(),
+            undoStatus: 'final'
+          }
+        })
+      }
+
+      return Effect.succeed({
+        methodResponses: [
+          ['EmailSubmission/set', {
+            ...mockEmailSubmissionSetResponse,
+            accountId: args.accountId,
+            created: Object.keys(createdSubmissions).length > 0 ? createdSubmissions : undefined,
+            updated: args.update ? Object.fromEntries(
+              Object.keys(args.update).map(id => [id, {
+                id,
+                sendAt: new Date().toISOString(),
+                undoStatus: 'final'
+              }])
+            ) : undefined,
+            destroyed: args.destroy || []
+          }, methodCalls[0][2]]
+        ]
+      })
+    }
+
+    if (methodName === 'EmailSubmission/query') {
+      const args = methodCalls[0][1] as any
+      return Effect.succeed({
+        methodResponses: [
+          ['EmailSubmission/query', {
+            ...mockEmailSubmissionQueryResponse,
+            accountId: args.accountId
+          }, methodCalls[0][2]]
+        ]
+      })
+    }
+
+    if (methodName === 'EmailSubmission/queryChanges') {
+      return Effect.succeed({
+        methodResponses: [
+          ['EmailSubmission/queryChanges', mockEmailSubmissionQueryChangesResponse, methodCalls[0][2]]
+        ]
+      })
+    }
+
+    if (methodName === 'EmailSubmission/changes') {
+      return Effect.succeed({
+        methodResponses: [
+          ['EmailSubmission/changes', mockEmailSubmissionChangesResponse, methodCalls[0][2]]
         ]
       })
     }

@@ -420,6 +420,19 @@ export const EmailImportArguments = Schema.Struct({
 export type EmailImportArguments = Schema.Schema.Type<typeof EmailImportArguments>
 
 /**
+ * Minimal Email object returned by Email/import
+ * According to JMAP spec, Email/import only returns: id, blobId, threadId, size
+ */
+export const EmailImportResult = Schema.Struct({
+  id: Id,
+  blobId: Schema.String,
+  threadId: Id,
+  size: UnsignedInt
+})
+
+export type EmailImportResult = Schema.Schema.Type<typeof EmailImportResult>
+
+/**
  * Response for Email/import method
  */
 export const EmailImportResponse = Schema.Struct({
@@ -428,7 +441,7 @@ export const EmailImportResponse = Schema.Struct({
   newState: Schema.String,
   created: Schema.optional(Schema.Record({
     key: Schema.String,
-    value: Email
+    value: EmailImportResult
   })),
   notCreated: Schema.optional(Schema.Record({
     key: Schema.String,

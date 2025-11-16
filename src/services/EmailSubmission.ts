@@ -1,0 +1,533 @@
+import { Context, Effect, Layer } from "effect";
+import { HttpClient } from "@effect/platform";
+
+import { JMAPClientService } from "../core/JMAPClient.ts";
+import type { JMAPClientInterface } from "../core/JMAPClient.ts";
+import { Invocation } from "../core/Types.ts";
+import {
+  JMAPMethodError,
+  NetworkError,
+  AuthenticationError,
+  SessionError,
+} from "../core/Errors.ts";
+import { CAPABILITY_SETS } from "../core/Capabilities.ts";
+import { extractMethodResponse } from "../core/ResponseUtils.ts";
+import {
+  EmailSubmissionObject,
+  EmailSubmissionSetResult,
+  EmailSubmissionGetArguments,
+  EmailSubmissionGetResponse,
+  EmailSubmissionSetArguments,
+  EmailSubmissionSetResponse,
+  EmailSubmissionQueryArguments,
+  EmailSubmissionQueryResponse,
+  EmailSubmissionQueryChangesArguments,
+  EmailSubmissionQueryChangesResponse,
+  EmailSubmissionChangesArguments,
+  EmailSubmissionChangesResponse,
+  Envelope,
+  EmailSubmissionHelpers,
+} from "../schemas/EmailSubmission.ts";
+import { Id, Common, JMAPDate } from "../schemas/Common.ts";
+import * as Schema from "effect/Schema";
+
+/**
+ * EmailSubmission Service Interface
+ */
+export interface EmailSubmissionService {
+  /**
+   * Get email submissions by ID
+   */
+  readonly get: (
+    args: EmailSubmissionGetArguments,
+  ) => Effect.Effect<
+    Schema.Schema.Type<typeof EmailSubmissionGetResponse>,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Create, update, or destroy email submissions
+   */
+  readonly set: (
+    args: EmailSubmissionSetArguments,
+  ) => Effect.Effect<
+    Schema.Schema.Type<typeof EmailSubmissionSetResponse>,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Query email submissions with filters and sorting
+   */
+  readonly query: (
+    args: EmailSubmissionQueryArguments,
+  ) => Effect.Effect<
+    Schema.Schema.Type<typeof EmailSubmissionQueryResponse>,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Get changes to an email submission query
+   */
+  readonly queryChanges: (
+    args: EmailSubmissionQueryChangesArguments,
+  ) => Effect.Effect<
+    Schema.Schema.Type<typeof EmailSubmissionQueryChangesResponse>,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Get changes to email submissions since a state
+   */
+  readonly changes: (
+    args: EmailSubmissionChangesArguments,
+  ) => Effect.Effect<
+    Schema.Schema.Type<typeof EmailSubmissionChangesResponse>,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Send an email by creating a submission
+   */
+  readonly send: (
+    accountId: string,
+    identityId: Id,
+    emailId: Id,
+    options?: {
+      envelope?: Envelope | null;
+      sendAt?: JMAPDate;
+      onSuccessUpdateEmail?: Record<string, any> | null;
+      onSuccessDestroyEmail?: Id[] | boolean | null;
+    },
+  ) => Effect.Effect<
+    EmailSubmissionSetResult,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Get delivery status for a submission
+   */
+  readonly getDeliveryStatus: (
+    accountId: string,
+    submissionId: Id,
+  ) => Effect.Effect<
+    EmailSubmissionObject | undefined,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Cancel a scheduled email submission
+   */
+  readonly cancelScheduled: (
+    accountId: string,
+    submissionId: Id,
+  ) => Effect.Effect<
+    EmailSubmissionSetResult | undefined,
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Get all submissions for a specific email
+   */
+  readonly getByEmailId: (
+    accountId: string,
+    emailId: Id,
+  ) => Effect.Effect<
+    readonly EmailSubmissionObject[],
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+
+  /**
+   * Get recent submissions
+   */
+  readonly getRecent: (
+    accountId: string,
+    limit?: number,
+  ) => Effect.Effect<
+    readonly EmailSubmissionObject[],
+    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+    JMAPClientInterface | HttpClient.HttpClient
+  >;
+}
+
+/**
+ * EmailSubmission Service Tag
+ */
+export const EmailSubmissionService = Context.GenericTag<EmailSubmissionService>(
+  "EmailSubmissionService",
+);
+
+/**
+ * Live implementation of EmailSubmission Service
+ */
+const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
+  const get: EmailSubmissionService["get"] = (args) =>
+    Effect.gen(function* () {
+      const client = yield* JMAPClientService;
+      const callId = `emailSubmission-get-${Date.now()}`;
+
+      const methodCall: Invocation = ["EmailSubmission/get", args, callId];
+
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.SUBMISSION]);
+      return yield* extractMethodResponse(
+        response,
+        "EmailSubmission/get",
+        callId,
+        EmailSubmissionGetResponse,
+      );
+    });
+
+  const set: EmailSubmissionService["set"] = (args) =>
+    Effect.gen(function* () {
+      const client = yield* JMAPClientService;
+      const callId = `emailSubmission-set-${Date.now()}`;
+
+      const methodCall: Invocation = ["EmailSubmission/set", args, callId];
+
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.SUBMISSION]);
+      return yield* extractMethodResponse(
+        response,
+        "EmailSubmission/set",
+        callId,
+        EmailSubmissionSetResponse,
+      );
+    });
+
+  const query: EmailSubmissionService["query"] = (args) =>
+    Effect.gen(function* () {
+      const client = yield* JMAPClientService;
+      const callId = `emailSubmission-query-${Date.now()}`;
+
+      const methodCall: Invocation = ["EmailSubmission/query", args, callId];
+
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.SUBMISSION]);
+      return yield* extractMethodResponse(
+        response,
+        "EmailSubmission/query",
+        callId,
+        EmailSubmissionQueryResponse,
+      );
+    });
+
+  const queryChanges: EmailSubmissionService["queryChanges"] = (args) =>
+    Effect.gen(function* () {
+      const client = yield* JMAPClientService;
+      const callId = `emailSubmission-queryChanges-${Date.now()}`;
+
+      const methodCall: Invocation = [
+        "EmailSubmission/queryChanges",
+        args,
+        callId,
+      ];
+
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.SUBMISSION]);
+      return yield* extractMethodResponse(
+        response,
+        "EmailSubmission/queryChanges",
+        callId,
+        EmailSubmissionQueryChangesResponse,
+      );
+    });
+
+  const changes: EmailSubmissionService["changes"] = (args) =>
+    Effect.gen(function* () {
+      const client = yield* JMAPClientService;
+      const callId = `emailSubmission-changes-${Date.now()}`;
+
+      const methodCall: Invocation = ["EmailSubmission/changes", args, callId];
+
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.SUBMISSION]);
+      return yield* extractMethodResponse(
+        response,
+        "EmailSubmission/changes",
+        callId,
+        EmailSubmissionChangesResponse,
+      );
+    });
+
+  const send: EmailSubmissionService["send"] = (
+    accountId,
+    identityId,
+    emailId,
+    options = {},
+  ) =>
+    Effect.gen(function* () {
+      const submission = EmailSubmissionHelpers.createSubmission(
+        identityId,
+        emailId,
+        options,
+      );
+
+      const result = yield* set({
+        accountId,
+        create: {
+          [`submission-${Date.now()}`]: submission,
+        },
+      });
+
+      // Return the first created submission
+      if (result.created) {
+        const submissions = Object.values(result.created);
+        if (submissions.length > 0) {
+          const createdSubmission = submissions[0];
+          if (createdSubmission) {
+            return createdSubmission;
+          }
+        }
+      }
+
+      // If creation failed, throw an error
+      if (result.notCreated) {
+        const errors = Object.values(result.notCreated);
+        return yield* Effect.die(
+          new Error(`Failed to send email: ${JSON.stringify(errors[0])}`)
+        );
+      }
+
+      return yield* Effect.die(
+        new Error("Unexpected response from EmailSubmission/set")
+      );
+    });
+
+  const getDeliveryStatus: EmailSubmissionService["getDeliveryStatus"] = (
+    accountId,
+    submissionId,
+  ) =>
+    Effect.gen(function* () {
+      const result = yield* get({
+        accountId,
+        ids: [submissionId],
+        properties: ["id", "deliveryStatus", "undoStatus"],
+      });
+
+      return result.list[0];
+    });
+
+  const cancelScheduled: EmailSubmissionService["cancelScheduled"] = (
+    accountId,
+    submissionId,
+  ) =>
+    Effect.gen(function* () {
+      const result = yield* set({
+        accountId,
+        update: {
+          [submissionId]: {
+            undoStatus: "canceled",
+          },
+        },
+      });
+
+      if (result.updated && result.updated[submissionId]) {
+        return result.updated[submissionId];
+      }
+
+      if (result.notUpdated && result.notUpdated[submissionId]) {
+        throw new Error(
+          `Failed to cancel submission: ${JSON.stringify(result.notUpdated[submissionId])}`,
+        );
+      }
+
+      return undefined;
+    });
+
+  const getByEmailId: EmailSubmissionService["getByEmailId"] = (
+    accountId,
+    emailId,
+  ) =>
+    Effect.gen(function* () {
+      const queryResult = yield* query({
+        accountId,
+        filter: {
+          emailIds: [emailId],
+        },
+      });
+
+      if (queryResult.ids.length === 0) {
+        return [];
+      }
+
+      const getResult = yield* get({
+        accountId,
+        ids: queryResult.ids,
+      });
+
+      return getResult.list;
+    });
+
+  const getRecent: EmailSubmissionService["getRecent"] = (
+    accountId,
+    limit = 10,
+  ) =>
+    Effect.gen(function* () {
+      const queryResult = yield* query({
+        accountId,
+        sort: [{ property: "sendAt", isAscending: false }],
+        limit: Common.createUnsignedInt(limit),
+      });
+
+      if (queryResult.ids.length === 0) {
+        return [];
+      }
+
+      const getResult = yield* get({
+        accountId,
+        ids: queryResult.ids,
+      });
+
+      return getResult.list;
+    });
+
+  return {
+    get,
+    set,
+    query,
+    queryChanges,
+    changes,
+    send,
+    getDeliveryStatus,
+    cancelScheduled,
+    getByEmailId,
+    getRecent,
+  };
+};
+
+/**
+ * Live layer for EmailSubmission Service
+ */
+export const EmailSubmissionServiceLive = Layer.succeed(
+  EmailSubmissionService,
+  makeEmailSubmissionServiceLive(),
+);
+
+/**
+ * Convenience functions for common email submission operations
+ */
+export const EmailSubmissionOperations = {
+  /**
+   * Send an email immediately with default settings
+   */
+  sendNow: (accountId: string, identityId: Id, emailId: Id) =>
+    Effect.gen(function* () {
+      const service = yield* EmailSubmissionService;
+      return yield* service.send(accountId, identityId, emailId);
+    }),
+
+  /**
+   * Send an email at a specific time
+   */
+  sendLater: (
+    accountId: string,
+    identityId: Id,
+    emailId: Id,
+    sendAt: JMAPDate,
+  ) =>
+    Effect.gen(function* () {
+      const service = yield* EmailSubmissionService;
+      return yield* service.send(accountId, identityId, emailId, { sendAt });
+    }),
+
+  /**
+   * Send email and mark original as answered
+   */
+  sendReply: (
+    accountId: string,
+    identityId: Id,
+    emailId: Id,
+    originalEmailId: Id,
+  ) =>
+    Effect.gen(function* () {
+      const service = yield* EmailSubmissionService;
+      return yield* service.send(accountId, identityId, emailId, {
+        onSuccessUpdateEmail: {
+          [originalEmailId]: {
+            keywords: { $answered: true },
+          },
+        },
+      });
+    }),
+
+  /**
+   * Send email and delete draft
+   */
+  sendAndDeleteDraft: (
+    accountId: string,
+    identityId: Id,
+    emailId: Id,
+  ) =>
+    Effect.gen(function* () {
+      const service = yield* EmailSubmissionService;
+      return yield* service.send(accountId, identityId, emailId, {
+        onSuccessDestroyEmail: [emailId],
+      });
+    }),
+
+  /**
+   * Get pending submissions that can be canceled
+   */
+  getPendingSubmissions: (accountId: string) =>
+    Effect.gen(function* () {
+      const service = yield* EmailSubmissionService;
+      const queryResult = yield* service.query({
+        accountId,
+        filter: {
+          undoStatus: "pending",
+        },
+      });
+
+      if (queryResult.ids.length === 0) {
+        return [];
+      }
+
+      const getResult = yield* service.get({
+        accountId,
+        ids: queryResult.ids,
+      });
+
+      return getResult.list;
+    }),
+
+  /**
+   * Get failed submissions
+   */
+  getFailedSubmissions: (accountId: string) =>
+    Effect.gen(function* () {
+      const service = yield* EmailSubmissionService;
+      const recent = yield* service.getRecent(accountId, 100);
+
+      // Filter for submissions with failed delivery
+      return recent.filter((submission) =>
+        EmailSubmissionHelpers.hasFailures(submission),
+      );
+    }),
+
+  /**
+   * Retry a failed submission
+   */
+  retrySubmission: (
+    accountId: string,
+    identityId: Id,
+    emailId: Id,
+    originalSubmissionId: Id,
+  ) =>
+    Effect.gen(function* () {
+      const service = yield* EmailSubmissionService;
+
+      // Get the original submission to copy envelope if exists
+      const original = yield* service.getDeliveryStatus(
+        accountId,
+        originalSubmissionId,
+      );
+
+      const options = original?.envelope ? { envelope: original.envelope } : {};
+
+      return yield* service.send(accountId, identityId, emailId, options);
+    }),
+};

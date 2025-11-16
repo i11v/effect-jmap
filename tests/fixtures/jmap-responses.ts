@@ -186,6 +186,132 @@ export const mockEmailImportResponse = {
   oldState: "state-125",
   newState: "state-126",
   created: {
+    "import1": {
+      id: "email-1",
+      blobId: "blob-1",
+      threadId: "thread-1",
+      size: 2048
+    }
+  }
+}
+
+// Full email import response (some JMAP servers may return this)
+export const mockEmailImportResponseFull = {
+  accountId: "test-account",
+  oldState: "state-125",
+  newState: "state-126",
+  created: {
     "import1": sampleEmails[0]
   }
+}
+
+// EmailSubmission-specific mock responses
+export const sampleEmailSubmissions = [
+  {
+    id: "submission-1",
+    identityId: "identity-1",
+    emailId: "email-1",
+    threadId: "thread-1",
+    envelope: null,
+    sendAt: "2024-01-15T10:30:00Z",
+    undoStatus: "final",
+    deliveryStatus: {
+      "test@example.com": {
+        smtpReply: "250 2.0.0 OK",
+        delivered: "yes",
+        displayed: "unknown"
+      }
+    },
+    dsnBlobIds: [],
+    mdnBlobIds: []
+  },
+  {
+    id: "submission-2",
+    identityId: "identity-1",
+    emailId: "email-2",
+    threadId: "thread-2",
+    envelope: {
+      mailFrom: { email: "sender@example.com" },
+      rcptTo: [
+        { email: "recipient1@example.com" },
+        { email: "recipient2@example.com" }
+      ]
+    },
+    sendAt: "2024-01-16T14:20:00Z",
+    undoStatus: "pending",
+    deliveryStatus: null,
+    dsnBlobIds: [],
+    mdnBlobIds: []
+  }
+]
+
+export const mockEmailSubmissionGetResponse = {
+  accountId: "test-account",
+  state: "submission-state-123",
+  list: sampleEmailSubmissions,
+  notFound: []
+}
+
+// Minimal EmailSubmission/set response (matches Fastmail behavior)
+export const mockEmailSubmissionSetResponse = {
+  accountId: "test-account",
+  oldState: "submission-state-123",
+  newState: "submission-state-124",
+  created: {
+    "temp1": {
+      id: "submission-1",
+      sendAt: "2024-01-15T10:30:00Z",
+      undoStatus: "final"
+    }
+  },
+  updated: {
+    "submission-1": {
+      id: "submission-1",
+      sendAt: "2024-01-15T10:30:00Z",
+      undoStatus: "final"
+    }
+  },
+  destroyed: []
+}
+
+// Full EmailSubmission/set response (some JMAP servers may return this)
+export const mockEmailSubmissionSetResponseFull = {
+  accountId: "test-account",
+  oldState: "submission-state-123",
+  newState: "submission-state-124",
+  created: {
+    "temp1": sampleEmailSubmissions[0]
+  },
+  updated: {
+    "submission-1": sampleEmailSubmissions[0]
+  },
+  destroyed: []
+}
+
+export const mockEmailSubmissionQueryResponse = {
+  accountId: "test-account",
+  queryState: "submission-query-state-123",
+  canCalculateChanges: true,
+  position: 0,
+  ids: ["submission-1", "submission-2"],
+  total: 2,
+  limit: 10
+}
+
+export const mockEmailSubmissionQueryChangesResponse = {
+  accountId: "test-account",
+  oldQueryState: "submission-query-state-123",
+  newQueryState: "submission-query-state-124",
+  removed: [],
+  added: [{ id: "submission-3", index: 0 }]
+}
+
+export const mockEmailSubmissionChangesResponse = {
+  accountId: "test-account",
+  oldState: "submission-state-123",
+  newState: "submission-state-124",
+  hasMoreChanges: false,
+  created: ["submission-3"],
+  updated: ["submission-1"],
+  destroyed: []
 }
