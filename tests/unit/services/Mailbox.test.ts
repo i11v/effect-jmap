@@ -3,13 +3,18 @@ import { Effect, Layer } from 'effect'
 import { HttpClient } from '@effect/platform'
 import { JMAPClientService } from '../../../src/core/JMAPClient.ts'
 import { MailboxService, MailboxServiceLive, MailboxOperations } from '../../../src/services/Mailbox.ts'
+import { IdGeneratorLive } from '../../../src/services/IdGenerator.ts'
 import { Common } from '../../../src/schemas/Common.ts'
 import { StandardRoles } from '../../../src/schemas/Mailbox.ts'
 import { JMAPFixtures } from '../../fixtures/jmap-responses.ts'
 import { TestUtils, testJMAPClient } from '../../utils/test-utils.ts'
 
 describe('MailboxService', () => {
-  const testLayer = Layer.provideMerge(MailboxServiceLive, testJMAPClient)
+  const testLayer = Layer.mergeAll(
+    MailboxServiceLive,
+    testJMAPClient,
+    IdGeneratorLive
+  )
 
   describe('get', () => {
     it('should retrieve all mailboxes when ids is null', async () => {
@@ -148,7 +153,11 @@ describe('MailboxService', () => {
 })
 
 describe('MailboxOperations', () => {
-  const testLayer = Layer.provideMerge(MailboxServiceLive, testJMAPClient)
+  const testLayer = Layer.mergeAll(
+    MailboxServiceLive,
+    testJMAPClient,
+    IdGeneratorLive
+  )
 
   describe('getInbox', () => {
     it('should find the inbox mailbox', async () => {

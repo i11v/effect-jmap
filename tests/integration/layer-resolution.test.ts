@@ -4,6 +4,7 @@ import { NodeHttpClient } from '@effect/platform-node'
 import { JMAPClientLive, JMAPClientService } from '../../src/core/JMAPClient.ts'
 import { EmailServiceLive, EmailService } from '../../src/services/Email.ts'
 import { MailboxServiceLive, MailboxService } from '../../src/services/Mailbox.ts'
+import { IdGeneratorLive } from '../../src/services/IdGenerator.ts'
 
 /**
  * Integration tests to verify layer resolution works correctly.
@@ -57,7 +58,7 @@ describe('Layer Resolution Integration', () => {
         JMAPClientLive(testConfig),
         EmailServiceLive,
         MailboxServiceLive
-      )
+      ).pipe(Layer.provide(IdGeneratorLive))
 
       const program = Effect.gen(function* () {
         const emailService = yield* EmailService
@@ -80,12 +81,17 @@ describe('Layer Resolution Integration', () => {
     })
 
     it('should fail with missing dependency layers', async () => {
-      // Test EmailService without JMAPClient
-      const incompleteLayer = EmailServiceLive
+      // Test EmailService without IdGenerator - should fail when the service method is called
+      // Provide JMAPClientService but not IdGenerator to isolate the dependency check
+      const incompleteLayer = Layer.mergeAll(
+        NodeHttpClient.layer,
+        JMAPClientLive(testConfig),
+        EmailServiceLive
+      )
 
       const program = Effect.gen(function* () {
         const emailService = yield* EmailService
-        // Try to actually use the service to trigger the missing dependency
+        // Try to actually use the service to trigger the missing IdGenerator dependency
         yield* emailService.get({
           accountId: 'test-account',
           ids: ['test-id']
@@ -95,7 +101,7 @@ describe('Layer Resolution Integration', () => {
 
       await expect(
         Effect.runPromise(Effect.provide(program, incompleteLayer))
-      ).rejects.toThrow(/Service not found.*JMAPClientService/)
+      ).rejects.toThrow(/Service not found.*IdGenerator/)
     })
   })
 
@@ -107,7 +113,7 @@ describe('Layer Resolution Integration', () => {
         JMAPClientLive(testConfig),
         EmailServiceLive,
         MailboxServiceLive
-      )
+      ).pipe(Layer.provide(IdGeneratorLive))
 
       // Should compile without circular dependency errors
       expect(layers).toBeDefined()
@@ -117,7 +123,9 @@ describe('Layer Resolution Integration', () => {
       // Test different ways of merging layers
       const httpLayer = NodeHttpClient.layer
       const jmapLayer = JMAPClientLive(testConfig)
-      const serviceLayer = Layer.mergeAll(EmailServiceLive, MailboxServiceLive)
+      const serviceLayer = Layer.mergeAll(EmailServiceLive, MailboxServiceLive).pipe(
+        Layer.provide(IdGeneratorLive)
+      )
 
       const combinedLayers = Layer.mergeAll(
         httpLayer,

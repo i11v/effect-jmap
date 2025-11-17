@@ -4,6 +4,7 @@ import { HttpClient } from "@effect/platform";
 import { JMAPClientService } from "../core/JMAPClient.ts";
 import type { JMAPClientInterface } from "../core/JMAPClient.ts";
 import { Invocation } from "../core/Types.ts";
+import { IdGenerator } from "./IdGenerator.ts";
 import {
   JMAPMethodError,
   NetworkError,
@@ -48,7 +49,7 @@ export interface EmailService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailGetResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -59,7 +60,7 @@ export interface EmailService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailSetResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -70,7 +71,7 @@ export interface EmailService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailQueryResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -81,7 +82,7 @@ export interface EmailService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailQueryChangesResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -92,7 +93,7 @@ export interface EmailService {
   ) => Effect.Effect<
     EmailCopyResponse,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -103,7 +104,7 @@ export interface EmailService {
   ) => Effect.Effect<
     EmailImportResponse,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -120,7 +121,7 @@ export interface EmailService {
   ) => Effect.Effect<
     readonly EmailType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -137,7 +138,7 @@ export interface EmailService {
   ) => Effect.Effect<
     readonly EmailType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -150,7 +151,7 @@ export interface EmailService {
   ) => Effect.Effect<
     readonly EmailType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -163,7 +164,7 @@ export interface EmailService {
   ) => Effect.Effect<
     readonly EmailType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -176,7 +177,7 @@ export interface EmailService {
   ) => Effect.Effect<
     readonly EmailType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -190,7 +191,7 @@ export interface EmailService {
   ) => Effect.Effect<
     readonly EmailType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -204,7 +205,7 @@ export interface EmailService {
   ) => Effect.Effect<
     readonly EmailType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -217,7 +218,7 @@ export interface EmailService {
   ) => Effect.Effect<
     readonly EmailType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -230,7 +231,7 @@ export interface EmailService {
   ) => Effect.Effect<
     EmailType | null,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 }
 
@@ -246,7 +247,9 @@ const makeEmailServiceLive = (): EmailService => {
   const get: EmailService["get"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `email-get-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `email-get-${id}`;
 
       const methodCall: Invocation = ["Email/get", args, callId];
 
@@ -262,7 +265,9 @@ const makeEmailServiceLive = (): EmailService => {
   const set: EmailService["set"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `email-set-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `email-set-${id}`;
 
       const methodCall: Invocation = ["Email/set", args, callId];
 
@@ -278,7 +283,9 @@ const makeEmailServiceLive = (): EmailService => {
   const query: EmailService["query"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `email-query-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `email-query-${id}`;
 
       const methodCall: Invocation = ["Email/query", args, callId];
 
@@ -294,7 +301,9 @@ const makeEmailServiceLive = (): EmailService => {
   const queryChanges: EmailService["queryChanges"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `email-queryChanges-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `email-queryChanges-${id}`;
 
       const methodCall: Invocation = ["Email/queryChanges", args, callId];
 
@@ -310,7 +319,9 @@ const makeEmailServiceLive = (): EmailService => {
   const copy: EmailService["copy"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `email-copy-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `email-copy-${id}`;
 
       const methodCall: Invocation = ["Email/copy", args, callId];
 
@@ -326,7 +337,9 @@ const makeEmailServiceLive = (): EmailService => {
   const emailImport: EmailService["import"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `email-import-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `email-import-${id}`;
 
       const methodCall: Invocation = ["Email/import", args, callId];
 
@@ -625,10 +638,11 @@ const makeEmailServiceLive = (): EmailService => {
 
 /**
  * Live layer for Email Service
+ * Dependencies: IdGenerator (required at runtime by service methods)
  */
-export const EmailServiceLive = Layer.succeed(
+export const EmailServiceLive = Layer.effect(
   EmailService,
-  makeEmailServiceLive(),
+  Effect.sync(makeEmailServiceLive)
 );
 
 /**

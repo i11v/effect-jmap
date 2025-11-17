@@ -7,6 +7,7 @@ import {
   EmailServiceLive,
   EmailOperations
 } from '../../../src/services/Email.ts'
+import { IdGeneratorLive } from '../../../src/services/IdGenerator.ts'
 import {
   Email,
   EmailGetResponse,
@@ -28,7 +29,8 @@ import {
 describe('Email Service', () => {
   const TestLayers = Layer.mergeAll(
     testJMAPClient,
-    EmailServiceLive
+    EmailServiceLive,
+    IdGeneratorLive
   )
 
   const runTest = <E, A>(effect: Effect.Effect<A, E, EmailService | HttpClient.HttpClient>) =>
@@ -432,7 +434,8 @@ describe('Email Service', () => {
 describe('EmailOperations', () => {
   const TestLayers = Layer.mergeAll(
     testJMAPClient,
-    EmailServiceLive
+    EmailServiceLive,
+    IdGeneratorLive
   )
 
   const runTest = <E, A>(effect: Effect.Effect<A, E, EmailService | HttpClient.HttpClient>) =>

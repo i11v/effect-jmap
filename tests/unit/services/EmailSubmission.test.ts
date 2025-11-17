@@ -6,6 +6,7 @@ import {
   EmailSubmissionServiceLive,
   EmailSubmissionOperations
 } from '../../../src/services/EmailSubmission.ts'
+import { IdGeneratorLive } from '../../../src/services/IdGenerator.ts'
 import {
   EmailSubmissionObject,
   EmailSubmissionHelpers
@@ -17,7 +18,8 @@ import { sampleEmailSubmissions } from '../../fixtures/jmap-responses.ts'
 describe('EmailSubmission Service', () => {
   const TestLayers = Layer.mergeAll(
     testJMAPClient,
-    EmailSubmissionServiceLive
+    EmailSubmissionServiceLive,
+    IdGeneratorLive
   )
 
   const runTest = <E, A>(effect: Effect.Effect<A, E, EmailSubmissionService | HttpClient.HttpClient>) =>

@@ -4,6 +4,7 @@ import { HttpClient } from "@effect/platform";
 import { JMAPClientService } from "../core/JMAPClient.ts";
 import type { JMAPClientInterface } from "../core/JMAPClient.ts";
 import { Invocation } from "../core/Types.ts";
+import { IdGenerator } from "./IdGenerator.ts";
 import {
   JMAPMethodError,
   NetworkError,
@@ -43,7 +44,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailSubmissionGetResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -54,7 +55,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailSubmissionSetResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -65,7 +66,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailSubmissionQueryResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -76,7 +77,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailSubmissionQueryChangesResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -87,7 +88,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof EmailSubmissionChangesResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -106,7 +107,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     EmailSubmissionSetResult,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -118,7 +119,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     EmailSubmissionObject | undefined,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -130,7 +131,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     EmailSubmissionSetResult | undefined,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -142,7 +143,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     readonly EmailSubmissionObject[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 
   /**
@@ -154,7 +155,7 @@ export interface EmailSubmissionService {
   ) => Effect.Effect<
     readonly EmailSubmissionObject[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >;
 }
 
@@ -172,7 +173,9 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
   const get: EmailSubmissionService["get"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `emailSubmission-get-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `emailSubmission-get-${id}`;
 
       const methodCall: Invocation = ["EmailSubmission/get", args, callId];
 
@@ -188,7 +191,9 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
   const set: EmailSubmissionService["set"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `emailSubmission-set-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `emailSubmission-set-${id}`;
 
       const methodCall: Invocation = ["EmailSubmission/set", args, callId];
 
@@ -204,7 +209,9 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
   const query: EmailSubmissionService["query"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `emailSubmission-query-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `emailSubmission-query-${id}`;
 
       const methodCall: Invocation = ["EmailSubmission/query", args, callId];
 
@@ -220,7 +227,9 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
   const queryChanges: EmailSubmissionService["queryChanges"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `emailSubmission-queryChanges-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `emailSubmission-queryChanges-${id}`;
 
       const methodCall: Invocation = [
         "EmailSubmission/queryChanges",
@@ -240,7 +249,9 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
   const changes: EmailSubmissionService["changes"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
-      const callId = `emailSubmission-changes-${Date.now()}`;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `emailSubmission-changes-${id}`;
 
       const methodCall: Invocation = ["EmailSubmission/changes", args, callId];
 
@@ -266,10 +277,12 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
         options,
       );
 
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
       const result = yield* set({
         accountId,
         create: {
-          [`submission-${Date.now()}`]: submission,
+          [`submission-${id}`]: submission,
         },
       });
 
@@ -401,10 +414,11 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
 
 /**
  * Live layer for EmailSubmission Service
+ * Dependencies: IdGenerator (required at runtime by service methods)
  */
-export const EmailSubmissionServiceLive = Layer.succeed(
+export const EmailSubmissionServiceLive = Layer.effect(
   EmailSubmissionService,
-  makeEmailSubmissionServiceLive(),
+  Effect.sync(makeEmailSubmissionServiceLive)
 );
 
 /**

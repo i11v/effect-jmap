@@ -6,6 +6,7 @@ import { Invocation } from '../core/Types.ts'
 import { JMAPMethodError, NetworkError, AuthenticationError, SessionError } from '../core/Errors.ts'
 import { extractMethodResponse } from '../core/ResponseUtils.ts'
 import { CAPABILITY_SETS } from '../core/Capabilities.ts'
+import { IdGenerator } from './IdGenerator.ts'
 import {
   type Mailbox as MailboxType,
   MailboxGetArguments,
@@ -36,7 +37,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof MailboxGetResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -47,7 +48,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof MailboxSetResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -58,7 +59,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof MailboxQueryResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -69,7 +70,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     Schema.Schema.Type<typeof MailboxQueryChangesResponse>,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -80,7 +81,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     readonly MailboxType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -92,7 +93,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     readonly MailboxType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -104,7 +105,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     readonly MailboxType[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -116,7 +117,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     MailboxType,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -129,7 +130,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     MailboxType | null,
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 
   /**
@@ -141,7 +142,7 @@ export interface MailboxService {
   ) => Effect.Effect<
     readonly Id[],
     JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient
+    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
   >
 }
 
@@ -158,7 +159,9 @@ const makeMailboxServiceLive = (): MailboxService => {
   const get: MailboxService['get'] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService
-      const callId = `mailbox-get-${Date.now()}`
+      const idGenerator = yield* IdGenerator
+      const id = yield* idGenerator.generate
+      const callId = `mailbox-get-${id}`
 
       const methodCall: Invocation = [
         'Mailbox/get',
@@ -173,7 +176,9 @@ const makeMailboxServiceLive = (): MailboxService => {
   const set: MailboxService['set'] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService
-      const callId = `mailbox-set-${Date.now()}`
+      const idGenerator = yield* IdGenerator
+      const id = yield* idGenerator.generate
+      const callId = `mailbox-set-${id}`
 
       const methodCall: Invocation = [
         'Mailbox/set',
@@ -188,7 +193,9 @@ const makeMailboxServiceLive = (): MailboxService => {
   const query: MailboxService['query'] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService
-      const callId = `mailbox-query-${Date.now()}`
+      const idGenerator = yield* IdGenerator
+      const id = yield* idGenerator.generate
+      const callId = `mailbox-query-${id}`
 
       const methodCall: Invocation = [
         'Mailbox/query',
@@ -203,7 +210,9 @@ const makeMailboxServiceLive = (): MailboxService => {
   const queryChanges: MailboxService['queryChanges'] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService
-      const callId = `mailbox-queryChanges-${Date.now()}`
+      const idGenerator = yield* IdGenerator
+      const id = yield* idGenerator.generate
+      const callId = `mailbox-queryChanges-${id}`
 
       const methodCall: Invocation = [
         'Mailbox/queryChanges',
@@ -259,7 +268,9 @@ const makeMailboxServiceLive = (): MailboxService => {
 
   const create: MailboxService['create'] = (accountId, mailbox) =>
     Effect.gen(function* () {
-      const tempId = `temp-${Date.now()}`
+      const idGenerator = yield* IdGenerator
+      const id = yield* idGenerator.generate
+      const tempId = `temp-${id}`
 
       const result = yield* set({
         accountId,
@@ -342,8 +353,12 @@ const makeMailboxServiceLive = (): MailboxService => {
 
 /**
  * Live layer for Mailbox Service
+ * Dependencies: IdGenerator (required at runtime by service methods)
  */
-export const MailboxServiceLive = Layer.succeed(MailboxService, makeMailboxServiceLive())
+export const MailboxServiceLive = Layer.effect(
+  MailboxService,
+  Effect.sync(makeMailboxServiceLive)
+)
 
 /**
  * Convenience functions for common mailbox operations
