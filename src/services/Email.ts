@@ -2,7 +2,6 @@ import { Context, Effect, Layer } from "effect";
 import { HttpClient } from "@effect/platform";
 
 import { JMAPClientService } from "../core/JMAPClient.ts";
-import type { JMAPClientInterface } from "../core/JMAPClient.ts";
 import { Invocation } from "../core/Types.ts";
 import { IdGenerator } from "./IdGenerator.ts";
 import {
@@ -40,211 +39,214 @@ import * as Schema from "effect/Schema";
 /**
  * Email Service Interface
  */
-export interface EmailService {
-  /**
-   * Get emails by ID with optional body content
-   */
-  readonly get: (
-    args: EmailGetArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailGetResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+export interface EmailServiceInterface {
+    /**
+     * Get emails by ID with optional body content
+     */
+    readonly get: (
+      args: EmailGetArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailGetResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Create, update, or destroy emails
-   */
-  readonly set: (
-    args: EmailSetArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailSetResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Create, update, or destroy emails
+     */
+    readonly set: (
+      args: EmailSetArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailSetResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Query emails with filters and sorting
-   */
-  readonly query: (
-    args: EmailQueryArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailQueryResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Query emails with filters and sorting
+     */
+    readonly query: (
+      args: EmailQueryArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailQueryResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get changes to an email query
-   */
-  readonly queryChanges: (
-    args: EmailQueryChangesArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailQueryChangesResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get changes to an email query
+     */
+    readonly queryChanges: (
+      args: EmailQueryChangesArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailQueryChangesResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Copy emails between accounts
-   */
-  readonly copy: (
-    args: EmailCopyArguments,
-  ) => Effect.Effect<
-    EmailCopyResponse,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Copy emails between accounts
+     */
+    readonly copy: (
+      args: EmailCopyArguments,
+    ) => Effect.Effect<
+      EmailCopyResponse,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Import emails from blobs
-   */
-  readonly import: (
-    args: EmailImportArguments,
-  ) => Effect.Effect<
-    EmailImportResponse,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Import emails from blobs
+     */
+    readonly import: (
+      args: EmailImportArguments,
+    ) => Effect.Effect<
+      EmailImportResponse,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get emails in a mailbox
-   */
-  readonly getByMailbox: (
-    accountId: string,
-    mailboxId: Id,
-    options?: {
-      limit?: number;
-      properties?: string[];
-      sort?: Array<{ property: string; isAscending?: boolean }>;
-    },
-  ) => Effect.Effect<
-    readonly EmailType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get emails in a mailbox
+     */
+    readonly getByMailbox: (
+      accountId: string,
+      mailboxId: Id,
+      options?: {
+        limit?: number;
+        properties?: string[];
+        sort?: Array<{ property: string; isAscending?: boolean }>;
+      },
+    ) => Effect.Effect<
+      readonly EmailType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Search emails by text
-   */
-  readonly search: (
-    accountId: string,
-    searchQuery: string,
-    options?: {
-      limit?: number;
-      mailboxId?: Id;
-      properties?: string[];
-    },
-  ) => Effect.Effect<
-    readonly EmailType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Search emails by text
+     */
+    readonly search: (
+      accountId: string,
+      searchQuery: string,
+      options?: {
+        limit?: number;
+        mailboxId?: Id;
+        properties?: string[];
+      },
+    ) => Effect.Effect<
+      readonly EmailType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get unread emails
-   */
-  readonly getUnread: (
-    accountId: string,
-    mailboxId?: Id,
-    limit?: number,
-  ) => Effect.Effect<
-    readonly EmailType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get unread emails
+     */
+    readonly getUnread: (
+      accountId: string,
+      mailboxId?: Id,
+      limit?: number,
+    ) => Effect.Effect<
+      readonly EmailType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Mark emails as read/unread
-   */
-  readonly markRead: (
-    accountId: string,
-    emailIds: Id[],
-    read: boolean,
-  ) => Effect.Effect<
-    readonly EmailType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Mark emails as read/unread
+     */
+    readonly markRead: (
+      accountId: string,
+      emailIds: Id[],
+      read: boolean,
+    ) => Effect.Effect<
+      readonly EmailType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Flag/unflag emails
-   */
-  readonly flag: (
-    accountId: string,
-    emailIds: Id[],
-    flagged: boolean,
-  ) => Effect.Effect<
-    readonly EmailType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Flag/unflag emails
+     */
+    readonly flag: (
+      accountId: string,
+      emailIds: Id[],
+      flagged: boolean,
+    ) => Effect.Effect<
+      readonly EmailType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Move emails to different mailbox
-   */
-  readonly move: (
-    accountId: string,
-    emailIds: Id[],
-    fromMailboxId: Id,
-    toMailboxId: Id,
-  ) => Effect.Effect<
-    readonly EmailType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Move emails to different mailbox
+     */
+    readonly move: (
+      accountId: string,
+      emailIds: Id[],
+      fromMailboxId: Id,
+      toMailboxId: Id,
+    ) => Effect.Effect<
+      readonly EmailType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Add or remove keywords from emails
-   */
-  readonly updateKeywords: (
-    accountId: string,
-    emailIds: Id[],
-    keywordsToAdd: string[],
-    keywordsToRemove: string[],
-  ) => Effect.Effect<
-    readonly EmailType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Add or remove keywords from emails
+     */
+    readonly updateKeywords: (
+      accountId: string,
+      emailIds: Id[],
+      keywordsToAdd: string[],
+      keywordsToRemove: string[],
+    ) => Effect.Effect<
+      readonly EmailType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get emails with full content (text and HTML bodies)
-   */
-  readonly getWithContent: (
-    accountId: string,
-    emailIds: Id[],
-    maxBodyValueBytes?: number,
-  ) => Effect.Effect<
-    readonly EmailType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get emails with full content (text and HTML bodies)
+     */
+    readonly getWithContent: (
+      accountId: string,
+      emailIds: Id[],
+      maxBodyValueBytes?: number,
+    ) => Effect.Effect<
+      readonly EmailType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get a single email with full content by ID
-   */
-  readonly getEmailContent: (
-    accountId: string,
-    emailId: Id,
-    maxBodyValueBytes?: number,
-  ) => Effect.Effect<
-    EmailType | null,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get a single email with full content by ID
+     */
+    readonly getEmailContent: (
+      accountId: string,
+      emailId: Id,
+      maxBodyValueBytes?: number,
+    ) => Effect.Effect<
+      EmailType | null,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 }
 
 /**
  * Email Service Tag
  */
-export const EmailService = Context.GenericTag<EmailService>("EmailService");
+export class EmailService extends Context.Tag("EmailService")<
+  EmailService,
+  EmailServiceInterface
+>() {}
 
 /**
  * Live implementation of Email Service
  */
-const makeEmailServiceLive = (): EmailService => {
-  const get: EmailService["get"] = (args) =>
+const makeEmailServiceLive = (): EmailServiceInterface => {
+  const get: EmailServiceInterface["get"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -262,7 +264,7 @@ const makeEmailServiceLive = (): EmailService => {
       );
     });
 
-  const set: EmailService["set"] = (args) =>
+  const set: EmailServiceInterface["set"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -280,7 +282,7 @@ const makeEmailServiceLive = (): EmailService => {
       );
     });
 
-  const query: EmailService["query"] = (args) =>
+  const query: EmailServiceInterface["query"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -298,7 +300,7 @@ const makeEmailServiceLive = (): EmailService => {
       );
     });
 
-  const queryChanges: EmailService["queryChanges"] = (args) =>
+  const queryChanges: EmailServiceInterface["queryChanges"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -316,7 +318,7 @@ const makeEmailServiceLive = (): EmailService => {
       );
     });
 
-  const copy: EmailService["copy"] = (args) =>
+  const copy: EmailServiceInterface["copy"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -334,7 +336,7 @@ const makeEmailServiceLive = (): EmailService => {
       );
     });
 
-  const emailImport: EmailService["import"] = (args) =>
+  const emailImport: EmailServiceInterface["import"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -352,7 +354,7 @@ const makeEmailServiceLive = (): EmailService => {
       );
     });
 
-  const getByMailbox: EmailService["getByMailbox"] = (
+  const getByMailbox: EmailServiceInterface["getByMailbox"] = (
     accountId,
     mailboxId,
     options = {},
@@ -382,7 +384,7 @@ const makeEmailServiceLive = (): EmailService => {
       return getResult.list.filter((email): email is EmailType => email.blobId != null);
     });
 
-  const search: EmailService["search"] = (
+  const search: EmailServiceInterface["search"] = (
     accountId,
     searchQuery,
     options = {},
@@ -417,7 +419,7 @@ const makeEmailServiceLive = (): EmailService => {
       return getResult.list.filter((email): email is EmailType => email.blobId != null);
     });
 
-  const getUnread: EmailService["getUnread"] = (accountId, mailboxId, limit) =>
+  const getUnread: EmailServiceInterface["getUnread"] = (accountId, mailboxId, limit) =>
     Effect.gen(function* () {
       let filter: EmailFilterCondition = {
         notKeyword: StandardKeywords.SEEN,
@@ -447,7 +449,7 @@ const makeEmailServiceLive = (): EmailService => {
       return getResult.list.filter((email): email is EmailType => email.blobId != null);
     });
 
-  const markRead: EmailService["markRead"] = (accountId, emailIds, read) =>
+  const markRead: EmailServiceInterface["markRead"] = (accountId, emailIds, read) =>
     Effect.gen(function* () {
       const updates: Record<Id, Partial<EmailMutable>> = {};
 
@@ -477,7 +479,7 @@ const makeEmailServiceLive = (): EmailService => {
       return updatedEmails;
     });
 
-  const flag: EmailService["flag"] = (accountId, emailIds, flagged) =>
+  const flag: EmailServiceInterface["flag"] = (accountId, emailIds, flagged) =>
     Effect.gen(function* () {
       const updates: Record<Id, Partial<EmailMutable>> = {};
 
@@ -506,7 +508,7 @@ const makeEmailServiceLive = (): EmailService => {
       return updatedEmails;
     });
 
-  const move: EmailService["move"] = (
+  const move: EmailServiceInterface["move"] = (
     accountId,
     emailIds,
     fromMailboxId,
@@ -541,7 +543,7 @@ const makeEmailServiceLive = (): EmailService => {
       return updatedEmails;
     });
 
-  const updateKeywords: EmailService["updateKeywords"] = (
+  const updateKeywords: EmailServiceInterface["updateKeywords"] = (
     accountId,
     emailIds,
     keywordsToAdd,
@@ -583,7 +585,7 @@ const makeEmailServiceLive = (): EmailService => {
       return updatedEmails;
     });
 
-  const getWithContent: EmailService["getWithContent"] = (
+  const getWithContent: EmailServiceInterface["getWithContent"] = (
     accountId,
     emailIds,
     maxBodyValueBytes,

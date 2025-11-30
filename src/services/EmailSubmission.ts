@@ -2,7 +2,6 @@ import { Context, Effect, Layer } from "effect";
 import { HttpClient } from "@effect/platform";
 
 import { JMAPClientService } from "../core/JMAPClient.ts";
-import type { JMAPClientInterface } from "../core/JMAPClient.ts";
 import { Invocation } from "../core/Types.ts";
 import { IdGenerator } from "./IdGenerator.ts";
 import {
@@ -35,142 +34,143 @@ import * as Schema from "effect/Schema";
 /**
  * EmailSubmission Service Interface
  */
-export interface EmailSubmissionService {
-  /**
-   * Get email submissions by ID
-   */
-  readonly get: (
-    args: EmailSubmissionGetArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailSubmissionGetResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+export interface EmailSubmissionServiceInterface {
+    /**
+     * Get email submissions by ID
+     */
+    readonly get: (
+      args: EmailSubmissionGetArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailSubmissionGetResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Create, update, or destroy email submissions
-   */
-  readonly set: (
-    args: EmailSubmissionSetArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailSubmissionSetResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Create, update, or destroy email submissions
+     */
+    readonly set: (
+      args: EmailSubmissionSetArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailSubmissionSetResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Query email submissions with filters and sorting
-   */
-  readonly query: (
-    args: EmailSubmissionQueryArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailSubmissionQueryResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Query email submissions with filters and sorting
+     */
+    readonly query: (
+      args: EmailSubmissionQueryArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailSubmissionQueryResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get changes to an email submission query
-   */
-  readonly queryChanges: (
-    args: EmailSubmissionQueryChangesArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailSubmissionQueryChangesResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get changes to an email submission query
+     */
+    readonly queryChanges: (
+      args: EmailSubmissionQueryChangesArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailSubmissionQueryChangesResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get changes to email submissions since a state
-   */
-  readonly changes: (
-    args: EmailSubmissionChangesArguments,
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof EmailSubmissionChangesResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get changes to email submissions since a state
+     */
+    readonly changes: (
+      args: EmailSubmissionChangesArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailSubmissionChangesResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Send an email by creating a submission
-   */
-  readonly send: (
-    accountId: string,
-    identityId: Id,
-    emailId: Id,
-    options?: {
-      envelope?: Envelope | null;
-      sendAt?: JMAPDate;
-      onSuccessUpdateEmail?: Record<string, any> | null;
-      onSuccessDestroyEmail?: Id[] | boolean | null;
-    },
-  ) => Effect.Effect<
-    EmailSubmissionSetResult,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Send an email by creating a submission
+     */
+    readonly send: (
+      accountId: string,
+      identityId: Id,
+      emailId: Id,
+      options?: {
+        envelope?: Envelope | null;
+        sendAt?: JMAPDate;
+        onSuccessUpdateEmail?: Record<string, any> | null;
+        onSuccessDestroyEmail?: Id[] | boolean | null;
+      },
+    ) => Effect.Effect<
+      EmailSubmissionSetResult,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get delivery status for a submission
-   */
-  readonly getDeliveryStatus: (
-    accountId: string,
-    submissionId: Id,
-  ) => Effect.Effect<
-    EmailSubmissionObject | undefined,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get delivery status for a submission
+     */
+    readonly getDeliveryStatus: (
+      accountId: string,
+      submissionId: Id,
+    ) => Effect.Effect<
+      EmailSubmissionObject | undefined,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Cancel a scheduled email submission
-   */
-  readonly cancelScheduled: (
-    accountId: string,
-    submissionId: Id,
-  ) => Effect.Effect<
-    EmailSubmissionSetResult | undefined,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Cancel a scheduled email submission
+     */
+    readonly cancelScheduled: (
+      accountId: string,
+      submissionId: Id,
+    ) => Effect.Effect<
+      EmailSubmissionSetResult | undefined,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get all submissions for a specific email
-   */
-  readonly getByEmailId: (
-    accountId: string,
-    emailId: Id,
-  ) => Effect.Effect<
-    readonly EmailSubmissionObject[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get all submissions for a specific email
+     */
+    readonly getByEmailId: (
+      accountId: string,
+      emailId: Id,
+    ) => Effect.Effect<
+      readonly EmailSubmissionObject[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 
-  /**
-   * Get recent submissions
-   */
-  readonly getRecent: (
-    accountId: string,
-    limit?: number,
-  ) => Effect.Effect<
-    readonly EmailSubmissionObject[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >;
+    /**
+     * Get recent submissions
+     */
+    readonly getRecent: (
+      accountId: string,
+      limit?: number,
+    ) => Effect.Effect<
+      readonly EmailSubmissionObject[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 }
 
 /**
  * EmailSubmission Service Tag
  */
-export const EmailSubmissionService = Context.GenericTag<EmailSubmissionService>(
-  "EmailSubmissionService",
-);
+export class EmailSubmissionService extends Context.Tag("EmailSubmissionService")<
+  EmailSubmissionService,
+  EmailSubmissionServiceInterface
+>() {}
 
 /**
  * Live implementation of EmailSubmission Service
  */
-const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
-  const get: EmailSubmissionService["get"] = (args) =>
+const makeEmailSubmissionServiceLive = (): EmailSubmissionServiceInterface => {
+  const get: EmailSubmissionServiceInterface["get"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -188,7 +188,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       );
     });
 
-  const set: EmailSubmissionService["set"] = (args) =>
+  const set: EmailSubmissionServiceInterface["set"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -206,7 +206,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       );
     });
 
-  const query: EmailSubmissionService["query"] = (args) =>
+  const query: EmailSubmissionServiceInterface["query"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -224,7 +224,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       );
     });
 
-  const queryChanges: EmailSubmissionService["queryChanges"] = (args) =>
+  const queryChanges: EmailSubmissionServiceInterface["queryChanges"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -246,7 +246,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       );
     });
 
-  const changes: EmailSubmissionService["changes"] = (args) =>
+  const changes: EmailSubmissionServiceInterface["changes"] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService;
       const idGenerator = yield* IdGenerator;
@@ -264,7 +264,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       );
     });
 
-  const send: EmailSubmissionService["send"] = (
+  const send: EmailSubmissionServiceInterface["send"] = (
     accountId,
     identityId,
     emailId,
@@ -310,7 +310,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       );
     });
 
-  const getDeliveryStatus: EmailSubmissionService["getDeliveryStatus"] = (
+  const getDeliveryStatus: EmailSubmissionServiceInterface["getDeliveryStatus"] = (
     accountId,
     submissionId,
   ) =>
@@ -324,7 +324,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       return result.list[0];
     });
 
-  const cancelScheduled: EmailSubmissionService["cancelScheduled"] = (
+  const cancelScheduled: EmailSubmissionServiceInterface["cancelScheduled"] = (
     accountId,
     submissionId,
   ) =>
@@ -351,7 +351,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       return undefined;
     });
 
-  const getByEmailId: EmailSubmissionService["getByEmailId"] = (
+  const getByEmailId: EmailSubmissionServiceInterface["getByEmailId"] = (
     accountId,
     emailId,
   ) =>
@@ -375,7 +375,7 @@ const makeEmailSubmissionServiceLive = (): EmailSubmissionService => {
       return getResult.list;
     });
 
-  const getRecent: EmailSubmissionService["getRecent"] = (
+  const getRecent: EmailSubmissionServiceInterface["getRecent"] = (
     accountId,
     limit = 10,
   ) =>

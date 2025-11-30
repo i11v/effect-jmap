@@ -19,45 +19,44 @@ export interface JMAPClientConfig {
 }
 
 /**
- * JMAP Client Service Interface
+ * JMAP Client Service
  */
-export interface JMAPClientInterface {
-  /**
-   * Get the current session information
-   */
-  readonly getSession: Effect.Effect<Session, SessionError | NetworkError | AuthenticationError, HttpClient.HttpClient>
+export class JMAPClientService extends Context.Tag('JMAPClientService')<
+  JMAPClientService,
+  {
+    /**
+     * Get the current session information
+     */
+    readonly getSession: Effect.Effect<Session, SessionError | NetworkError | AuthenticationError, HttpClient.HttpClient>
 
-  /**
-   * Send a JMAP request
-   */
-  readonly request: <T>(
-    request: Request,
-    responseSchema: Schema.Schema<T>
-  ) => Effect.Effect<T, JMAPMethodError | NetworkError | AuthenticationError | SessionError, HttpClient.HttpClient>
+    /**
+     * Send a JMAP request
+     */
+    readonly request: <T>(
+      request: Request,
+      responseSchema: Schema.Schema<T>
+    ) => Effect.Effect<T, JMAPMethodError | NetworkError | AuthenticationError | SessionError, HttpClient.HttpClient>
 
-  /**
-   * Send a batch of method calls in a single request
-   */
-  readonly batch: (
-    methodCalls: ReadonlyArray<Invocation>,
-    using?: ReadonlyArray<string>
-  ) => Effect.Effect<Response, JMAPMethodError | NetworkError | AuthenticationError | SessionError, HttpClient.HttpClient>
+    /**
+     * Send a batch of method calls in a single request
+     */
+    readonly batch: (
+      methodCalls: ReadonlyArray<Invocation>,
+      using?: ReadonlyArray<string>
+    ) => Effect.Effect<Response, JMAPMethodError | NetworkError | AuthenticationError | SessionError, HttpClient.HttpClient>
 
-  /**
-   * Get the current session state for synchronization
-   */
-  readonly getSessionState: Effect.Effect<string, SessionError | NetworkError | AuthenticationError, HttpClient.HttpClient>
-}
+    /**
+     * Get the current session state for synchronization
+     */
+    readonly getSessionState: Effect.Effect<string, SessionError | NetworkError | AuthenticationError, HttpClient.HttpClient>
+  }
+>() {}
 
 /**
  * Alias for backwards compatibility
  */
+export type JMAPClientInterface = Context.Tag.Service<typeof JMAPClientService>
 export type JMAPClient = JMAPClientInterface
-
-/**
- * JMAP Client Service Tag
- */
-export const JMAPClientService = Context.GenericTag<JMAPClient>('JMAPClientService')
 
 /**
  * Internal session state management
@@ -298,7 +297,7 @@ const makeJMAPClientLive = (config: JMAPClientConfig): JMAPClientInterface => {
 /**
  * Live layer for JMAP Client
  */
-export const JMAPClientLive = (config: JMAPClientConfig): Layer.Layer<JMAPClient, never, HttpClient.HttpClient> =>
+export const JMAPClientLive = (config: JMAPClientConfig): Layer.Layer<JMAPClientService, never, HttpClient.HttpClient> =>
   Layer.succeed(JMAPClientService, makeJMAPClientLive(config))
 
 /**

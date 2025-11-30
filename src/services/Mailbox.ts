@@ -1,7 +1,6 @@
 import { Context, Effect, Layer } from 'effect'
 import { HttpClient } from '@effect/platform'
 import { JMAPClientService } from '../core/JMAPClient.ts'
-import type { JMAPClientInterface } from '../core/JMAPClient.ts'
 import { Invocation } from '../core/Types.ts'
 import { JMAPMethodError, NetworkError, AuthenticationError, SessionError } from '../core/Errors.ts'
 import { extractMethodResponse } from '../core/ResponseUtils.ts'
@@ -28,135 +27,138 @@ import * as Schema from 'effect/Schema'
 /**
  * Mailbox Service Interface
  */
-export interface MailboxService {
-  /**
-   * Get mailboxes by ID
-   */
-  readonly get: (
-    args: MailboxGetArguments
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof MailboxGetResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+export interface MailboxServiceInterface {
+    /**
+     * Get mailboxes by ID
+     */
+    readonly get: (
+      args: MailboxGetArguments
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof MailboxGetResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Create, update, or destroy mailboxes
-   */
-  readonly set: (
-    args: MailboxSetArguments
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof MailboxSetResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Create, update, or destroy mailboxes
+     */
+    readonly set: (
+      args: MailboxSetArguments
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof MailboxSetResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Query mailboxes with filters and sorting
-   */
-  readonly query: (
-    args: MailboxQueryArguments
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof MailboxQueryResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Query mailboxes with filters and sorting
+     */
+    readonly query: (
+      args: MailboxQueryArguments
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof MailboxQueryResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Get changes to a mailbox query
-   */
-  readonly queryChanges: (
-    args: MailboxQueryChangesArguments
-  ) => Effect.Effect<
-    Schema.Schema.Type<typeof MailboxQueryChangesResponse>,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Get changes to a mailbox query
+     */
+    readonly queryChanges: (
+      args: MailboxQueryChangesArguments
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof MailboxQueryChangesResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Get all mailboxes for an account
-   */
-  readonly getAll: (
-    accountId: string
-  ) => Effect.Effect<
-    readonly MailboxType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Get all mailboxes for an account
+     */
+    readonly getAll: (
+      accountId: string
+    ) => Effect.Effect<
+      readonly MailboxType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Find mailboxes by role
-   */
-  readonly findByRole: (
-    accountId: string,
-    role: MailboxRole | null
-  ) => Effect.Effect<
-    readonly MailboxType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Find mailboxes by role
+     */
+    readonly findByRole: (
+      accountId: string,
+      role: MailboxRole | null
+    ) => Effect.Effect<
+      readonly MailboxType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Get mailbox hierarchy
-   */
-  readonly getHierarchy: (
-    accountId: string,
-    parentId?: Id
-  ) => Effect.Effect<
-    readonly MailboxType[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Get mailbox hierarchy
+     */
+    readonly getHierarchy: (
+      accountId: string,
+      parentId?: Id
+    ) => Effect.Effect<
+      readonly MailboxType[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Create a new mailbox
-   */
-  readonly create: (
-    accountId: string,
-    mailbox: MailboxMutable & { name: string }
-  ) => Effect.Effect<
-    MailboxType,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Create a new mailbox
+     */
+    readonly create: (
+      accountId: string,
+      mailbox: MailboxMutable & { name: string }
+    ) => Effect.Effect<
+      MailboxType,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Update an existing mailbox
-   */
-  readonly update: (
-    accountId: string,
-    mailboxId: Id,
-    updates: Partial<MailboxMutable>
-  ) => Effect.Effect<
-    MailboxType | null,
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Update an existing mailbox
+     */
+    readonly update: (
+      accountId: string,
+      mailboxId: Id,
+      updates: Partial<MailboxMutable>
+    ) => Effect.Effect<
+      MailboxType | null,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 
-  /**
-   * Delete a mailbox
-   */
-  readonly destroy: (
-    accountId: string,
-    mailboxIds: Id[]
-  ) => Effect.Effect<
-    readonly Id[],
-    JMAPMethodError | NetworkError | AuthenticationError | SessionError,
-    JMAPClientInterface | HttpClient.HttpClient | IdGenerator
-  >
+    /**
+     * Delete a mailbox
+     */
+    readonly destroy: (
+      accountId: string,
+      mailboxIds: Id[]
+    ) => Effect.Effect<
+      readonly Id[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >
 }
 
 /**
  * Mailbox Service Tag
  */
-export const MailboxService = Context.GenericTag<MailboxService>('MailboxService')
+export class MailboxService extends Context.Tag('MailboxService')<
+  MailboxService,
+  MailboxServiceInterface
+>() {}
 
 /**
  * Live implementation of Mailbox Service
  */
-const makeMailboxServiceLive = (): MailboxService => {
+const makeMailboxServiceLive = (): MailboxServiceInterface => {
 
-  const get: MailboxService['get'] = (args) =>
+  const get: MailboxServiceInterface['get'] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService
       const idGenerator = yield* IdGenerator
@@ -173,7 +175,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return yield* extractMethodResponse(response, 'Mailbox/get', callId, MailboxGetResponse)
     })
 
-  const set: MailboxService['set'] = (args) =>
+  const set: MailboxServiceInterface['set'] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService
       const idGenerator = yield* IdGenerator
@@ -190,7 +192,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return yield* extractMethodResponse(response, 'Mailbox/set', callId, MailboxSetResponse)
     })
 
-  const query: MailboxService['query'] = (args) =>
+  const query: MailboxServiceInterface['query'] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService
       const idGenerator = yield* IdGenerator
@@ -207,7 +209,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return yield* extractMethodResponse(response, 'Mailbox/query', callId, MailboxQueryResponse)
     })
 
-  const queryChanges: MailboxService['queryChanges'] = (args) =>
+  const queryChanges: MailboxServiceInterface['queryChanges'] = (args) =>
     Effect.gen(function* () {
       const client = yield* JMAPClientService
       const idGenerator = yield* IdGenerator
@@ -224,7 +226,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return yield* extractMethodResponse(response, 'Mailbox/queryChanges', callId, MailboxQueryChangesResponse)
     })
 
-  const getAll: MailboxService['getAll'] = (accountId) =>
+  const getAll: MailboxServiceInterface['getAll'] = (accountId) =>
     Effect.gen(function* () {
       const result = yield* get({
         accountId,
@@ -233,7 +235,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return result.list
     })
 
-  const findByRole: MailboxService['findByRole'] = (accountId, role) =>
+  const findByRole: MailboxServiceInterface['findByRole'] = (accountId, role) =>
     Effect.gen(function* () {
       const queryResult = yield* query({
         accountId,
@@ -254,7 +256,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return getResult.list
     })
 
-  const getHierarchy: MailboxService['getHierarchy'] = (accountId, parentId) =>
+  const getHierarchy: MailboxServiceInterface['getHierarchy'] = (accountId, parentId) =>
     Effect.gen(function* () {
       const allMailboxes = yield* getAll(accountId)
 
@@ -266,7 +268,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return MailboxHelpers.getChildren(parentId, Array.from(allMailboxes))
     })
 
-  const create: MailboxService['create'] = (accountId, mailbox) =>
+  const create: MailboxServiceInterface['create'] = (accountId, mailbox) =>
     Effect.gen(function* () {
       const idGenerator = yield* IdGenerator
       const id = yield* idGenerator.generate
@@ -296,7 +298,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return createdMailbox as MailboxType
     })
 
-  const update: MailboxService['update'] = (accountId, mailboxId, updates) =>
+  const update: MailboxServiceInterface['update'] = (accountId, mailboxId, updates) =>
     Effect.gen(function* () {
       const result = yield* set({
         accountId,
@@ -315,7 +317,7 @@ const makeMailboxServiceLive = (): MailboxService => {
       return result.updated?.[mailboxId] || null
     })
 
-  const destroy: MailboxService['destroy'] = (accountId, mailboxIds) =>
+  const destroy: MailboxServiceInterface['destroy'] = (accountId, mailboxIds) =>
     Effect.gen(function* () {
       const result = yield* set({
         accountId,

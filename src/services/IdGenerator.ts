@@ -4,21 +4,24 @@ import crypto from "node:crypto"
 /**
  * Service for generating unique identifiers
  */
-export interface IdGenerator {
+export interface IdGeneratorInterface {
   readonly generate: Effect.Effect<string>
 }
 
 /**
  * IdGenerator context tag
  */
-export const IdGenerator = Context.GenericTag<IdGenerator>("@services/IdGenerator")
+export class IdGenerator extends Context.Tag("@services/IdGenerator")<
+  IdGenerator,
+  IdGeneratorInterface
+>() {}
 
 /**
  * Default implementation using Node.js crypto.randomUUID()
  */
 export const IdGeneratorLive = Layer.succeed(
   IdGenerator,
-  IdGenerator.of({
+  {
     generate: Effect.sync(() => crypto.randomUUID())
-  })
+  }
 )
