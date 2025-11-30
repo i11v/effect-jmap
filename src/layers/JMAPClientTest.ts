@@ -1,4 +1,5 @@
-import { Context, Effect, Layer } from 'effect'
+import { Effect, Layer } from 'effect'
+import { JMAPClientService } from '../core/JMAPClient.ts'
 import type { JMAPClient } from '../core/JMAPClient.ts'
 import type { Session, Request, Response, Invocation } from '../core/Types.ts'
 import { Errors } from '../core/Errors.ts'
@@ -138,8 +139,8 @@ const makeJMAPClientTest = (config: JMAPTestConfig): JMAPClient => {
 /**
  * Test layer for JMAP Client
  */
-export const JMAPClientTest = (config: JMAPTestConfig): Layer.Layer<JMAPClient> =>
-  Layer.succeed(Context.GenericTag<JMAPClient>('JMAPClient'), makeJMAPClientTest(config))
+export const JMAPClientTest = (config: JMAPTestConfig): Layer.Layer<JMAPClientService> =>
+  Layer.succeed(JMAPClientService, makeJMAPClientTest(config))
 
 /**
  * Default test configuration with minimal mock data

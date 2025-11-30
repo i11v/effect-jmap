@@ -13,31 +13,22 @@ A TypeScript implementation of the [JMAP](https://jmap.io) protocol for Mail (RF
 pnpm add effect-jmap
 ```
 
-## Usage
+## Quick Start
 
-The library requires you to provide the JMAP session URL and bearer token as configuration parameters:
+The easiest way to get started is with the `JMAPLive` function, which includes everything you need:
 
 ```typescript
-import { Effect, Layer } from 'effect'
-import { NodeHttpClient } from '@effect/platform-node'
+import { Effect } from 'effect'
 import {
-  createJMAPClient,
+  JMAPLive,
   MailboxService,
-  MailboxServiceLive,
   JMAPClientService
 } from 'effect-jmap'
 
-// Create the client layer with your JMAP server configuration
-const JMAPClientLayer = createJMAPClient(
+// Create a complete layer with one function call
+const mainLayer = JMAPLive(
   'https://api.fastmail.com/jmap/session',  // Your JMAP session URL
   'your-bearer-token-here'                   // Your authentication token
-)
-
-// Compose layers (include service layers you need)
-const MainLayer = Layer.mergeAll(
-  NodeHttpClient.layerUndici,
-  JMAPClientLayer,
-  MailboxServiceLive  // Add service layers as needed
 )
 
 // Use the services
@@ -55,4 +46,44 @@ const program = Effect.gen(function* () {
 })
 
 // Run the program
-Effect.runPromise(program.pipe(Effect.provide(MainLayer)))
+Effect.runPromise(program.pipe(Effect.provide(mainLayer)))
+```
+
+## Advanced Usage
+
+For fine-grained control over the HTTP client, JMAP client configuration, or specific service layers, you can manually compose layers:
+
+```typescript
+import { Effect, Layer } from 'effect'
+import { NodeHttpClient } from '@effect/platform-node'
+import {
+  createJMAPClient,
+  defaultConfig,
+  AppLive,
+  MailboxService,
+  JMAPClientService
+} from 'effect-jmap'
+
+// Option 1: Manual layer composition
+const mainLayer = Layer.mergeAll(
+  NodeHttpClient.layerUndici,
+  createJMAPClient(sessionUrl, bearerToken),
+  AppLive  // Includes all services + IdGenerator
+)
+
+// Option 2: With custom configuration
+const customConfig = {
+  ...defaultConfig(sessionUrl, bearerToken),
+  timeout: 60000,
+  maxRetries: 5,
+  userAgent: 'my-app/1.0'
+}
+
+const customLayer = Layer.mergeAll(
+  NodeHttpClient.layerUndici,
+  createJMAPClientWithConfig(customConfig),
+  AppLive
+)
+
+// Use the same program as above
+Effect.runPromise(program.pipe(Effect.provide(mainLayer)))
