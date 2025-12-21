@@ -1,13 +1,13 @@
 import { Layer } from 'effect'
 import { NodeHttpClient } from '@effect/platform-node'
-import { JMAPClientLive as JMAPClientLiveImpl, defaultConfig, type JMAPClientConfig } from './JMAPClientLive.js'
-import { MailboxServiceLive } from '../services/Mailbox.js'
-import { EmailServiceLive } from '../services/Email.js'
-import { EmailSubmissionServiceLive } from '../services/EmailSubmission.js'
-import { IdGeneratorLive } from '../services/IdGenerator.js'
+import { JMAPClientLive as JMAPClientLiveImpl, defaultConfig, type JMAPClientConfig } from './client/live.ts'
+import { MailboxServiceLive } from './mailbox/service.ts'
+import { EmailServiceLive } from './email/service.ts'
+import { EmailSubmissionServiceLive } from './submission/service.ts'
+import { IdGeneratorLive } from './shared/id-generator.ts'
 
-export * from './JMAPClientLive.js'
-export * from './JMAPClientTest.js'
+export * from './client/live.ts'
+export * from './client/test.ts'
 
 /**
  * Complete JMAP layer including all services, client, and HTTP client.

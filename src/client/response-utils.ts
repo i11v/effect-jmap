@@ -1,7 +1,7 @@
 import { Effect } from 'effect'
 import * as Schema from 'effect/Schema'
-import { JMAPMethodError } from './Errors.ts'
-import { Response, MethodResponse } from './Types.ts'
+import { JMAPMethodError } from './errors.ts'
+import { Response, MethodResponse } from './types.ts'
 
 /**
  * Extract and validate a method response from a JMAP batch response

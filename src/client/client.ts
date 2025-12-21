@@ -1,7 +1,7 @@
 import { Context, Effect, Layer, Schedule, Duration } from 'effect'
 import { HttpClient, HttpClientRequest, HttpBody } from '@effect/platform'
-import { Session, Request, Response, Invocation } from './Types.ts'
-import { SessionError, NetworkError, AuthenticationError, JMAPMethodError, MethodError, Errors } from './Errors.ts'
+import { Session, Request, Response, Invocation } from './types.ts'
+import { SessionError, NetworkError, AuthenticationError, JMAPMethodError, MethodError, Errors } from './errors.ts'
 import * as Schema from 'effect/Schema'
 
 /**

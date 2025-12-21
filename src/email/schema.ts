@@ -1,5 +1,5 @@
 import { Schema } from 'effect'
-import { Id, UnsignedInt, JMAPDate, EmailAddress, Keywords, Comparator } from './Common.ts'
+import { Id, UnsignedInt, JMAPDate, EmailAddress, Keywords, Comparator } from '../shared/common.ts'
 
 /**
  * JMAP Email schemas - RFC 8621 Section 4

@@ -1,11 +1,11 @@
 import { Context, Effect, Layer } from 'effect'
 import { HttpClient } from '@effect/platform'
-import { JMAPClientService } from '../core/JMAPClient.ts'
-import { Invocation } from '../core/Types.ts'
-import { JMAPMethodError, NetworkError, AuthenticationError, SessionError } from '../core/Errors.ts'
-import { extractMethodResponse } from '../core/ResponseUtils.ts'
-import { CAPABILITY_SETS } from '../core/Capabilities.ts'
-import { IdGenerator } from './IdGenerator.ts'
+import { JMAPClientService } from '../client/client.ts'
+import { Invocation } from '../client/types.ts'
+import { JMAPMethodError, NetworkError, AuthenticationError, SessionError } from '../client/errors.ts'
+import { extractMethodResponse } from '../client/response-utils.ts'
+import { CAPABILITY_SETS } from '../client/capabilities.ts'
+import { IdGenerator } from '../shared/id-generator.ts'
 import {
   type Mailbox as MailboxType,
   MailboxGetArguments,
@@ -20,8 +20,8 @@ import {
   type MailboxRole,
   StandardRoles,
   MailboxHelpers
-} from '../schemas/Mailbox.ts'
-import { Id, Common } from '../schemas/Common.ts'
+} from './schema.ts'
+import { Id, Common } from '../shared/common.ts'
 import * as Schema from 'effect/Schema'
 
 /**

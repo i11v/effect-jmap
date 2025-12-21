@@ -4,8 +4,8 @@ import {
   EmailBodyPart,
   EmailAttachment,
   EmailBodyValues,
-} from "../schemas/Email.ts";
-import { Keywords, StandardKeywords } from "../schemas/Common.ts";
+} from "./schema.ts";
+import { Keywords, StandardKeywords } from "../shared/common.ts";
 
 /**
  * Email Utilities for advanced email processing

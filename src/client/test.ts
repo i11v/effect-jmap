@@ -1,8 +1,8 @@
 import { Effect, Layer } from 'effect'
-import { JMAPClientService } from '../core/JMAPClient.ts'
-import type { JMAPClient } from '../core/JMAPClient.ts'
-import type { Session, Request, Response, Invocation } from '../core/Types.ts'
-import { Errors } from '../core/Errors.ts'
+import { JMAPClientService } from './client.ts'
+import type { JMAPClient } from './client.ts'
+import type { Session, Request, Response, Invocation } from './types.ts'
+import { Errors } from './errors.ts'
 import * as Schema from 'effect/Schema'
 
 /**

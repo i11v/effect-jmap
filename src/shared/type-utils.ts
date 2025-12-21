@@ -1,5 +1,5 @@
 import * as Schema from 'effect/Schema'
-import { Id, UnsignedInt } from '../schemas/Common.ts'
+import { Id, UnsignedInt } from './common.ts'
 
 /**
  * Type-safe utilities for working with branded types

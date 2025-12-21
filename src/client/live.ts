@@ -1,6 +1,6 @@
 import { Layer } from 'effect'
 import { HttpClient } from '@effect/platform'
-import { JMAPClientService, JMAPClientLive as JMAPClientLiveImpl, type JMAPClientConfig, defaultConfig } from '../core/JMAPClient.ts'
+import { JMAPClientService, JMAPClientLive as JMAPClientLiveImpl, type JMAPClientConfig, defaultConfig } from './client.ts'
 
 /**
  * Re-export the live implementation with the proper layer type

@@ -1,19 +1,19 @@
 import { Context, Effect, Layer } from "effect";
 import { HttpClient } from "@effect/platform";
 
-import { JMAPClientService } from "../core/JMAPClient.ts";
-import { Invocation } from "../core/Types.ts";
-import { IdGenerator } from "./IdGenerator.ts";
+import { JMAPClientService } from "../client/client.ts";
+import { Invocation } from "../client/types.ts";
+import { IdGenerator } from "../shared/id-generator.ts";
 import {
   JMAPMethodError,
   NetworkError,
   AuthenticationError,
   SessionError,
-} from "../core/Errors.ts";
-import { CAPABILITY_SETS } from "../core/Capabilities.ts";
-import { extractMethodResponse } from "../core/ResponseUtils.ts";
-import { BodyUtils } from "../core/EmailUtils.ts";
-import { updateFilter } from "../core/TypeUtils.ts";
+} from "../client/errors.ts";
+import { CAPABILITY_SETS } from "../client/capabilities.ts";
+import { extractMethodResponse } from "../client/response-utils.ts";
+import { BodyUtils } from "./utils.ts";
+import { updateFilter } from "../shared/type-utils.ts";
 import {
   Email as EmailType,
   EmailGetArguments,
@@ -32,8 +32,8 @@ import {
   EmailFilterCondition,
   EmailHelpers,
   StandardProperties,
-} from "../schemas/Email.ts";
-import { Id, Common, Keywords, StandardKeywords } from "../schemas/Common.ts";
+} from "./schema.ts";
+import { Id, Common, Keywords, StandardKeywords } from "../shared/common.ts";
 import * as Schema from "effect/Schema";
 
 /**
