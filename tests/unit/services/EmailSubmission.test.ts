@@ -5,13 +5,13 @@ import {
   EmailSubmissionService,
   EmailSubmissionServiceLive,
   EmailSubmissionOperations
-} from '../../../src/services/EmailSubmission.ts'
-import { IdGeneratorLive } from '../../../src/services/IdGenerator.ts'
+} from '../../../src/submission/service.ts'
+import { IdGeneratorLive } from '../../../src/shared/id-generator.ts'
 import {
   EmailSubmissionObject,
   EmailSubmissionHelpers
-} from '../../../src/schemas/EmailSubmission.ts'
-import { Common } from '../../../src/schemas/Common.ts'
+} from '../../../src/submission/schema.ts'
+import { Common } from '../../../src/shared/common.ts'
 import { testJMAPClient } from '../../utils/test-utils.ts'
 import { sampleEmailSubmissions } from '../../fixtures/jmap-responses.ts'
 

@@ -8,8 +8,8 @@ import {
   MailboxMutable,
   StandardRoles,
   MailboxHelpers
-} from '../../../src/schemas/Mailbox.ts'
-import { Common } from '../../../src/schemas/Common.ts'
+} from '../../../src/mailbox/schema.ts'
+import { Common } from '../../../src/shared/common.ts'
 
 describe('Mailbox Schema', () => {
   describe('MailboxRole', () => {

@@ -1,5 +1,5 @@
 import { Effect, Layer, TestContext } from 'effect'
-import { JMAPClientService, JMAPClient } from '../../src/core/JMAPClient.ts'
+import { JMAPClientService, type JMAPClient } from '../../src/client/client.ts'
 import {
   JMAPFixtures,
   sampleEmails,

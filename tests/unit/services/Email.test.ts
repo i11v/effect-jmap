@@ -6,8 +6,8 @@ import {
   EmailService,
   EmailServiceLive,
   EmailOperations
-} from '../../../src/services/Email.ts'
-import { IdGeneratorLive } from '../../../src/services/IdGenerator.ts'
+} from '../../../src/email/service.ts'
+import { IdGeneratorLive } from '../../../src/shared/id-generator.ts'
 import {
   Email,
   EmailGetResponse,
@@ -15,9 +15,9 @@ import {
   EmailQueryResponse,
   EmailHelpers,
   StandardProperties
-} from '../../../src/schemas/Email.ts'
-import { Common, StandardKeywords } from '../../../src/schemas/Common.ts'
-import { JMAPClient } from '../../../src/core/JMAPClient.ts'
+} from '../../../src/email/schema.ts'
+import { Common, StandardKeywords } from '../../../src/shared/common.ts'
+import { type JMAPClient } from '../../../src/client/client.ts'
 import { testJMAPClient } from '../../utils/test-utils.ts'
 import {
   mockEmailGetResponse,

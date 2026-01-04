@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import { Effect, Layer } from 'effect'
 import { NodeHttpClient } from '@effect/platform-node'
-import { JMAPClientLive, JMAPClientService } from '../../src/core/JMAPClient.ts'
-import { EmailServiceLive, EmailService } from '../../src/services/Email.ts'
-import { MailboxServiceLive, MailboxService } from '../../src/services/Mailbox.ts'
-import { IdGeneratorLive } from '../../src/services/IdGenerator.ts'
+import { JMAPClientService } from '../../src/client/client.ts'
+import { JMAPClientLive } from '../../src/client/live.ts'
+import { EmailServiceLive, EmailService } from '../../src/email/service.ts'
+import { MailboxServiceLive, MailboxService } from '../../src/mailbox/service.ts'
+import { IdGeneratorLive } from '../../src/shared/id-generator.ts'
 
 /**
  * Integration tests to verify layer resolution works correctly.

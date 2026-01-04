@@ -8,9 +8,9 @@ import {
   HTMLUtils,
   BinaryUtils,
   EmailProcessing
-} from '../../../src/core/EmailUtils.ts'
-import { Email, EmailBodyPart, EmailAttachment } from '../../../src/schemas/Email.ts'
-import { Common, StandardKeywords } from '../../../src/schemas/Common.ts'
+} from '../../../src/email/utils.ts'
+import { Email, EmailBodyPart, EmailAttachment } from '../../../src/email/schema.ts'
+import { Common, StandardKeywords } from '../../../src/shared/common.ts'
 
 describe('EmailUtils', () => {
   describe('MimeTypes', () => {

@@ -19,8 +19,8 @@ import {
   EmailImportResult,
   EmailHelpers,
   StandardProperties
-} from '../../../src/schemas/Email.ts'
-import { Common, EmailAddress, Keywords, StandardKeywords } from '../../../src/schemas/Common.ts'
+} from '../../../src/email/schema.ts'
+import { Common, EmailAddress, Keywords, StandardKeywords } from '../../../src/shared/common.ts'
 
 describe('Email Schema', () => {
   describe('EmailHeader', () => {

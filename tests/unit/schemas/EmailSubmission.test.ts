@@ -14,8 +14,8 @@ import {
   EmailSubmissionGetArguments,
   EmailSubmissionSetArguments,
   EmailSubmissionQueryArguments
-} from '../../../src/schemas/EmailSubmission.ts'
-import { Common } from '../../../src/schemas/Common.ts'
+} from '../../../src/submission/schema.ts'
+import { Common } from '../../../src/shared/common.ts'
 
 describe('EmailSubmission Schema', () => {
   describe('UndoStatus', () => {
