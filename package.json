@@ -19,8 +19,15 @@
     "build:clean": "rm -rf dist",
     "ci": "pnpm typecheck && pnpm test && pnpm build",
     "dev": "tsc --watch",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
+    "test": "vitest run --exclude tests/functional/**",
+    "test:watch": "vitest --watch --exclude tests/functional/**",
+    "test:functional": "vitest run tests/functional/",
+    "test:all": "vitest run",
+    "test:server:start": "docker compose -f docker-compose.test.yml up -d",
+    "test:server:stop": "docker compose -f docker-compose.test.yml down",
+    "test:server:logs": "docker compose -f docker-compose.test.yml logs -f",
+    "test:server:clean": "docker compose -f docker-compose.test.yml down -v && rm -rf .stalwart-data",
+    "seed-test-data": "tsx scripts/seed-test-data.ts",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [

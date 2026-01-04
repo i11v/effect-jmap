@@ -229,3 +229,9 @@ temp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Stalwart test server (cloned for reference/testing)
+stalwart/
+
+# Test infrastructure data
+.stalwart-data/

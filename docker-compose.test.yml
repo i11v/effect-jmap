@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  stalwart:
+    image: stalwartlabs/mail-server:latest
+    container_name: effect-jmap-test-server
+    ports:
+      - "8080:8080"  # HTTP/JMAP
+    volumes:
+      - .stalwart-data:/opt/stalwart-mail
+    environment:
+      # Set a known admin password for testing
+      - STALWART_ADMIN_PASSWORD=test-admin-password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/.well-known/jmap"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  stalwart-data:
