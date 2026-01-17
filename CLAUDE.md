@@ -19,5 +19,4 @@ This library uses Effect-TS extensively:
 ## Code Style
 
 - ES modules with `.js` extensions in imports (for Node ESM compatibility)
-- Prefer `Schema.optional()` over nullable union types
 - Errors use `Data.TaggedError` pattern
