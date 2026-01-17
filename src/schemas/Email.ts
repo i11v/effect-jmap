@@ -27,39 +27,41 @@ export type EmailHeaders = Schema.Schema.Type<typeof EmailHeaders>
 
 /**
  * Email Body Part structure for multipart messages
+ * Per RFC 8621: partId and blobId are null for multipart/*, other properties are nullable
  */
 export const EmailBodyPart = Schema.Struct({
-  partId: Schema.optional(Schema.String),
-  blobId: Schema.optional(Schema.String),
-  size: Schema.optional(UnsignedInt),
+  partId: Schema.NullOr(Schema.String),
+  blobId: Schema.NullOr(Schema.String),
+  size: UnsignedInt,
   headers: Schema.optional(EmailHeaders),
-  name: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  type: Schema.optional(Schema.String),
-  charset: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  disposition: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  cid: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  language: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
-  location: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  subParts: Schema.optional(Schema.Array(Schema.Any)) // Simplified to break circular reference
+  name: Schema.NullOr(Schema.String),
+  type: Schema.String,
+  charset: Schema.NullOr(Schema.String),
+  disposition: Schema.NullOr(Schema.String),
+  cid: Schema.NullOr(Schema.String),
+  language: Schema.NullOr(Schema.Array(Schema.String)),
+  location: Schema.NullOr(Schema.String),
+  subParts: Schema.NullOr(Schema.Array(Schema.Any)) // Simplified to break circular reference
 })
 
 export type EmailBodyPart = Schema.Schema.Type<typeof EmailBodyPart>
 
 /**
  * Email Body structure
+ * Per RFC 8621: nullable properties match EmailBodyPart specification
  */
 export const EmailBody = Schema.Struct({
   type: Schema.String,
-  subParts: Schema.optional(Schema.Array(EmailBodyPart)),
-  partId: Schema.optional(Schema.String),
-  blobId: Schema.optional(Schema.String),
-  size: Schema.optional(UnsignedInt),
-  name: Schema.optional(Schema.String),
-  charset: Schema.optional(Schema.String),
-  disposition: Schema.optional(Schema.String),
-  cid: Schema.optional(Schema.String),
-  language: Schema.optional(Schema.Array(Schema.String)),
-  location: Schema.optional(Schema.String)
+  subParts: Schema.NullOr(Schema.Array(EmailBodyPart)),
+  partId: Schema.NullOr(Schema.String),
+  blobId: Schema.NullOr(Schema.String),
+  size: UnsignedInt,
+  name: Schema.NullOr(Schema.String),
+  charset: Schema.NullOr(Schema.String),
+  disposition: Schema.NullOr(Schema.String),
+  cid: Schema.NullOr(Schema.String),
+  language: Schema.NullOr(Schema.Array(Schema.String)),
+  location: Schema.NullOr(Schema.String)
 })
 
 export type EmailBody = Schema.Schema.Type<typeof EmailBody>
@@ -80,14 +82,15 @@ export type EmailBodyValues = Schema.Schema.Type<typeof EmailBodyValues>
 
 /**
  * Email Attachment structure
+ * Per RFC 8621: name, cid, disposition are nullable (String|null)
  */
 export const EmailAttachment = Schema.Struct({
   blobId: Schema.String,
   type: Schema.String,
-  name: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  name: Schema.NullOr(Schema.String),
   size: UnsignedInt,
-  cid: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  disposition: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
+  cid: Schema.NullOr(Schema.String),
+  disposition: Schema.NullOr(Schema.String),
   isInline: Schema.optional(Schema.Boolean)
 })
 
@@ -95,6 +98,9 @@ export type EmailAttachment = Schema.Schema.Type<typeof EmailAttachment>
 
 /**
  * Core Email object
+ * Per RFC 8621 Section 4: Property types follow the spec's Type|null notation
+ * - Nullable properties (Type|null): can be present with null value
+ * - Non-nullable properties: always present with a value
  */
 export const Email = Schema.Struct({
   id: Id,
@@ -104,27 +110,27 @@ export const Email = Schema.Struct({
     key: Id,
     value: Schema.Boolean
   }),
-  keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined),
+  keywords: Keywords, // String[Boolean], default: {} - NOT nullable per spec
   size: UnsignedInt,
   receivedAt: JMAPDate,
-  sentAt: Schema.Union(JMAPDate, Schema.Null, Schema.Undefined),
-  messageId: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
-  inReplyTo: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
-  references: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
-  sender: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  from: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  to: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  cc: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  bcc: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  replyTo: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  subject: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  textBody: Schema.Union(Schema.Array(EmailBodyPart), Schema.Null, Schema.Undefined),
-  htmlBody: Schema.Union(Schema.Array(EmailBodyPart), Schema.Null, Schema.Undefined),
-  attachments: Schema.Union(Schema.Array(EmailAttachment), Schema.Null, Schema.Undefined),
-  hasAttachment: Schema.Union(Schema.Boolean, Schema.Null, Schema.Undefined),
-  preview: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  bodyValues: Schema.Union(EmailBodyValues, Schema.Null, Schema.Undefined),
-  headers: Schema.Union(EmailHeaders, Schema.Null, Schema.Undefined)
+  sentAt: Schema.NullOr(JMAPDate), // Date|null
+  messageId: Schema.NullOr(Schema.Array(Schema.String)), // String[]|null
+  inReplyTo: Schema.NullOr(Schema.Array(Schema.String)), // String[]|null
+  references: Schema.NullOr(Schema.Array(Schema.String)), // String[]|null
+  sender: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
+  from: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
+  to: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
+  cc: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
+  bcc: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
+  replyTo: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
+  subject: Schema.NullOr(Schema.String), // String|null
+  textBody: Schema.Array(EmailBodyPart), // EmailBodyPart[] - NOT nullable per spec
+  htmlBody: Schema.Array(EmailBodyPart), // EmailBodyPart[] - NOT nullable per spec
+  attachments: Schema.Array(EmailAttachment), // EmailBodyPart[] - NOT nullable per spec
+  hasAttachment: Schema.Boolean, // Boolean - NOT nullable per spec
+  preview: Schema.String, // String - NOT nullable per spec
+  bodyValues: EmailBodyValues, // String[EmailBodyValue] - NOT nullable per spec
+  headers: Schema.Array(EmailHeader) // EmailHeader[] - NOT nullable per spec
 })
 
 export type Email = Schema.Schema.Type<typeof Email>
@@ -132,36 +138,38 @@ export type Email = Schema.Schema.Type<typeof Email>
 /**
  * Partial Email object for responses where specific properties are requested
  * All fields except 'id' are optional to handle partial responses from Email/get
+ * Properties that are nullable per spec use Schema.NullOr, wrapped in Schema.optional
+ * Properties that are NOT nullable per spec use Schema.optional directly
  */
 export const PartialEmail = Schema.Struct({
   id: Id,
-  blobId: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  threadId: Schema.Union(Id, Schema.Null, Schema.Undefined),
-  mailboxIds: Schema.Union(Schema.Record({
+  blobId: Schema.optional(Schema.String),
+  threadId: Schema.optional(Id),
+  mailboxIds: Schema.optional(Schema.Record({
     key: Id,
     value: Schema.Boolean
-  }), Schema.Null, Schema.Undefined),
-  keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined),
-  size: Schema.Union(UnsignedInt, Schema.Null, Schema.Undefined),
-  receivedAt: Schema.Union(JMAPDate, Schema.Null, Schema.Undefined),
-  sentAt: Schema.Union(JMAPDate, Schema.Null, Schema.Undefined),
-  messageId: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
-  inReplyTo: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
-  references: Schema.Union(Schema.Array(Schema.String), Schema.Null, Schema.Undefined),
-  sender: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  from: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  to: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  cc: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  bcc: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  replyTo: Schema.Union(Schema.Array(EmailAddress), Schema.Null, Schema.Undefined),
-  subject: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  textBody: Schema.Union(Schema.Array(EmailBodyPart), Schema.Null, Schema.Undefined),
-  htmlBody: Schema.Union(Schema.Array(EmailBodyPart), Schema.Null, Schema.Undefined),
-  attachments: Schema.Union(Schema.Array(EmailAttachment), Schema.Null, Schema.Undefined),
-  hasAttachment: Schema.Union(Schema.Boolean, Schema.Null, Schema.Undefined),
-  preview: Schema.Union(Schema.String, Schema.Null, Schema.Undefined),
-  bodyValues: Schema.Union(EmailBodyValues, Schema.Null, Schema.Undefined),
-  headers: Schema.Union(EmailHeaders, Schema.Null, Schema.Undefined)
+  })),
+  keywords: Schema.optional(Keywords),
+  size: Schema.optional(UnsignedInt),
+  receivedAt: Schema.optional(JMAPDate),
+  sentAt: Schema.optional(Schema.NullOr(JMAPDate)), // Date|null
+  messageId: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))), // String[]|null
+  inReplyTo: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))), // String[]|null
+  references: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))), // String[]|null
+  sender: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))), // EmailAddress[]|null
+  from: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))), // EmailAddress[]|null
+  to: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))), // EmailAddress[]|null
+  cc: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))), // EmailAddress[]|null
+  bcc: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))), // EmailAddress[]|null
+  replyTo: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))), // EmailAddress[]|null
+  subject: Schema.optional(Schema.NullOr(Schema.String)), // String|null
+  textBody: Schema.optional(Schema.Array(EmailBodyPart)),
+  htmlBody: Schema.optional(Schema.Array(EmailBodyPart)),
+  attachments: Schema.optional(Schema.Array(EmailAttachment)),
+  hasAttachment: Schema.optional(Schema.Boolean),
+  preview: Schema.optional(Schema.String),
+  bodyValues: Schema.optional(EmailBodyValues),
+  headers: Schema.optional(Schema.Array(EmailHeader))
 })
 
 export type PartialEmail = Schema.Schema.Type<typeof PartialEmail>
@@ -197,13 +205,14 @@ export type EmailFilterCondition = Schema.Schema.Type<typeof EmailFilterConditio
 
 /**
  * Email properties that can be set during creation/update
+ * Per RFC 8621: mailboxIds is required (Id[Boolean]), keywords has default {}
  */
 export const EmailMutable = Schema.Struct({
-  mailboxIds: Schema.Union(Schema.Record({
+  mailboxIds: Schema.Record({
     key: Id,
     value: Schema.Boolean
-  }), Schema.Null, Schema.Undefined),
-  keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined)
+  }),
+  keywords: Schema.optional(Keywords)
 })
 
 export type EmailMutable = Schema.Schema.Type<typeof EmailMutable>
@@ -257,29 +266,30 @@ export type EmailSetArguments = Schema.Schema.Type<typeof EmailSetArguments>
 
 /**
  * Response for Email/set method
+ * Per RFC 8620: /set response fields are nullable (Type|null), not optional
  */
 export const EmailSetResponse = Schema.Struct({
   accountId: Schema.String,
   oldState: Schema.String,
   newState: Schema.String,
-  created: Schema.optional(Schema.Record({
+  created: Schema.NullOr(Schema.Record({
     key: Schema.String,
     value: Email
   })),
-  updated: Schema.optional(Schema.Record({
+  updated: Schema.NullOr(Schema.Record({
     key: Id,
-    value: Schema.Union(Email, Schema.Null)
+    value: Schema.NullOr(Email)
   })),
-  destroyed: Schema.optional(Schema.Array(Id)),
-  notCreated: Schema.optional(Schema.Record({
+  destroyed: Schema.NullOr(Schema.Array(Id)),
+  notCreated: Schema.NullOr(Schema.Record({
     key: Schema.String,
     value: Schema.Any
   })),
-  notUpdated: Schema.optional(Schema.Record({
+  notUpdated: Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.Any
   })),
-  notDestroyed: Schema.optional(Schema.Record({
+  notDestroyed: Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.Any
   }))
@@ -368,7 +378,7 @@ export const EmailCopyArguments = Schema.Struct({
         key: Id,
         value: Schema.Boolean
       }),
-      keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined)
+      keywords: Schema.optional(Keywords)
     })
   }),
   onSuccessDestroyOriginal: Schema.optional(Schema.Boolean),
@@ -411,7 +421,7 @@ export const EmailImportArguments = Schema.Struct({
         key: Id,
         value: Schema.Boolean
       }),
-      keywords: Schema.Union(Keywords, Schema.Null, Schema.Undefined),
+      keywords: Schema.optional(Keywords),
       receivedAt: Schema.optional(JMAPDate)
     })
   })
@@ -678,15 +688,17 @@ export const EmailHelpers = {
 
   /**
    * Extract inline attachments (images with cid)
+   * Per RFC 8621: cid is String|null, so we check for truthy cid value
    */
   getInlineAttachments: (email: Email): EmailAttachment[] =>
-    email.attachments?.filter(att => att.isInline === true || att.cid !== undefined) || [],
+    email.attachments.filter(att => att.isInline === true || (att.cid != null && att.cid !== '')),
 
   /**
    * Extract regular attachments (non-inline)
+   * Per RFC 8621: cid is String|null, so we check for null/empty cid
    */
   getRegularAttachments: (email: Email): EmailAttachment[] =>
-    email.attachments?.filter(att => att.isInline !== true && att.cid === undefined) || [],
+    email.attachments.filter(att => att.isInline !== true && (att.cid == null || att.cid === '')),
 
   /**
    * Create keywords object from array of keyword strings

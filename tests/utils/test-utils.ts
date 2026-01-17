@@ -83,6 +83,7 @@ const mockJMAPClient: JMAPClient = {
 
     if (methodName === 'Mailbox/set') {
       const args = methodCalls[0][1] as any
+      // Per RFC 8620: /set response fields are nullable (Type|null), not optional
       return Effect.succeed({
         methodResponses: [
           ['Mailbox/set', {
@@ -115,14 +116,17 @@ const mockJMAPClient: JMAPClient = {
                   isSubscribed: true
                 }
               ])
-            ) : undefined,
+            ) : null,
             updated: args.update ? Object.fromEntries(
               Object.entries(args.update).map(([id, updates]) => [id, {
                 ...JMAPFixtures.mailboxes[0],
                 ...updates
               }])
-            ) : undefined,
-            destroyed: args.destroy || []
+            ) : null,
+            destroyed: args.destroy || null,
+            notCreated: null,
+            notUpdated: null,
+            notDestroyed: null
           }, methodCalls[0][2]]
         ]
       })
@@ -165,15 +169,21 @@ const mockJMAPClient: JMAPClient = {
 
     if (methodName === 'Email/set') {
       const args = methodCalls[0][1] as any
+      // Per RFC 8620: /set response fields are nullable (Type|null), not optional
       return Effect.succeed({
         methodResponses: [
           ['Email/set', {
-            ...mockEmailSetResponse,
             accountId: args.accountId,
+            oldState: mockEmailSetResponse.oldState,
+            newState: mockEmailSetResponse.newState,
+            created: null,
             updated: args.update ? Object.fromEntries(
               Object.keys(args.update).map(id => [id, sampleEmails[0]])
-            ) : undefined,
-            destroyed: args.destroy || []
+            ) : null,
+            destroyed: args.destroy || null,
+            notCreated: null,
+            notUpdated: null,
+            notDestroyed: null
           }, methodCalls[0][2]]
         ]
       })
@@ -265,20 +275,25 @@ const mockJMAPClient: JMAPClient = {
         })
       }
 
+      // Per RFC 8620: /set response fields are nullable (Type|null), not optional
       return Effect.succeed({
         methodResponses: [
           ['EmailSubmission/set', {
-            ...mockEmailSubmissionSetResponse,
             accountId: args.accountId,
-            created: Object.keys(createdSubmissions).length > 0 ? createdSubmissions : undefined,
+            oldState: mockEmailSubmissionSetResponse.oldState,
+            newState: mockEmailSubmissionSetResponse.newState,
+            created: Object.keys(createdSubmissions).length > 0 ? createdSubmissions : null,
             updated: args.update ? Object.fromEntries(
               Object.keys(args.update).map(id => [id, {
                 id,
                 sendAt: new Date().toISOString(),
                 undoStatus: 'final'
               }])
-            ) : undefined,
-            destroyed: args.destroy || []
+            ) : null,
+            destroyed: args.destroy || null,
+            notCreated: null,
+            notUpdated: null,
+            notDestroyed: null
           }, methodCalls[0][2]]
         ]
       })
