@@ -5,8 +5,6 @@ A TypeScript library implementing RFC 8621 JMAP for Mail using Effect-TS.
 ## Package Management
 
 - **Always use pnpm** as the package manager (never npm, yarn, or bun)
-- Use pnpm for all script execution: `pnpm build`, `pnpm test`, `pnpm typecheck`
-- Package manager version is locked at pnpm@10.17.0
 
 ## Quick Reference
 
