@@ -1,3 +1,10 @@
+## [0.4.1](https://github.com/i11v/effect-jmap/compare/v0.4.0...v0.4.1) (2026-01-18)
+
+
+### Bug Fixes
+
+* correct MailboxService.update return type to match JMAP spec ([f596847](https://github.com/i11v/effect-jmap/commit/f596847b9fe7484266d9bac125ab338dd50f628d))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
