@@ -8,6 +8,7 @@ import { CAPABILITY_SETS } from '../client/capabilities.ts'
 import { IdGenerator } from '../shared/id-generator.ts'
 import {
   type Mailbox as MailboxType,
+  type MailboxCreated,
   MailboxGetArguments,
   MailboxGetResponse,
   MailboxSetArguments,
@@ -121,13 +122,15 @@ export interface MailboxServiceInterface {
 
     /**
      * Update an existing mailbox
+     * Returns the MailboxCreated partial object from the JMAP response (only id is guaranteed;
+     * other fields are present only if server-set values differ from requested)
      */
     readonly update: (
       accountId: string,
       mailboxId: Id,
       updates: Partial<MailboxMutable>
     ) => Effect.Effect<
-      MailboxType | null,
+      MailboxCreated | null,
       JMAPMethodError | NetworkError | AuthenticationError | SessionError,
       JMAPClientService | HttpClient.HttpClient | IdGenerator
     >
