@@ -1,6 +1,6 @@
 {
   "name": "effect-jmap",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A TypeScript library implementing RFC 8621 JMAP for Mail using Effect",
   "repository": {
     "type": "git",

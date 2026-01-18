@@ -1,3 +1,10 @@
+## [0.4.2](https://github.com/i11v/effect-jmap/compare/v0.4.1...v0.4.2) (2026-01-18)
+
+
+### Bug Fixes
+
+* Make nullable schema fields optional for JMAP server compatibility ([#5](https://github.com/i11v/effect-jmap/issues/5)) ([e37bb61](https://github.com/i11v/effect-jmap/commit/e37bb6178637bd2d25a171cc7f016c40a0a7b349))
+
 ## [0.4.1](https://github.com/i11v/effect-jmap/compare/v0.4.0...v0.4.1) (2026-01-18)
 
 
