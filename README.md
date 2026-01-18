@@ -87,3 +87,47 @@ const customLayer = Layer.mergeAll(
 
 // Use the same program as above
 Effect.runPromise(program.pipe(Effect.provide(mainLayer)))
+```
+
+## Contributing
+
+### Commit Convention
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/). All commits must follow this format:
+
+```
+<type>(<scope>): <description>
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code refactoring
+- `perf`: Performance improvements
+- `test`: Adding or updating tests
+- `build`: Build system changes
+- `ci`: CI configuration changes
+- `chore`: Maintenance tasks
+
+Commits are validated automatically via husky and commitlint.
+
+### Automated Releases
+
+This project uses [semantic-release](https://semantic-release.gitbook.io/) for automated versioning and npm publishing:
+
+- Pushes to `main` trigger the release workflow
+- Version bumps are determined by commit types:
+  - `fix:` commits trigger a **patch** release (1.0.x)
+  - `feat:` commits trigger a **minor** release (1.x.0)
+  - `BREAKING CHANGE:` in commit body triggers a **major** release (x.0.0)
+- Changelog is generated automatically
+- GitHub releases are created with release notes
+- Package is published to npm automatically
+
+### Required Secrets
+
+For the automated release workflow, configure these repository secrets:
+
+- `NPM_TOKEN`: npm access token with publish permissions

@@ -2,6 +2,10 @@
   "name": "effect-jmap",
   "version": "0.3.0",
   "description": "A TypeScript library implementing RFC 8621 JMAP for Mail using Effect",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/i11v/effect-jmap.git"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -28,7 +32,9 @@
     "test:server:logs": "docker compose -f docker-compose.test.yml logs -f",
     "test:server:clean": "docker compose -f docker-compose.test.yml down -v && rm -rf .stalwart-data",
     "seed-test-data": "tsx scripts/seed-test-data.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "release:dry-run": "semantic-release --dry-run",
+    "prepare": "husky"
   },
   "keywords": [
     "jmap",
@@ -42,10 +48,16 @@
   "license": "MIT",
   "packageManager": "pnpm@10.17.0",
   "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@effect/language-service": "^0.56.0",
     "@effect/platform-node": "^0.97.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@types/node": "^24.6.0",
     "dotenv": "^17.2.2",
+    "husky": "^9.1.7",
+    "semantic-release": "^25.0.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
