@@ -1,0 +1,5 @@
+#!/bin/sh
+# Validate the last commit message follows conventional commits
+if git rev-parse HEAD >/dev/null 2>&1; then
+  pnpm exec commitlint --from HEAD~1 --to HEAD
+fi
