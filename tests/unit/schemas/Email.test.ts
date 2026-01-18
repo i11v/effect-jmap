@@ -133,6 +133,28 @@ describe('Email Schema', () => {
       expect(result.language).toBeNull()
       expect(result.location).toBeNull()
     })
+
+    it('should validate body part without subParts field (omitted)', () => {
+      // Real-world JMAP servers often omit subParts entirely instead of returning null
+      const bodyPart = {
+        partId: '1',
+        blobId: 'blob123',
+        size: Common.createUnsignedInt(474),
+        type: 'text/plain',
+        charset: 'UTF-8',
+        name: null,
+        disposition: null,
+        cid: null,
+        language: null,
+        location: null
+        // subParts intentionally omitted
+      }
+
+      const result = Schema.decodeUnknownSync(EmailBodyPart)(bodyPart)
+      expect(result.partId).toBe('1')
+      expect(result.type).toBe('text/plain')
+      expect(result.subParts).toBeUndefined()
+    })
   })
 
   describe('EmailBody', () => {
