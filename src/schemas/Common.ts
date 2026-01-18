@@ -70,10 +70,11 @@ export const Blob = Schema.Struct({
 export type Blob = Schema.Schema.Type<typeof Blob>
 
 /**
- * JMAP AddressList - represents email addresses
+ * JMAP EmailAddress - represents an email address
+ * Per RFC 8621: name is String|null (nullable, not optional)
  */
 export const EmailAddress = Schema.Struct({
-  name: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
+  name: Schema.NullOr(Schema.String), // String|null - nullable per spec
   email: Schema.String.pipe(
     Schema.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
   )

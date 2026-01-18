@@ -7,16 +7,16 @@ import { Id, UnsignedInt, JMAPDate, Comparator } from './Common.ts'
 
 /**
  * Email address for envelope
+ * Per RFC 8621: parameters is Object|null
  */
 export const Address = Schema.Struct({
   email: Schema.String,
-  parameters: Schema.optional(Schema.Union(
+  parameters: Schema.NullOr(
     Schema.Record({
       key: Schema.String,
-      value: Schema.Union(Schema.String, Schema.Null)
-    }),
-    Schema.Null
-  ))
+      value: Schema.NullOr(Schema.String)
+    })
+  )
 })
 
 export type Address = Schema.Schema.Type<typeof Address>
@@ -61,18 +61,20 @@ export type DeliveryStatus = Schema.Schema.Type<typeof DeliveryStatus>
 
 /**
  * Core EmailSubmission object (full)
+ * Per RFC 8621 Section 7: envelope and deliveryStatus are nullable (Type|null)
+ * dsnBlobIds and mdnBlobIds are arrays (Id[]) - NOT nullable
  */
 export const EmailSubmissionObject = Schema.Struct({
   id: Id,
   identityId: Id,
   emailId: Id,
   threadId: Id,
-  envelope: Schema.Union(Envelope, Schema.Null, Schema.Undefined),
+  envelope: Schema.NullOr(Envelope), // Envelope|null
   sendAt: JMAPDate,
   undoStatus: UndoStatus,
-  deliveryStatus: Schema.Union(DeliveryStatus, Schema.Null, Schema.Undefined),
-  dsnBlobIds: Schema.Array(Id),
-  mdnBlobIds: Schema.Array(Id)
+  deliveryStatus: Schema.NullOr(DeliveryStatus), // String[DeliveryStatus]|null
+  dsnBlobIds: Schema.Array(Id), // Id[] - NOT nullable
+  mdnBlobIds: Schema.Array(Id) // Id[] - NOT nullable
 })
 
 export type EmailSubmissionObject = Schema.Schema.Type<typeof EmailSubmissionObject>
@@ -98,20 +100,20 @@ export type EmailSubmissionSetResult = Schema.Schema.Type<typeof EmailSubmission
 
 /**
  * EmailSubmission properties that can be set during creation
+ * Per RFC 8621: envelope is nullable, onSuccess* are optional
  */
 export const EmailSubmissionMutable = Schema.Struct({
   identityId: Id,
   emailId: Id,
-  envelope: Schema.optional(Schema.Union(Envelope, Schema.Null)),
+  envelope: Schema.optional(Schema.NullOr(Envelope)),
   sendAt: Schema.optional(JMAPDate),
-  onSuccessUpdateEmail: Schema.optional(Schema.Union(
+  onSuccessUpdateEmail: Schema.optional(Schema.NullOr(
     Schema.Record({
       key: Schema.String,
       value: Schema.Any
-    }),
-    Schema.Null
+    })
   )),
-  onSuccessDestroyEmail: Schema.optional(Schema.Union(Schema.Array(Id), Schema.Boolean, Schema.Null))
+  onSuccessDestroyEmail: Schema.optional(Schema.NullOr(Schema.Union(Schema.Array(Id), Schema.Boolean)))
 })
 
 export type EmailSubmissionMutable = Schema.Schema.Type<typeof EmailSubmissionMutable>
@@ -176,51 +178,43 @@ export type EmailSubmissionSetArguments = Schema.Schema.Type<typeof EmailSubmiss
 
 /**
  * Response for EmailSubmission/set method
+ * Per RFC 8620 /set response: created, updated, destroyed, notCreated, notUpdated, notDestroyed
+ * are nullable (Type|null) - they can be null if no operations of that type were requested
  */
 export const EmailSubmissionSetResponse = Schema.Struct({
   accountId: Schema.String,
   oldState: Schema.String,
   newState: Schema.String,
-  created: Schema.Union(
+  created: Schema.NullOr(
     Schema.Record({
       key: Schema.String,
       value: EmailSubmissionSetResult
-    }),
-    Schema.Null,
-    Schema.Undefined
+    })
   ),
-  updated: Schema.Union(
+  updated: Schema.NullOr(
     Schema.Record({
       key: Id,
-      value: Schema.Union(EmailSubmissionSetResult, Schema.Null)
-    }),
-    Schema.Null,
-    Schema.Undefined
+      value: Schema.NullOr(EmailSubmissionSetResult)
+    })
   ),
-  destroyed: Schema.Union(Schema.Array(Id), Schema.Null, Schema.Undefined),
-  notCreated: Schema.Union(
+  destroyed: Schema.NullOr(Schema.Array(Id)),
+  notCreated: Schema.NullOr(
     Schema.Record({
       key: Schema.String,
       value: Schema.Any
-    }),
-    Schema.Null,
-    Schema.Undefined
+    })
   ),
-  notUpdated: Schema.Union(
+  notUpdated: Schema.NullOr(
     Schema.Record({
       key: Id,
       value: Schema.Any
-    }),
-    Schema.Null,
-    Schema.Undefined
+    })
   ),
-  notDestroyed: Schema.Union(
+  notDestroyed: Schema.NullOr(
     Schema.Record({
       key: Id,
       value: Schema.Any
-    }),
-    Schema.Null,
-    Schema.Undefined
+    })
   )
 })
 
@@ -402,8 +396,8 @@ export const EmailSubmissionHelpers = {
    * Create a simple envelope from email addresses
    */
   createEnvelope: (from: string, to: string[]): Envelope => ({
-    mailFrom: { email: from, parameters: undefined },
-    rcptTo: to.map(email => ({ email, parameters: undefined }))
+    mailFrom: { email: from, parameters: null },
+    rcptTo: to.map(email => ({ email, parameters: null }))
   }),
 
   /**

@@ -54,14 +54,24 @@ describe('Email Schema', () => {
   })
 
   describe('EmailBodyPart', () => {
+    // Helper to create a valid EmailBodyPart with all required fields
+    const createBodyPart = (overrides = {}) => ({
+      partId: '1',
+      blobId: 'blob123',
+      size: Common.createUnsignedInt(1024),
+      type: 'text/plain',
+      charset: 'utf-8',
+      name: null,
+      disposition: null,
+      cid: null,
+      language: null,
+      location: null,
+      subParts: null,
+      ...overrides
+    })
+
     it('should validate basic body part', () => {
-      const bodyPart = {
-        partId: '1',
-        blobId: 'blob123',
-        size: Common.createUnsignedInt(1024),
-        type: 'text/plain',
-        charset: 'utf-8'
-      }
+      const bodyPart = createBodyPart()
 
       const result = Schema.decodeUnknownSync(EmailBodyPart)(bodyPart)
       expect(result.partId).toBe('1')
@@ -70,21 +80,17 @@ describe('Email Schema', () => {
     })
 
     it('should validate nested body parts', () => {
-      const bodyPart = {
+      // Per RFC 8621: multipart/* has null partId and blobId
+      const bodyPart = createBodyPart({
+        partId: null,
+        blobId: null,
         type: 'multipart/mixed',
+        charset: null,
         subParts: [
-          {
-            partId: '1.1',
-            type: 'text/plain',
-            size: Common.createUnsignedInt(512)
-          },
-          {
-            partId: '1.2',
-            type: 'text/html',
-            size: Common.createUnsignedInt(1024)
-          }
+          createBodyPart({ partId: '1.1', blobId: 'blob1' }),
+          createBodyPart({ partId: '1.2', blobId: 'blob2', type: 'text/html' })
         ]
-      }
+      })
 
       const result = Schema.decodeUnknownSync(EmailBodyPart)(bodyPart)
       expect(result.subParts).toHaveLength(2)
@@ -92,14 +98,15 @@ describe('Email Schema', () => {
     })
 
     it('should validate attachment part', () => {
-      const bodyPart = {
+      const bodyPart = createBodyPart({
         partId: '2',
         blobId: 'blob456',
         size: Common.createUnsignedInt(2048),
         type: 'image/png',
         disposition: 'attachment',
-        name: 'photo.png'
-      }
+        name: 'photo.png',
+        charset: null
+      })
 
       const result = Schema.decodeUnknownSync(EmailBodyPart)(bodyPart)
       expect(result.disposition).toBe('attachment')
@@ -107,18 +114,16 @@ describe('Email Schema', () => {
     })
 
     it('should validate body part with null values', () => {
-      const bodyPart = {
+      const bodyPart = createBodyPart({
         partId: '3',
         blobId: 'blob789',
-        size: Common.createUnsignedInt(1024),
-        type: 'text/plain',
         charset: null,
         disposition: null,
         cid: null,
         name: null,
         language: null,
         location: null
-      }
+      })
 
       const result = Schema.decodeUnknownSync(EmailBodyPart)(bodyPart)
       expect(result.charset).toBeNull()
@@ -131,20 +136,37 @@ describe('Email Schema', () => {
   })
 
   describe('EmailBody', () => {
+    // Helper to create valid body part for use in EmailBody
+    const createBodyPartForBody = (overrides = {}) => ({
+      partId: '1',
+      blobId: 'blob1',
+      size: Common.createUnsignedInt(256),
+      type: 'text/plain',
+      charset: 'utf-8',
+      name: null,
+      disposition: null,
+      cid: null,
+      language: null,
+      location: null,
+      subParts: null,
+      ...overrides
+    })
+
     it('should validate email body structure', () => {
       const body = {
         type: 'multipart/alternative',
+        size: Common.createUnsignedInt(768),
+        partId: null,
+        blobId: null,
+        name: null,
+        charset: null,
+        disposition: null,
+        cid: null,
+        language: null,
+        location: null,
         subParts: [
-          {
-            partId: '1',
-            type: 'text/plain',
-            size: Common.createUnsignedInt(256)
-          },
-          {
-            partId: '2',
-            type: 'text/html',
-            size: Common.createUnsignedInt(512)
-          }
+          createBodyPartForBody({ partId: '1' }),
+          createBodyPartForBody({ partId: '2', type: 'text/html', size: Common.createUnsignedInt(512) })
         ]
       }
 
@@ -188,11 +210,13 @@ describe('Email Schema', () => {
 
   describe('EmailAttachment', () => {
     it('should validate attachment', () => {
+      // Per RFC 8621: name, cid, disposition are nullable (String|null)
       const attachment = {
         blobId: 'blob123',
         type: 'application/pdf',
         name: 'document.pdf',
         size: Common.createUnsignedInt(1048576),
+        cid: null,
         disposition: 'attachment'
       }
 
@@ -202,12 +226,14 @@ describe('Email Schema', () => {
     })
 
     it('should validate inline attachment', () => {
+      // Per RFC 8621: name, cid, disposition are nullable (String|null)
       const attachment = {
         blobId: 'blob456',
         type: 'image/jpeg',
         name: 'image.jpg',
         size: Common.createUnsignedInt(204800),
         cid: 'image1@example.com',
+        disposition: 'inline',
         isInline: true
       }
 
@@ -241,6 +267,23 @@ describe('Email Schema', () => {
   })
 
   describe('Email', () => {
+    // Helper to create a valid EmailBodyPart
+    const createBodyPart = (overrides = {}) => ({
+      partId: '1',
+      blobId: 'blob1',
+      size: Common.createUnsignedInt(256),
+      type: 'text/plain',
+      charset: 'utf-8',
+      name: null,
+      disposition: null,
+      cid: null,
+      language: null,
+      location: null,
+      subParts: null,
+      ...overrides
+    })
+
+    // Per RFC 8621: Email has many required fields, nullable properties use null
     const createValidEmail = () => {
       const inboxId = Common.createId('inbox')
       return {
@@ -255,10 +298,26 @@ describe('Email Schema', () => {
         },
         size: Common.createUnsignedInt(2048),
         receivedAt: Common.now(),
+        // Nullable properties per RFC 8621
+        sentAt: null,
+        messageId: null,
+        inReplyTo: null,
+        references: null,
+        sender: null,
         from: [{ email: 'sender@example.com', name: 'Test Sender' }],
         to: [{ email: 'recipient@example.com', name: 'Test Recipient' }],
+        cc: null,
+        bcc: null,
+        replyTo: null,
         subject: 'Test Email',
-        hasAttachment: false
+        // Non-nullable properties per RFC 8621
+        textBody: [createBodyPart()],
+        htmlBody: [],
+        attachments: [],
+        hasAttachment: false,
+        preview: 'This is a preview...',
+        bodyValues: {},
+        headers: []
       }
     }
 
@@ -281,7 +340,9 @@ describe('Email Schema', () => {
             blobId: 'blob456',
             type: 'image/png',
             name: 'image.png',
-            size: Common.createUnsignedInt(1024)
+            size: Common.createUnsignedInt(1024),
+            cid: null,
+            disposition: 'attachment'
           }
         ]
       }
@@ -294,20 +355,8 @@ describe('Email Schema', () => {
     it('should validate email with body content', () => {
       const email = {
         ...createValidEmail(),
-        textBody: [
-          {
-            partId: '1',
-            type: 'text/plain',
-            size: Common.createUnsignedInt(256)
-          }
-        ],
-        htmlBody: [
-          {
-            partId: '2',
-            type: 'text/html',
-            size: Common.createUnsignedInt(512)
-          }
-        ],
+        textBody: [createBodyPart({ partId: '1' })],
+        htmlBody: [createBodyPart({ partId: '2', type: 'text/html' })],
         bodyValues: {
           '1': {
             value: 'Plain text content',
@@ -323,7 +372,7 @@ describe('Email Schema', () => {
       const result = Schema.decodeUnknownSync(Email)(email)
       expect(result.textBody).toHaveLength(1)
       expect(result.htmlBody).toHaveLength(1)
-      expect(result.bodyValues!['1'].value).toBe('Plain text content')
+      expect(result.bodyValues['1'].value).toBe('Plain text content')
     })
 
     it('should require mandatory fields', () => {
@@ -373,6 +422,7 @@ describe('Email Schema', () => {
 
   describe('EmailMutable', () => {
     it('should validate mutable properties', () => {
+      // Per RFC 8621: mailboxIds is required, keywords is optional
       const mutable = {
         mailboxIds: {
           [Common.createId('inbox')]: false,
@@ -386,6 +436,18 @@ describe('Email Schema', () => {
 
       const result = Schema.decodeUnknownSync(EmailMutable)(mutable)
       expect(result.keywords![StandardKeywords.SEEN]).toBe(true)
+    })
+
+    it('should validate with only mailboxIds', () => {
+      const mutable = {
+        mailboxIds: {
+          [Common.createId('inbox')]: true
+        }
+      }
+
+      const result = Schema.decodeUnknownSync(EmailMutable)(mutable)
+      expect(result.mailboxIds).toBeDefined()
+      expect(result.keywords).toBeUndefined()
     })
   })
 
@@ -446,6 +508,22 @@ describe('Email Schema', () => {
 })
 
 describe('EmailHelpers', () => {
+  // Helper to create a valid EmailBodyPart
+  const createBodyPart = (overrides: Record<string, any> = {}) => ({
+    partId: '1',
+    blobId: 'blob1',
+    size: Common.createUnsignedInt(256),
+    type: 'text/plain',
+    charset: 'utf-8',
+    name: null,
+    disposition: null,
+    cid: null,
+    language: null,
+    location: null,
+    subParts: null,
+    ...overrides
+  })
+
   const createTestEmail = (): ReturnType<typeof Schema.decodeUnknownSync<typeof Email>> => {
     const inboxId = Common.createId('inbox')
     const spamId = Common.createId('spam')
@@ -465,13 +543,22 @@ describe('EmailHelpers', () => {
       },
       size: Common.createUnsignedInt(2048),
       receivedAt: Common.now(),
+      // Nullable properties per RFC 8621
+      sentAt: null,
+      messageId: null,
+      inReplyTo: null,
+      references: null,
+      sender: null,
       from: [{ email: 'sender@example.com', name: 'Test Sender' }],
       to: [
         { email: 'recipient1@example.com', name: 'Recipient 1' },
-        { email: 'recipient2@example.com' }
+        { email: 'recipient2@example.com', name: null }
       ],
-      cc: [{ email: 'cc@example.com' }],
+      cc: [{ email: 'cc@example.com', name: null }],
+      bcc: null,
+      replyTo: null,
       subject: 'Test Email',
+      // Non-nullable properties per RFC 8621
       hasAttachment: true,
       attachments: [
         {
@@ -480,22 +567,21 @@ describe('EmailHelpers', () => {
           name: 'image.png',
           size: Common.createUnsignedInt(1024),
           isInline: true,
-          cid: 'image1@example.com'
+          cid: 'image1@example.com',
+          disposition: null
         },
         {
           blobId: 'attachment2',
           type: 'application/pdf',
           name: 'document.pdf',
-          size: Common.createUnsignedInt(2048)
+          size: Common.createUnsignedInt(2048),
+          cid: null,
+          disposition: null
         }
       ],
-      textBody: [
-        {
-          partId: '1',
-          type: 'text/plain',
-          size: Common.createUnsignedInt(256)
-        }
-      ],
+      textBody: [createBodyPart({ partId: '1' })],
+      htmlBody: [],
+      preview: 'This is the email content',
       bodyValues: {
         '1': {
           value: 'This is the email content',
@@ -505,7 +591,8 @@ describe('EmailHelpers', () => {
           value: '<p>HTML content</p>',
           isTruncated: false
         }
-      }
+      },
+      headers: []
     }
   }
 
@@ -593,13 +680,7 @@ describe('EmailHelpers', () => {
     it('should get HTML content', () => {
       const email = {
         ...createTestEmail(),
-        htmlBody: [
-          {
-            partId: '2',
-            type: 'text/html',
-            size: Common.createUnsignedInt(256)
-          }
-        ]
+        htmlBody: [createBodyPart({ partId: '2', type: 'text/html' })]
       }
       expect(EmailHelpers.getHTMLContent(email)).toBe('<p>HTML content</p>')
     })

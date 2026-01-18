@@ -35,13 +35,15 @@ describe('EmailSubmission Schema', () => {
 
   describe('Address', () => {
     it('should validate address with email only', () => {
+      // Per RFC 8621: parameters is Object|null, so must be explicitly null
       const address = {
-        email: 'test@example.com'
+        email: 'test@example.com',
+        parameters: null
       }
 
       const result = Schema.decodeUnknownSync(Address)(address)
       expect(result.email).toBe('test@example.com')
-      expect(result.parameters).toBeUndefined()
+      expect(result.parameters).toBeNull()
     })
 
     it('should validate address with parameters', () => {
@@ -71,11 +73,12 @@ describe('EmailSubmission Schema', () => {
 
   describe('Envelope', () => {
     it('should validate complete envelope', () => {
+      // Per RFC 8621: parameters is Object|null, so must be explicitly provided
       const envelope = {
-        mailFrom: { email: 'sender@example.com' },
+        mailFrom: { email: 'sender@example.com', parameters: null },
         rcptTo: [
-          { email: 'recipient1@example.com' },
-          { email: 'recipient2@example.com' }
+          { email: 'recipient1@example.com', parameters: null },
+          { email: 'recipient2@example.com', parameters: null }
         ]
       }
 
@@ -87,7 +90,7 @@ describe('EmailSubmission Schema', () => {
 
     it('should require at least one recipient', () => {
       const envelopeNoRecipients = {
-        mailFrom: { email: 'sender@example.com' },
+        mailFrom: { email: 'sender@example.com', parameters: null },
         rcptTo: []
       }
 
@@ -175,22 +178,13 @@ describe('EmailSubmission Schema', () => {
       expect(result.envelope).toBeNull()
     })
 
-    it('should allow undefined envelope', () => {
-      const submission = {
-        ...validSubmission,
-        envelope: undefined
-      }
-
-      const result = Schema.decodeUnknownSync(EmailSubmissionObject)(submission)
-      expect(result.envelope).toBeUndefined()
-    })
-
     it('should validate submission with envelope', () => {
+      // Per RFC 8621: envelope is Envelope|null, parameters is Object|null
       const submission = {
         ...validSubmission,
         envelope: {
-          mailFrom: { email: 'sender@example.com' },
-          rcptTo: [{ email: 'recipient@example.com' }]
+          mailFrom: { email: 'sender@example.com', parameters: null },
+          rcptTo: [{ email: 'recipient@example.com', parameters: null }]
         }
       }
 
@@ -258,8 +252,8 @@ describe('EmailSubmission Schema', () => {
         emailId: 'email-1',
         threadId: 'thread-1',
         envelope: {
-          mailFrom: { email: 'sender@example.com' },
-          rcptTo: [{ email: 'recipient@example.com' }]
+          mailFrom: { email: 'sender@example.com', parameters: null },
+          rcptTo: [{ email: 'recipient@example.com', parameters: null }]
         },
         sendAt: '2024-01-15T10:30:00Z',
         undoStatus: 'final',
@@ -317,8 +311,8 @@ describe('EmailSubmission Schema', () => {
         identityId: Common.createId('identity-1'),
         emailId: Common.createId('email-1'),
         envelope: {
-          mailFrom: { email: 'sender@example.com' },
-          rcptTo: [{ email: 'recipient@example.com' }]
+          mailFrom: { email: 'sender@example.com', parameters: null },
+          rcptTo: [{ email: 'recipient@example.com', parameters: null }]
         }
       }
 

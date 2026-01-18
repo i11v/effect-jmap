@@ -72,6 +72,22 @@ export const JMAPFixtures = {
     }
   ],
 
+  // Per RFC 8621: EmailBodyPart requires all fields with nullable values as null
+  bodyPart: (overrides: Record<string, any> = {}) => ({
+    partId: "1",
+    blobId: "blob-part-1",
+    size: 256,
+    type: "text/plain",
+    charset: "utf-8",
+    name: null,
+    disposition: null,
+    cid: null,
+    language: null,
+    location: null,
+    subParts: null,
+    ...overrides
+  }),
+
   emails: [
     {
       id: "email-1",
@@ -81,12 +97,18 @@ export const JMAPFixtures = {
       keywords: { "$seen": true },
       size: 2048,
       receivedAt: "2024-01-15T10:30:00Z",
+      // Per RFC 8621: nullable fields use null, not undefined
+      sentAt: "2024-01-15T10:29:00Z",
       messageId: ["<message-1@example.com>"],
+      inReplyTo: null,
+      references: null,
       sender: [{ name: "John Doe", email: "john@example.com" }],
       from: [{ name: "John Doe", email: "john@example.com" }],
       to: [{ name: "Test User", email: "test@example.com" }],
+      cc: null,
+      bcc: null,
+      replyTo: null,
       subject: "Test Email 1",
-      sentAt: "2024-01-15T10:29:00Z",
       hasAttachment: false,
       preview: "This is a test email for our JMAP implementation...",
       bodyValues: {
@@ -96,9 +118,22 @@ export const JMAPFixtures = {
           isTruncated: false
         }
       },
-      textBody: [{ partId: "1", type: "text/plain", size: 256 }],
+      textBody: [{
+        partId: "1",
+        blobId: "blob-part-1",
+        size: 256,
+        type: "text/plain",
+        charset: "utf-8",
+        name: null,
+        disposition: null,
+        cid: null,
+        language: null,
+        location: null,
+        subParts: null
+      }],
       htmlBody: [],
-      attachments: []
+      attachments: [],
+      headers: []
     },
     {
       id: "email-2",
@@ -108,12 +143,17 @@ export const JMAPFixtures = {
       keywords: { "$flagged": true },
       size: 4096,
       receivedAt: "2024-01-16T14:20:00Z",
+      sentAt: "2024-01-16T14:19:00Z",
       messageId: ["<message-2@example.com>"],
+      inReplyTo: null,
+      references: null,
       sender: [{ name: "Jane Smith", email: "jane@example.com" }],
       from: [{ name: "Jane Smith", email: "jane@example.com" }],
       to: [{ name: "Test User", email: "test@example.com" }],
+      cc: null,
+      bcc: null,
+      replyTo: null,
       subject: "Test Email 2",
-      sentAt: "2024-01-16T14:19:00Z",
       hasAttachment: true,
       preview: "Second test email with attachment...",
       bodyValues: {
@@ -128,16 +168,43 @@ export const JMAPFixtures = {
           isTruncated: false
         }
       },
-      textBody: [{ partId: "1", type: "text/plain", size: 512 }],
-      htmlBody: [{ partId: "2", type: "text/html", size: 256 }],
+      textBody: [{
+        partId: "1",
+        blobId: "blob-part-2",
+        size: 512,
+        type: "text/plain",
+        charset: "utf-8",
+        name: null,
+        disposition: null,
+        cid: null,
+        language: null,
+        location: null,
+        subParts: null
+      }],
+      htmlBody: [{
+        partId: "2",
+        blobId: "blob-part-3",
+        size: 256,
+        type: "text/html",
+        charset: "utf-8",
+        name: null,
+        disposition: null,
+        cid: null,
+        language: null,
+        location: null,
+        subParts: null
+      }],
       attachments: [
         {
           blobId: "attachment-1",
           type: "application/pdf",
           name: "document.pdf",
-          size: 2048
+          size: 2048,
+          cid: null,
+          disposition: "attachment"
         }
-      ]
+      ],
+      headers: []
     }
   ]
 }
@@ -206,6 +273,7 @@ export const mockEmailImportResponseFull = {
 }
 
 // EmailSubmission-specific mock responses
+// Per RFC 8621: parameters is Object|null, envelope is Envelope|null
 export const sampleEmailSubmissions = [
   {
     id: "submission-1",
@@ -231,10 +299,10 @@ export const sampleEmailSubmissions = [
     emailId: "email-2",
     threadId: "thread-2",
     envelope: {
-      mailFrom: { email: "sender@example.com" },
+      mailFrom: { email: "sender@example.com", parameters: null },
       rcptTo: [
-        { email: "recipient1@example.com" },
-        { email: "recipient2@example.com" }
+        { email: "recipient1@example.com", parameters: null },
+        { email: "recipient2@example.com", parameters: null }
       ]
     },
     sendAt: "2024-01-16T14:20:00Z",
@@ -253,6 +321,7 @@ export const mockEmailSubmissionGetResponse = {
 }
 
 // Minimal EmailSubmission/set response (matches Fastmail behavior)
+// Per RFC 8620: created, updated, destroyed etc. are nullable, not optional
 export const mockEmailSubmissionSetResponse = {
   accountId: "test-account",
   oldState: "submission-state-123",
@@ -271,7 +340,10 @@ export const mockEmailSubmissionSetResponse = {
       undoStatus: "final"
     }
   },
-  destroyed: []
+  destroyed: [],
+  notCreated: null,
+  notUpdated: null,
+  notDestroyed: null
 }
 
 // Full EmailSubmission/set response (some JMAP servers may return this)
@@ -285,7 +357,10 @@ export const mockEmailSubmissionSetResponseFull = {
   updated: {
     "submission-1": sampleEmailSubmissions[0]
   },
-  destroyed: []
+  destroyed: [],
+  notCreated: null,
+  notUpdated: null,
+  notDestroyed: null
 }
 
 export const mockEmailSubmissionQueryResponse = {

@@ -132,29 +132,30 @@ export type MailboxSetArguments = Schema.Schema.Type<typeof MailboxSetArguments>
 
 /**
  * Response for Mailbox/set method
+ * Per RFC 8620: /set response fields are nullable (Type|null), not optional
  */
 export const MailboxSetResponse = Schema.Struct({
   accountId: Schema.String,
   oldState: Schema.String,
   newState: Schema.String,
-  created: Schema.optional(Schema.Record({
+  created: Schema.NullOr(Schema.Record({
     key: Schema.String,
     value: Mailbox
   })),
-  updated: Schema.optional(Schema.Record({
+  updated: Schema.NullOr(Schema.Record({
     key: Id,
-    value: Schema.Union(Mailbox, Schema.Null)
+    value: Schema.NullOr(Mailbox)
   })),
-  destroyed: Schema.optional(Schema.Array(Id)),
-  notCreated: Schema.optional(Schema.Record({
+  destroyed: Schema.NullOr(Schema.Array(Id)),
+  notCreated: Schema.NullOr(Schema.Record({
     key: Schema.String,
     value: Schema.Any
   })),
-  notUpdated: Schema.optional(Schema.Record({
+  notUpdated: Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.Any
   })),
-  notDestroyed: Schema.optional(Schema.Record({
+  notDestroyed: Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.Any
   }))
