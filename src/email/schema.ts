@@ -28,20 +28,21 @@ export type EmailHeaders = Schema.Schema.Type<typeof EmailHeaders>
 /**
  * Email Body Part structure for multipart messages
  * Per RFC 8621: partId and blobId are null for multipart/*, other properties are nullable
+ * All nullable fields are also optional since servers may omit them entirely
  */
 export const EmailBodyPart = Schema.Struct({
-  partId: Schema.NullOr(Schema.String),
-  blobId: Schema.NullOr(Schema.String),
+  partId: Schema.optional(Schema.NullOr(Schema.String)),
+  blobId: Schema.optional(Schema.NullOr(Schema.String)),
   size: UnsignedInt,
   headers: Schema.optional(EmailHeaders),
-  name: Schema.NullOr(Schema.String),
+  name: Schema.optional(Schema.NullOr(Schema.String)),
   type: Schema.String,
-  charset: Schema.NullOr(Schema.String),
-  disposition: Schema.NullOr(Schema.String),
-  cid: Schema.NullOr(Schema.String),
-  language: Schema.NullOr(Schema.Array(Schema.String)),
-  location: Schema.NullOr(Schema.String),
-  subParts: Schema.NullOr(Schema.Array(Schema.Any)) // Simplified to break circular reference
+  charset: Schema.optional(Schema.NullOr(Schema.String)),
+  disposition: Schema.optional(Schema.NullOr(Schema.String)),
+  cid: Schema.optional(Schema.NullOr(Schema.String)),
+  language: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  location: Schema.optional(Schema.NullOr(Schema.String)),
+  subParts: Schema.optional(Schema.NullOr(Schema.Array(Schema.Any))) // Simplified to break circular reference
 })
 
 export type EmailBodyPart = Schema.Schema.Type<typeof EmailBodyPart>
@@ -49,19 +50,20 @@ export type EmailBodyPart = Schema.Schema.Type<typeof EmailBodyPart>
 /**
  * Email Body structure
  * Per RFC 8621: nullable properties match EmailBodyPart specification
+ * All nullable fields are also optional since servers may omit them entirely
  */
 export const EmailBody = Schema.Struct({
   type: Schema.String,
-  subParts: Schema.NullOr(Schema.Array(EmailBodyPart)),
-  partId: Schema.NullOr(Schema.String),
-  blobId: Schema.NullOr(Schema.String),
+  subParts: Schema.optional(Schema.NullOr(Schema.Array(EmailBodyPart))),
+  partId: Schema.optional(Schema.NullOr(Schema.String)),
+  blobId: Schema.optional(Schema.NullOr(Schema.String)),
   size: UnsignedInt,
-  name: Schema.NullOr(Schema.String),
-  charset: Schema.NullOr(Schema.String),
-  disposition: Schema.NullOr(Schema.String),
-  cid: Schema.NullOr(Schema.String),
-  language: Schema.NullOr(Schema.Array(Schema.String)),
-  location: Schema.NullOr(Schema.String)
+  name: Schema.optional(Schema.NullOr(Schema.String)),
+  charset: Schema.optional(Schema.NullOr(Schema.String)),
+  disposition: Schema.optional(Schema.NullOr(Schema.String)),
+  cid: Schema.optional(Schema.NullOr(Schema.String)),
+  language: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  location: Schema.optional(Schema.NullOr(Schema.String))
 })
 
 export type EmailBody = Schema.Schema.Type<typeof EmailBody>
@@ -83,14 +85,15 @@ export type EmailBodyValues = Schema.Schema.Type<typeof EmailBodyValues>
 /**
  * Email Attachment structure
  * Per RFC 8621: name, cid, disposition are nullable (String|null)
+ * All nullable fields are also optional since servers may omit them entirely
  */
 export const EmailAttachment = Schema.Struct({
   blobId: Schema.String,
   type: Schema.String,
-  name: Schema.NullOr(Schema.String),
+  name: Schema.optional(Schema.NullOr(Schema.String)),
   size: UnsignedInt,
-  cid: Schema.NullOr(Schema.String),
-  disposition: Schema.NullOr(Schema.String),
+  cid: Schema.optional(Schema.NullOr(Schema.String)),
+  disposition: Schema.optional(Schema.NullOr(Schema.String)),
   isInline: Schema.optional(Schema.Boolean)
 })
 
@@ -99,8 +102,7 @@ export type EmailAttachment = Schema.Schema.Type<typeof EmailAttachment>
 /**
  * Core Email object
  * Per RFC 8621 Section 4: Property types follow the spec's Type|null notation
- * - Nullable properties (Type|null): can be present with null value
- * - Non-nullable properties: always present with a value
+ * All nullable fields are also optional since servers may omit them entirely
  */
 export const Email = Schema.Struct({
   id: Id,
@@ -110,27 +112,27 @@ export const Email = Schema.Struct({
     key: Id,
     value: Schema.Boolean
   }),
-  keywords: Keywords, // String[Boolean], default: {} - NOT nullable per spec
+  keywords: Keywords,
   size: UnsignedInt,
   receivedAt: JMAPDate,
-  sentAt: Schema.NullOr(JMAPDate), // Date|null
-  messageId: Schema.NullOr(Schema.Array(Schema.String)), // String[]|null
-  inReplyTo: Schema.NullOr(Schema.Array(Schema.String)), // String[]|null
-  references: Schema.NullOr(Schema.Array(Schema.String)), // String[]|null
-  sender: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
-  from: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
-  to: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
-  cc: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
-  bcc: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
-  replyTo: Schema.NullOr(Schema.Array(EmailAddress)), // EmailAddress[]|null
-  subject: Schema.NullOr(Schema.String), // String|null
-  textBody: Schema.Array(EmailBodyPart), // EmailBodyPart[] - NOT nullable per spec
-  htmlBody: Schema.Array(EmailBodyPart), // EmailBodyPart[] - NOT nullable per spec
-  attachments: Schema.Array(EmailAttachment), // EmailBodyPart[] - NOT nullable per spec
-  hasAttachment: Schema.Boolean, // Boolean - NOT nullable per spec
-  preview: Schema.String, // String - NOT nullable per spec
-  bodyValues: EmailBodyValues, // String[EmailBodyValue] - NOT nullable per spec
-  headers: Schema.Array(EmailHeader) // EmailHeader[] - NOT nullable per spec
+  sentAt: Schema.optional(Schema.NullOr(JMAPDate)),
+  messageId: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  inReplyTo: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  references: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  sender: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  from: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  to: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  cc: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  bcc: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  replyTo: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  subject: Schema.optional(Schema.NullOr(Schema.String)),
+  textBody: Schema.Array(EmailBodyPart),
+  htmlBody: Schema.Array(EmailBodyPart),
+  attachments: Schema.Array(EmailAttachment),
+  hasAttachment: Schema.Boolean,
+  preview: Schema.String,
+  bodyValues: EmailBodyValues,
+  headers: Schema.Array(EmailHeader)
 })
 
 export type Email = Schema.Schema.Type<typeof Email>
@@ -266,33 +268,33 @@ export type EmailSetArguments = Schema.Schema.Type<typeof EmailSetArguments>
 
 /**
  * Response for Email/set method
- * Per RFC 8620: /set response fields are nullable (Type|null), not optional
+ * All nullable fields are also optional since servers may omit them entirely
  */
 export const EmailSetResponse = Schema.Struct({
   accountId: Schema.String,
   oldState: Schema.String,
   newState: Schema.String,
-  created: Schema.NullOr(Schema.Record({
+  created: Schema.optional(Schema.NullOr(Schema.Record({
     key: Schema.String,
     value: Email
-  })),
-  updated: Schema.NullOr(Schema.Record({
+  }))),
+  updated: Schema.optional(Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.NullOr(Email)
-  })),
-  destroyed: Schema.NullOr(Schema.Array(Id)),
-  notCreated: Schema.NullOr(Schema.Record({
+  }))),
+  destroyed: Schema.optional(Schema.NullOr(Schema.Array(Id))),
+  notCreated: Schema.optional(Schema.NullOr(Schema.Record({
     key: Schema.String,
     value: Schema.Any
-  })),
-  notUpdated: Schema.NullOr(Schema.Record({
+  }))),
+  notUpdated: Schema.optional(Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.Any
-  })),
-  notDestroyed: Schema.NullOr(Schema.Record({
+  }))),
+  notDestroyed: Schema.optional(Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.Any
-  }))
+  })))
 })
 
 export type EmailSetResponse = Schema.Schema.Type<typeof EmailSetResponse>

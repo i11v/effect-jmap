@@ -8,15 +8,16 @@ import { Id, UnsignedInt, JMAPDate, Comparator } from '../shared/common.ts'
 /**
  * Email address for envelope
  * Per RFC 8621: parameters is Object|null
+ * All nullable fields are also optional since servers may omit them entirely
  */
 export const Address = Schema.Struct({
   email: Schema.String,
-  parameters: Schema.NullOr(
+  parameters: Schema.optional(Schema.NullOr(
     Schema.Record({
       key: Schema.String,
       value: Schema.NullOr(Schema.String)
     })
-  )
+  ))
 })
 
 export type Address = Schema.Schema.Type<typeof Address>
@@ -62,19 +63,19 @@ export type DeliveryStatus = Schema.Schema.Type<typeof DeliveryStatus>
 /**
  * Core EmailSubmission object (full)
  * Per RFC 8621 Section 7: envelope and deliveryStatus are nullable (Type|null)
- * dsnBlobIds and mdnBlobIds are arrays (Id[]) - NOT nullable
+ * All nullable fields are also optional since servers may omit them entirely
  */
 export const EmailSubmissionObject = Schema.Struct({
   id: Id,
   identityId: Id,
   emailId: Id,
   threadId: Id,
-  envelope: Schema.NullOr(Envelope), // Envelope|null
+  envelope: Schema.optional(Schema.NullOr(Envelope)),
   sendAt: JMAPDate,
   undoStatus: UndoStatus,
-  deliveryStatus: Schema.NullOr(DeliveryStatus), // String[DeliveryStatus]|null
-  dsnBlobIds: Schema.Array(Id), // Id[] - NOT nullable
-  mdnBlobIds: Schema.Array(Id) // Id[] - NOT nullable
+  deliveryStatus: Schema.optional(Schema.NullOr(DeliveryStatus)),
+  dsnBlobIds: Schema.Array(Id),
+  mdnBlobIds: Schema.Array(Id)
 })
 
 export type EmailSubmissionObject = Schema.Schema.Type<typeof EmailSubmissionObject>
@@ -178,44 +179,43 @@ export type EmailSubmissionSetArguments = Schema.Schema.Type<typeof EmailSubmiss
 
 /**
  * Response for EmailSubmission/set method
- * Per RFC 8620 /set response: created, updated, destroyed, notCreated, notUpdated, notDestroyed
- * are nullable (Type|null) - they can be null if no operations of that type were requested
+ * All nullable fields are also optional since servers may omit them entirely
  */
 export const EmailSubmissionSetResponse = Schema.Struct({
   accountId: Schema.String,
   oldState: Schema.String,
   newState: Schema.String,
-  created: Schema.NullOr(
+  created: Schema.optional(Schema.NullOr(
     Schema.Record({
       key: Schema.String,
       value: EmailSubmissionSetResult
     })
-  ),
-  updated: Schema.NullOr(
+  )),
+  updated: Schema.optional(Schema.NullOr(
     Schema.Record({
       key: Id,
       value: Schema.NullOr(EmailSubmissionSetResult)
     })
-  ),
-  destroyed: Schema.NullOr(Schema.Array(Id)),
-  notCreated: Schema.NullOr(
+  )),
+  destroyed: Schema.optional(Schema.NullOr(Schema.Array(Id))),
+  notCreated: Schema.optional(Schema.NullOr(
     Schema.Record({
       key: Schema.String,
       value: Schema.Any
     })
-  ),
-  notUpdated: Schema.NullOr(
+  )),
+  notUpdated: Schema.optional(Schema.NullOr(
     Schema.Record({
       key: Id,
       value: Schema.Any
     })
-  ),
-  notDestroyed: Schema.NullOr(
+  )),
+  notDestroyed: Schema.optional(Schema.NullOr(
     Schema.Record({
       key: Id,
       value: Schema.Any
     })
-  )
+  ))
 })
 
 export type EmailSubmissionSetResponse = Schema.Schema.Type<typeof EmailSubmissionSetResponse>
