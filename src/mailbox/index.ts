@@ -13,6 +13,7 @@ export {
   MailboxQueryChangesArguments,
   MailboxQueryChangesResponse,
   MailboxMutable,
+  MailboxCreated,
   StandardRoles,
   MailboxHelpers,
   type MailboxFilterCondition as MailboxFilterConditionType,

@@ -13,6 +13,8 @@ import { Effect, Console, Schedule, Duration, pipe } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
 import { HttpClient, HttpClientRequest, HttpBody } from "@effect/platform"
 import { NodeHttpClient } from "@effect/platform-node"
+import { execSync } from "child_process"
+import * as crypto from "crypto"
 
 // Test configuration
 const TEST_CONFIG = {
@@ -46,6 +48,20 @@ const TEST_CONFIG = {
 const basicAuth = (username: string, password: string): string => {
   const credentials = Buffer.from(`${username}:${password}`).toString("base64")
   return `Basic ${credentials}`
+}
+
+// Helper to hash password using SHA-512 crypt format (for Stalwart)
+const hashPassword = (password: string): string => {
+  // Generate a random salt
+  const salt = crypto.randomBytes(16).toString("base64").replace(/[+/=]/g, "").slice(0, 16)
+  // Use openssl to generate SHA-512 crypt hash
+  try {
+    const hash = execSync(`openssl passwd -6 -salt "${salt}" "${password}"`, { encoding: "utf-8" }).trim()
+    return hash
+  } catch {
+    // Fallback: use plain text with $plain$ prefix if openssl fails
+    return `$plain$${password}`
+  }
 }
 
 // Management API client
@@ -85,7 +101,8 @@ const waitForServer = pipe(
     const request = HttpClientRequest.get(`${TEST_CONFIG.baseUrl}/.well-known/jmap`)
     const response = yield* httpClient.execute(request)
 
-    if (response.status !== 200) {
+    // Accept 200 or 307 (redirect to /jmap/session) as ready
+    if (response.status !== 200 && response.status !== 307) {
       yield* Effect.fail(new Error(`Server not ready: HTTP ${response.status}`))
     }
 
@@ -126,12 +143,16 @@ const createUser = (user: (typeof TEST_CONFIG.users)[number]) =>
   Effect.gen(function* () {
     yield* Console.log(`Creating user: ${user.name}`)
 
+    // Hash the password using SHA-512 crypt format
+    const hashedPassword = hashPassword(user.password)
+
     yield* managementRequest("POST", "/api/principal", {
       type: "individual",
       name: user.name,
-      secrets: [user.password],
+      secrets: [hashedPassword],
       description: user.description,
       emails: user.emails,
+      roles: ["user"],  // Required for JMAP access
     }).pipe(
       Effect.catchAll((error) => {
         // Ignore "already exists" errors
@@ -158,7 +179,8 @@ const sendTestEmail = (
     const httpClient = yield* HttpClient.HttpClient
 
     // First get the session to find the account ID and API URL
-    const sessionRequest = HttpClientRequest.get(`${TEST_CONFIG.baseUrl}/.well-known/jmap`).pipe(
+    // Use /jmap/session directly since /.well-known/jmap redirects there
+    const sessionRequest = HttpClientRequest.get(`${TEST_CONFIG.baseUrl}/jmap/session`).pipe(
       HttpClientRequest.setHeader("Authorization", basicAuth(fromUser, fromPassword))
     )
 
@@ -170,7 +192,13 @@ const sendTestEmail = (
     }
 
     const accountId = session.primaryAccounts["urn:ietf:params:jmap:mail"]
-    const apiUrl = session.apiUrl
+
+    // Fix apiUrl if it contains Docker container hostname
+    const baseUrlParsed = new URL(TEST_CONFIG.baseUrl)
+    const apiUrlParsed = new URL(session.apiUrl)
+    apiUrlParsed.host = baseUrlParsed.host
+    apiUrlParsed.protocol = baseUrlParsed.protocol
+    const apiUrl = apiUrlParsed.toString()
 
     // Get the Drafts mailbox ID
     const getMailboxRequest: unknown = {

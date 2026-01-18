@@ -89,6 +89,27 @@ export const MailboxMutable = Schema.Struct({
 export type MailboxMutable = Schema.Schema.Type<typeof MailboxMutable>
 
 /**
+ * Partial Mailbox returned in /set create responses
+ * Per RFC 8621, only id is required; other fields are returned only if
+ * server-set values differ from defaults or requested values
+ */
+export const MailboxCreated = Schema.Struct({
+  id: Id,
+  name: Schema.optional(Schema.String),
+  parentId: Schema.optional(Schema.Union(Id, Schema.Null)),
+  role: Schema.optional(Schema.Union(MailboxRole, Schema.Null)),
+  sortOrder: Schema.optional(UnsignedInt),
+  totalEmails: Schema.optional(UnsignedInt),
+  unreadEmails: Schema.optional(UnsignedInt),
+  totalThreads: Schema.optional(UnsignedInt),
+  unreadThreads: Schema.optional(UnsignedInt),
+  myRights: Schema.optional(MailboxRights),
+  isSubscribed: Schema.optional(Schema.Boolean)
+})
+
+export type MailboxCreated = Schema.Schema.Type<typeof MailboxCreated>
+
+/**
  * Arguments for Mailbox/get method
  */
 export const MailboxGetArguments = Schema.Struct({
@@ -132,33 +153,34 @@ export type MailboxSetArguments = Schema.Schema.Type<typeof MailboxSetArguments>
 
 /**
  * Response for Mailbox/set method
- * Per RFC 8620: /set response fields are nullable (Type|null), not optional
+ * Per RFC 8620: /set response fields should be null when not applicable,
+ * but some servers omit fields entirely, so we accept both null and undefined
  */
 export const MailboxSetResponse = Schema.Struct({
   accountId: Schema.String,
   oldState: Schema.String,
   newState: Schema.String,
-  created: Schema.NullOr(Schema.Record({
+  created: Schema.optionalWith(Schema.NullOr(Schema.Record({
     key: Schema.String,
-    value: Mailbox
-  })),
-  updated: Schema.NullOr(Schema.Record({
+    value: MailboxCreated
+  })), { nullable: true }),
+  updated: Schema.optionalWith(Schema.NullOr(Schema.Record({
     key: Id,
-    value: Schema.NullOr(Mailbox)
-  })),
-  destroyed: Schema.NullOr(Schema.Array(Id)),
-  notCreated: Schema.NullOr(Schema.Record({
+    value: Schema.NullOr(MailboxCreated)
+  })), { nullable: true }),
+  destroyed: Schema.optionalWith(Schema.NullOr(Schema.Array(Id)), { nullable: true }),
+  notCreated: Schema.optionalWith(Schema.NullOr(Schema.Record({
     key: Schema.String,
     value: Schema.Any
-  })),
-  notUpdated: Schema.NullOr(Schema.Record({
+  })), { nullable: true }),
+  notUpdated: Schema.optionalWith(Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.Any
-  })),
-  notDestroyed: Schema.NullOr(Schema.Record({
+  })), { nullable: true }),
+  notDestroyed: Schema.optionalWith(Schema.NullOr(Schema.Record({
     key: Id,
     value: Schema.Any
-  }))
+  })), { nullable: true })
 })
 
 export type MailboxSetResponse = Schema.Schema.Type<typeof MailboxSetResponse>

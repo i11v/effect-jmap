@@ -18,8 +18,9 @@ import {
   skipIfStalwartUnavailable,
   isStalwartAvailable,
 } from "./stalwart-client.ts"
-import { MailboxService } from "../../src/mailbox/service.ts"
+import { MailboxService, MailboxServiceLive } from "../../src/mailbox/service.ts"
 import { JMAPClientService } from "../../src/client/client.ts"
+import { IdGeneratorLive } from "../../src/shared/id-generator.ts"
 
 // Test configuration
 const TEST_SERVER_URL = process.env.JMAP_TEST_SERVER_URL || "http://localhost:8080"
@@ -45,14 +46,18 @@ describe.skipIf(SKIP_FUNCTIONAL)("Mailbox Service - Functional Tests", () => {
     }
   })
 
-  // Create a test layer for the test user
-  const testLayer = Layer.mergeAll(
-    StalwartClientForUser("testuser", TEST_SERVER_URL),
+  // Create a test layer for the test user with all required services
+  const testLayer = Layer.provideMerge(
+    Layer.mergeAll(
+      StalwartClientForUser("testuser", TEST_SERVER_URL),
+      MailboxServiceLive,
+      IdGeneratorLive
+    ),
     NodeHttpClient.layer
   )
 
   const runTest = <A, E>(
-    effect: Effect.Effect<A, E, JMAPClientService>
+    effect: Effect.Effect<A, E, JMAPClientService | MailboxService>
   ): Promise<A> =>
     Effect.runPromise(
       effect.pipe(
@@ -82,7 +87,7 @@ describe.skipIf(SKIP_FUNCTIONAL)("Mailbox Service - Functional Tests", () => {
           expect(accountId).toBeDefined()
 
           // Use the MailboxService to get mailboxes
-          const mailboxService = new MailboxService()
+          const mailboxService = yield* MailboxService
           const mailboxes = yield* mailboxService.getAll(accountId)
 
           return mailboxes
@@ -91,10 +96,10 @@ describe.skipIf(SKIP_FUNCTIONAL)("Mailbox Service - Functional Tests", () => {
 
       // Verify we got some mailboxes (Stalwart creates default ones)
       expect(result).toBeDefined()
-      expect(Array.isArray(result.list)).toBe(true)
+      expect(Array.isArray(result)).toBe(true)
 
       // Stalwart should create standard mailboxes like Inbox, Drafts, etc.
-      const roles = result.list.map((m) => m.role).filter(Boolean)
+      const roles = result.map((m) => m.role).filter(Boolean)
       // At minimum, we should have an inbox
       expect(roles.length).toBeGreaterThan(0)
     })
@@ -120,18 +125,19 @@ describe.skipIf(SKIP_FUNCTIONAL)("Mailbox Service - Functional Tests", () => {
             session.primaryAccounts["urn:ietf:params:jmap:mail"]
 
           // First get all mailboxes to find valid IDs
-          const mailboxService = new MailboxService()
+          const mailboxService = yield* MailboxService
           const allMailboxes = yield* mailboxService.getAll(accountId)
 
-          if (allMailboxes.list.length === 0) {
+          if (allMailboxes.length === 0) {
             return { list: [], notFound: [], state: "" }
           }
 
           // Get specific mailboxes by ID
-          const firstId = allMailboxes.list[0].id
-          const specificMailboxes = yield* mailboxService.get(accountId, [
-            firstId,
-          ])
+          const firstId = allMailboxes[0].id
+          const specificMailboxes = yield* mailboxService.get({
+            accountId,
+            ids: [firstId],
+          })
 
           return specificMailboxes
         })
@@ -160,8 +166,9 @@ describe.skipIf(SKIP_FUNCTIONAL)("Mailbox Service - Functional Tests", () => {
           const accountId =
             session.primaryAccounts["urn:ietf:params:jmap:mail"]
 
-          const mailboxService = new MailboxService()
-          const queryResult = yield* mailboxService.query(accountId, {
+          const mailboxService = yield* MailboxService
+          const queryResult = yield* mailboxService.query({
+            accountId,
             filter: { role: "inbox" },
           })
 
@@ -197,10 +204,11 @@ describe.skipIf(SKIP_FUNCTIONAL)("Mailbox Service - Functional Tests", () => {
           const accountId =
             session.primaryAccounts["urn:ietf:params:jmap:mail"]
 
-          const mailboxService = new MailboxService()
+          const mailboxService = yield* MailboxService
 
           // Create a new mailbox
-          const createResult = yield* mailboxService.set(accountId, {
+          const createResult = yield* mailboxService.set({
+            accountId,
             create: {
               testMailbox: {
                 name: testMailboxName,
@@ -217,7 +225,8 @@ describe.skipIf(SKIP_FUNCTIONAL)("Mailbox Service - Functional Tests", () => {
           }
 
           // Delete the mailbox
-          const deleteResult = yield* mailboxService.set(accountId, {
+          const deleteResult = yield* mailboxService.set({
+            accountId,
             destroy: [createdId],
           })
 

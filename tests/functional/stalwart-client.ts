@@ -105,7 +105,8 @@ const makeStalwartClient = (
 ): Context.Tag.Service<typeof JMAPClientService> => {
   let sessionState: SessionState | null = null
 
-  const sessionUrl = `${config.baseUrl}/.well-known/jmap`
+  // Use /jmap/session directly since /.well-known/jmap returns a 307 redirect
+  const sessionUrl = `${config.baseUrl}/jmap/session`
 
   const defaultHeaders = {
     "Content-Type": "application/json",
@@ -170,12 +171,23 @@ const makeStalwartClient = (
       )
     )
 
+    // Fix apiUrl if it contains Docker container hostname
+    // Replace with our configured baseUrl
+    const baseUrlParsed = new URL(config.baseUrl)
+    const apiUrlParsed = new URL(session.apiUrl)
+    apiUrlParsed.host = baseUrlParsed.host
+    apiUrlParsed.protocol = baseUrlParsed.protocol
+    const fixedSession = {
+      ...session,
+      apiUrl: apiUrlParsed.toString()
+    }
+
     sessionState = {
-      session,
+      session: fixedSession,
       lastUpdated: new Date(),
     }
 
-    return session
+    return fixedSession
   })
 
   const getSession = Effect.gen(function* () {
@@ -377,7 +389,8 @@ export const isStalwartAvailable = (
       Effect.catchAll(() => Effect.succeed(null))
     )
 
-    return response !== null && response.status === 200
+    // Accept 200 or 307 (redirect to /jmap/session) as available
+    return response !== null && (response.status === 200 || response.status === 307)
   })
 
 /**

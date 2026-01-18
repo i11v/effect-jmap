@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   stalwart:
-    image: stalwartlabs/mail-server:latest
+    image: stalwartlabs/stalwart:latest
     container_name: effect-jmap-test-server
     ports:
       - "8080:8080"  # HTTP/JMAP
