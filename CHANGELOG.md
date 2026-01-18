@@ -1,3 +1,10 @@
+## [0.4.3](https://github.com/i11v/effect-jmap/compare/v0.4.2...v0.4.3) (2026-01-18)
+
+
+### Bug Fixes
+
+* Trigger release to publish to npm registry ([d42ab47](https://github.com/i11v/effect-jmap/commit/d42ab47e873a88e0441d4e6e46bbfd7163dbe8e0))
+
 ## [0.4.2](https://github.com/i11v/effect-jmap/compare/v0.4.1...v0.4.2) (2026-01-18)
 
 
