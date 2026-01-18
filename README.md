@@ -131,11 +131,3 @@ This project uses [semantic-release](https://semantic-release.gitbook.io/) for a
 For the automated release workflow, configure these repository secrets:
 
 - `NPM_TOKEN`: npm access token with publish permissions
-
-### Branch Protection
-
-Configure branch protection rules for `main` with these required status checks:
-
-- **Typecheck** - TypeScript compilation must pass
-- **Test** - All unit tests must pass
-- **Lint Commits** - Commit messages must follow conventional commits (PRs only)
