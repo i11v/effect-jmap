@@ -10,20 +10,6 @@ jobs:
   functional-tests:
     runs-on: ubuntu-latest
 
-    services:
-      stalwart:
-        image: stalwartlabs/stalwart:latest
-        ports:
-          - 8080:8080
-        env:
-          STALWART_ADMIN_PASSWORD: test-admin-password
-        options: >-
-          --health-cmd "curl -f http://localhost:8080/.well-known/jmap || exit 1"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 30
-          --health-start-period 10s
-
     steps:
       - uses: actions/checkout@v4
 
@@ -39,20 +25,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Wait for Stalwart to be ready
+      - name: Start test server
+        run: pnpm test:server:start
+
+      - name: Wait for server to be healthy
         run: |
-          echo "Waiting for Stalwart server..."
-          for i in {1..30}; do
-            if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/.well-known/jmap | grep -qE "200|307"; then
-              echo "Stalwart is ready!"
-              break
-            fi
-            echo "Attempt $i: Stalwart not ready yet..."
-            sleep 2
-          done
+          timeout 60 bash -c 'until curl -sf http://localhost:8080/.well-known/jmap; do sleep 2; done'
 
       - name: Seed test data
         run: pnpm seed-test-data
 
       - name: Run functional tests
         run: pnpm test:functional
+
+      - name: Stop test server
+        if: always()
+        run: pnpm test:server:stop
