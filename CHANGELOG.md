@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/i11v/effect-jmap/compare/v0.4.3...v0.5.0) (2026-01-22)
+
+
+### Features
+
+* Add comprehensive test email dataset generator ([#11](https://github.com/i11v/effect-jmap/issues/11)) ([e2b4d42](https://github.com/i11v/effect-jmap/commit/e2b4d423f14f3095aa7a234e2933cf1475f5ca8c))
+
 ## [0.4.3](https://github.com/i11v/effect-jmap/compare/v0.4.2...v0.4.3) (2026-01-18)
 
 
