@@ -1,0 +1,2418 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-01-22T21:29:30.298Z",
+  "useAI": false,
+  "emails": [
+    {
+      "id": "E24fd2140f6cdd9d742450a66",
+      "threadId": "T3bb2f3b059bb2633",
+      "scenarioId": "project-discussion",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "subject": "Q1 project planning and budget allocation",
+        "sentAt": "2026-01-22T08:29:30.290Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "03af32d77cc3cd76001aebc7.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob, Carol,\n\nThis is regarding: Q1 project planning and budget allocation\n\nThanks,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob, Carol,</p>\n<p>This is regarding: Q1 project planning and budget allocation</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Bob, Carol,\n\nThis is regarding: Q1 project planning and budget allocation\n\nThanks,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob, Carol,</p>\n<p>This is regarding: Q1 project planning and budget allocation</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E9c1ab0d5572ed95f12a1c873",
+      "threadId": "T3bb2f3b059bb2633",
+      "scenarioId": "project-discussion",
+      "emailIndex": 1,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Re: Q1 project planning and budget allocation",
+        "sentAt": "2026-01-21T10:29:30.294Z",
+        "keywords": {
+          "$seen": true,
+          "$flagged": true
+        },
+        "messageId": [
+          "1c4c4c719e4fa7fd8210a7cf.1@test.local"
+        ],
+        "inReplyTo": [
+          "03af32d77cc3cd76001aebc7.0@test.local"
+        ],
+        "references": [
+          "03af32d77cc3cd76001aebc7.0@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: Q1 project planning and budget allocation\n\nThanks,\nBob Jones",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Q1 project planning and budget allocation</p>\n\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: Q1 project planning and budget allocation\n\nThanks,\nBob Jones",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Q1 project planning and budget allocation</p>\n\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E0b0e17366fcc4069d5d84ab1",
+      "threadId": "T3bb2f3b059bb2633",
+      "scenarioId": "project-discussion",
+      "emailIndex": 2,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "Re: Re: Q1 project planning and budget allocation",
+        "sentAt": "2026-01-20T12:29:30.294Z",
+        "keywords": {},
+        "messageId": [
+          "cff291c2936c9aa725587c2e.2@test.local"
+        ],
+        "inReplyTo": [
+          "1c4c4c719e4fa7fd8210a7cf.1@test.local"
+        ],
+        "references": [
+          "03af32d77cc3cd76001aebc7.0@test.local",
+          "1c4c4c719e4fa7fd8210a7cf.1@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob,\n\nThis is regarding: Q1 project planning and budget allocation\n\nThanks,\nCarol Davis",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: Q1 project planning and budget allocation</p>\n\n<p>Thanks,<br/>\nCarol Davis</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Bob,\n\nThis is regarding: Q1 project planning and budget allocation\n\nThanks,\nCarol Davis",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: Q1 project planning and budget allocation</p>\n\n<p>Thanks,<br/>\nCarol Davis</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E5799391c1b03717133574b89",
+      "threadId": "T73aeee5b8224902e",
+      "scenarioId": "feature-request",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "New dashboard feature request for analytics module",
+        "sentAt": "2026-01-22T08:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "a1606b5b412679f1ec833130.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nBob Jones",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        },
+        "cc": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ]
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nBob Jones",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E5734a7ac1777f891e5908df5",
+      "threadId": "T73aeee5b8224902e",
+      "scenarioId": "feature-request",
+      "emailIndex": 1,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "Re: New dashboard feature request for analytics module",
+        "sentAt": "2026-01-21T10:29:30.294Z",
+        "keywords": {
+          "$seen": true,
+          "$answered": true
+        },
+        "messageId": [
+          "1830bca833258a7daf17da65.1@test.local"
+        ],
+        "inReplyTo": [
+          "a1606b5b412679f1ec833130.0@test.local"
+        ],
+        "references": [
+          "a1606b5b412679f1ec833130.0@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Bob,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Edaa20b1aae59086c737d4d3c",
+      "threadId": "T73aeee5b8224902e",
+      "scenarioId": "feature-request",
+      "emailIndex": 2,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Re: Re: New dashboard feature request for analytics module",
+        "sentAt": "2026-01-20T12:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "b61b146259ddce6cb99f0117.2@test.local"
+        ],
+        "inReplyTo": [
+          "1830bca833258a7daf17da65.1@test.local"
+        ],
+        "references": [
+          "a1606b5b412679f1ec833130.0@test.local",
+          "1830bca833258a7daf17da65.1@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nBob Jones",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nBob Jones",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E4e8afaec158a0b954fde3f23",
+      "threadId": "T73aeee5b8224902e",
+      "scenarioId": "feature-request",
+      "emailIndex": 3,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "Re: Re: Re: New dashboard feature request for analytics module",
+        "sentAt": "2026-01-19T14:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "5744aae315f7b2a5e186cb65.3@test.local"
+        ],
+        "inReplyTo": [
+          "b61b146259ddce6cb99f0117.2@test.local"
+        ],
+        "references": [
+          "a1606b5b412679f1ec833130.0@test.local",
+          "1830bca833258a7daf17da65.1@test.local",
+          "b61b146259ddce6cb99f0117.2@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nDavid Wilson",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nDavid Wilson</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Bob,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nDavid Wilson",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nDavid Wilson</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E2b29d9e3d4a2d4fa8817c1ff",
+      "threadId": "T73aeee5b8224902e",
+      "scenarioId": "feature-request",
+      "emailIndex": 4,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "subject": "Re: Re: Re: Re: New dashboard feature request for analytics module",
+        "sentAt": "2026-01-18T16:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "fb08e1d321c66187ebcb680c.4@test.local"
+        ],
+        "inReplyTo": [
+          "5744aae315f7b2a5e186cb65.3@test.local"
+        ],
+        "references": [
+          "a1606b5b412679f1ec833130.0@test.local",
+          "1830bca833258a7daf17da65.1@test.local",
+          "b61b146259ddce6cb99f0117.2@test.local",
+          "5744aae315f7b2a5e186cb65.3@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi David,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi David,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi David,\n\nThis is regarding: New dashboard feature request for analytics module\n\nThanks,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi David,</p>\n<p>This is regarding: New dashboard feature request for analytics module</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Eeb055cb7a3ff55ff2d229f56",
+      "threadId": "Tc0d55a8963b85052",
+      "scenarioId": "meeting-scheduling",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          },
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "subject": "Team meeting scheduling for next week",
+        "sentAt": "2026-01-22T08:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "0cd5d6ab4c7b48d5f2498b4b.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice, Bob, David,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nCarol Davis",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob, David,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nCarol Davis</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice, Bob, David,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nCarol Davis",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob, David,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nCarol Davis</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E80f1023fa39684945904b362",
+      "threadId": "Tc0d55a8963b85052",
+      "scenarioId": "meeting-scheduling",
+      "emailIndex": 1,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "subject": "Re: Team meeting scheduling for next week",
+        "sentAt": "2026-01-21T10:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "0c55f355585c4adb077d7bf7.1@test.local"
+        ],
+        "inReplyTo": [
+          "0cd5d6ab4c7b48d5f2498b4b.0@test.local"
+        ],
+        "references": [
+          "0cd5d6ab4c7b48d5f2498b4b.0@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Carol,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Carol,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nAlice Smith</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Carol,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Carol,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E10b27e06cc40fe501c93fe5e",
+      "threadId": "Tc0d55a8963b85052",
+      "scenarioId": "meeting-scheduling",
+      "emailIndex": 2,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "subject": "Re: Team meeting scheduling for next week",
+        "sentAt": "2026-01-20T12:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "91da17af5286defe564094b8.2@test.local"
+        ],
+        "inReplyTo": [
+          "0cd5d6ab4c7b48d5f2498b4b.0@test.local"
+        ],
+        "references": [
+          "0cd5d6ab4c7b48d5f2498b4b.0@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Carol,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nBob Jones",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Carol,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nBob Jones</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Carol,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nBob Jones",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Carol,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nBob Jones</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E1bc874c1afb4cb96ac10d2e4",
+      "threadId": "Tc0d55a8963b85052",
+      "scenarioId": "meeting-scheduling",
+      "emailIndex": 3,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "subject": "Re: Team meeting scheduling for next week",
+        "sentAt": "2026-01-19T14:29:30.294Z",
+        "keywords": {},
+        "messageId": [
+          "abf3a2d7011273995c888e44.3@test.local"
+        ],
+        "inReplyTo": [
+          "0cd5d6ab4c7b48d5f2498b4b.0@test.local"
+        ],
+        "references": [
+          "0cd5d6ab4c7b48d5f2498b4b.0@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Carol,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nDavid Wilson",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Carol,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nDavid Wilson</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Carol,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nDavid Wilson",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Carol,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nDavid Wilson</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E8fe722687f6a79b398b72a30",
+      "threadId": "Tc0d55a8963b85052",
+      "scenarioId": "meeting-scheduling",
+      "emailIndex": 4,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Re: Re: Team meeting scheduling for next week",
+        "sentAt": "2026-01-18T16:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "b06203c404b3435400d85353.4@test.local"
+        ],
+        "inReplyTo": [
+          "0c55f355585c4adb077d7bf7.1@test.local"
+        ],
+        "references": [
+          "0cd5d6ab4c7b48d5f2498b4b.0@test.local",
+          "0c55f355585c4adb077d7bf7.1@test.local"
+        ],
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nCarol Davis",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nCarol Davis</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: Team meeting scheduling for next week\n\nCheers,\nCarol Davis",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Team meeting scheduling for next week</p>\n\n<p>Cheers,<br/>\nCarol Davis</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E491d90ee354692a7cc3a345d",
+      "threadId": "Tfbfc9821220342bb",
+      "scenarioId": "plain-text-welcome",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "Welcome to the team introduction",
+        "sentAt": "2026-01-22T08:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "b2e7c17ec144886aab4d6831.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob,\n\nThis is regarding: Welcome to the team introduction\n\nThanks,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Bob,\n\nThis is regarding: Welcome to the team introduction\n\nThanks,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: Welcome to the team introduction</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E808265b090682ad6b2664974",
+      "threadId": "T91d0aebaf3c4e823",
+      "scenarioId": "html-newsletter",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          },
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "subject": "Monthly company newsletter with updates",
+        "sentAt": "2026-01-22T08:29:30.294Z",
+        "keywords": {},
+        "messageId": [
+          "6547414d94e7f8eac179258f.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/html"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob, David,</p>\n<p>This is regarding: Monthly company newsletter with updates</p>\n\n<p>Thanks,<br/>\nCarol Davis</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice, Bob, David,\n\nThis is regarding: Monthly company newsletter with updates\n\nThanks,\nCarol Davis",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob, David,</p>\n<p>This is regarding: Monthly company newsletter with updates</p>\n\n<p>Thanks,<br/>\nCarol Davis</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Ebfcebef35d643563c8dde2c9",
+      "threadId": "Ta50270f16af12386",
+      "scenarioId": "multipart-announcement",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          },
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          },
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "subject": "Important policy update announcement",
+        "sentAt": "2026-01-22T08:29:30.294Z",
+        "keywords": {
+          "$flagged": true
+        },
+        "messageId": [
+          "a2e5930facec6923446a6396.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Dear Alice, Bob, Carol, Eve,\n\nThis is regarding: Important policy update announcement\n\nBest regards,\nDavid Wilson",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Dear Alice, Bob, Carol, Eve,</p>\n<p>This is regarding: Important policy update announcement</p>\n\n<p>Best regards,<br/>\nDavid Wilson</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Dear Alice, Bob, Carol, Eve,\n\nThis is regarding: Important policy update announcement\n\nBest regards,\nDavid Wilson",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Dear Alice, Bob, Carol, Eve,</p>\n<p>This is regarding: Important policy update announcement</p>\n\n<p>Best regards,<br/>\nDavid Wilson</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E34c6385e4b7aa18dbacc8159",
+      "threadId": "T628e535b0d00f3f6",
+      "scenarioId": "quarterly-report",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Q4 financial report with detailed analysis",
+        "sentAt": "2026-01-22T08:29:30.294Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "889d745a35acffca3582b028.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: Q4 financial report with detailed analysis\n\nPlease find the attached file(s): Q4-Financial-Report.pdf.\n\nThanks,\nBob Jones",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Q4 financial report with detailed analysis</p>\n<p>Please find the attached file(s): Q4-Financial-Report.pdf.</p>\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        },
+        "attachments": [
+          {
+            "blobId": "B3ea60ef31af4e0b78716b7b9ffe0b8f6",
+            "type": "application/pdf",
+            "name": "Q4-Financial-Report.pdf",
+            "size": 512000,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          }
+        ]
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: Q4 financial report with detailed analysis\n\nPlease find the attached file(s): Q4-Financial-Report.pdf.\n\nThanks,\nBob Jones",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Q4 financial report with detailed analysis</p>\n<p>Please find the attached file(s): Q4-Financial-Report.pdf.</p>\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E10bb159e0aaeefd831320c4b",
+      "threadId": "T2293a5b3f6d42bd3",
+      "scenarioId": "project-files",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "subject": "Project documentation and resource files",
+        "sentAt": "2026-01-22T08:29:30.295Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "a88a793b3ba19383bc8d9a03.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob, Carol,\n\nThis is regarding: Project documentation and resource files\n\nPlease find the attached file(s): project-spec.pdf, budget.xlsx, architecture-diagram.png.\n\nThanks,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob, Carol,</p>\n<p>This is regarding: Project documentation and resource files</p>\n<p>Please find the attached file(s): project-spec.pdf, budget.xlsx, architecture-diagram.png.</p>\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        },
+        "attachments": [
+          {
+            "blobId": "B798ac7f472e67365e53e7df5985dae9b",
+            "type": "application/pdf",
+            "name": "project-spec.pdf",
+            "size": 256000,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          },
+          {
+            "blobId": "B2a20003b1717c47fd8951d7ae35365d5",
+            "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "name": "budget.xlsx",
+            "size": 102400,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          },
+          {
+            "blobId": "B79f98df48f92890f36349eaed6aa37f4",
+            "type": "image/png",
+            "name": "architecture-diagram.png",
+            "size": 153600,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          }
+        ]
+      },
+      "rawContent": {
+        "text": "Hi Bob, Carol,\n\nThis is regarding: Project documentation and resource files\n\nPlease find the attached file(s): project-spec.pdf, budget.xlsx, architecture-diagram.png.\n\nThanks,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob, Carol,</p>\n<p>This is regarding: Project documentation and resource files</p>\n<p>Please find the attached file(s): project-spec.pdf, budget.xlsx, architecture-diagram.png.</p>\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E8a256ab9ab183857fd7f0f82",
+      "threadId": "Tc250e68a00da628c",
+      "scenarioId": "photo-album",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          },
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          },
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "subject": "Team event photos from the annual retreat",
+        "sentAt": "2026-01-22T08:29:30.296Z",
+        "keywords": {},
+        "messageId": [
+          "58a817623aa78fa1a8aa15f6.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice, Bob, David, Eve,\n\nThis is regarding: Team event photos from the annual retreat\n\nPlease find the attached file(s): team-photo-1.jpg, team-photo-2.jpg.\n\nCheers,\nCarol Davis",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob, David, Eve,</p>\n<p>This is regarding: Team event photos from the annual retreat</p>\n<p>Please find the attached file(s): team-photo-1.jpg, team-photo-2.jpg.</p>\n<p>Cheers,<br/>\nCarol Davis</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        },
+        "attachments": [
+          {
+            "blobId": "B25d06a51e2a764474173bc465419bd13",
+            "type": "image/jpeg",
+            "name": "team-photo-1.jpg",
+            "size": 2097152,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          },
+          {
+            "blobId": "Bb8713ba2efb065bdca70919a0f9305af",
+            "type": "image/jpeg",
+            "name": "team-photo-2.jpg",
+            "size": 1572864,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          }
+        ]
+      },
+      "rawContent": {
+        "text": "Hi Alice, Bob, David, Eve,\n\nThis is regarding: Team event photos from the annual retreat\n\nPlease find the attached file(s): team-photo-1.jpg, team-photo-2.jpg.\n\nCheers,\nCarol Davis",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob, David, Eve,</p>\n<p>This is regarding: Team event photos from the annual retreat</p>\n<p>Please find the attached file(s): team-photo-1.jpg, team-photo-2.jpg.</p>\n<p>Cheers,<br/>\nCarol Davis</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E6ff5068ac78a088a205c5e27",
+      "threadId": "Tca98078c8126cd08",
+      "scenarioId": "design-assets",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Design assets for the new marketing campaign",
+        "sentAt": "2026-01-22T08:29:30.297Z",
+        "keywords": {
+          "$seen": true,
+          "$flagged": true
+        },
+        "messageId": [
+          "a00cec2554c3a9380d660706.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: Design assets for the new marketing campaign\n\nPlease find the attached file(s): logo-variant-1.png, logo-variant-2.png, banner-design.png, brand-guidelines.pdf, icon-set.svg, source-files.zip.\n\nThanks,\nEve Martinez",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Design assets for the new marketing campaign</p>\n<p>Please find the attached file(s): logo-variant-1.png, logo-variant-2.png, banner-design.png, brand-guidelines.pdf, icon-set.svg, source-files.zip.</p>\n<p>Thanks,<br/>\nEve Martinez</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        },
+        "attachments": [
+          {
+            "blobId": "B95f0adc8ffec82782807eae59a209ecb",
+            "type": "image/png",
+            "name": "logo-variant-1.png",
+            "size": 204800,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          },
+          {
+            "blobId": "Bb02633bb820769ad8b459f6771fef277",
+            "type": "image/png",
+            "name": "logo-variant-2.png",
+            "size": 184320,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          },
+          {
+            "blobId": "B3997ad956a684cce0969a8552eba5952",
+            "type": "image/png",
+            "name": "banner-design.png",
+            "size": 358400,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          },
+          {
+            "blobId": "B8f1ac43a1d01a093582df7401b890bb4",
+            "type": "application/pdf",
+            "name": "brand-guidelines.pdf",
+            "size": 409600,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          },
+          {
+            "blobId": "Bca45b5314e9052f6726142a268cab387",
+            "type": "image/svg+xml",
+            "name": "icon-set.svg",
+            "size": 51200,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          },
+          {
+            "blobId": "B1e2cef340808ab816f4ac4eb50d4408c",
+            "type": "application/zip",
+            "name": "source-files.zip",
+            "size": 819200,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          }
+        ]
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: Design assets for the new marketing campaign\n\nPlease find the attached file(s): logo-variant-1.png, logo-variant-2.png, banner-design.png, brand-guidelines.pdf, icon-set.svg, source-files.zip.\n\nThanks,\nEve Martinez",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Design assets for the new marketing campaign</p>\n<p>Please find the attached file(s): logo-variant-1.png, logo-variant-2.png, banner-design.png, brand-guidelines.pdf, icon-set.svg, source-files.zip.</p>\n<p>Thanks,<br/>\nEve Martinez</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E953069c0e6ffe7eedcc75716",
+      "threadId": "Tfe42325a13072d1a",
+      "scenarioId": "inline-images-demo",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "Product screenshots for documentation",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "3846497dd68d40da1354c0b8.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob,\n\nThis is regarding: Product screenshots for documentation\n\nPlease find the attached file(s): .\n\nThanks,\nDavid Wilson",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: Product screenshots for documentation</p>\n<p>Please find the attached file(s): .</p>\n<p>Thanks,<br/>\nDavid Wilson</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        },
+        "attachments": [
+          {
+            "blobId": "B632b6586e18b101fcfe1b5821e1295a8",
+            "type": "image/png",
+            "name": "inline-image-1.png",
+            "size": 51200,
+            "cid": "f28c53544e668f80@test.local",
+            "disposition": "inline",
+            "isInline": true
+          },
+          {
+            "blobId": "B01b1eb536d378aa0be7913f921495a43",
+            "type": "image/png",
+            "name": "inline-image-2.png",
+            "size": 51200,
+            "cid": "8b21b1851298a2b4@test.local",
+            "disposition": "inline",
+            "isInline": true
+          },
+          {
+            "blobId": "B1209cb956130338e38a1fc2679eae2de",
+            "type": "image/png",
+            "name": "inline-image-3.png",
+            "size": 51200,
+            "cid": "1fb82da26620ab81@test.local",
+            "disposition": "inline",
+            "isInline": true
+          }
+        ]
+      },
+      "rawContent": {
+        "text": "Hi Bob,\n\nThis is regarding: Product screenshots for documentation\n\nPlease find the attached file(s): .\n\nThanks,\nDavid Wilson",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: Product screenshots for documentation</p>\n<p>Please find the attached file(s): .</p>\n<p>Thanks,<br/>\nDavid Wilson</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E42e7e132afca4a0d2b242040",
+      "threadId": "T84c3c0658b6051fa",
+      "scenarioId": "unsent-draft",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_DRAFTS": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "subject": "Meeting agenda draft for board review",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$draft": true
+        },
+        "messageId": [
+          "109d405bd705892466b38e90.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Dear Bob, Carol,\n\nThis is regarding: Meeting agenda draft for board review\n\nBest regards,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Dear Bob, Carol,\n\nThis is regarding: Meeting agenda draft for board review\n\nBest regards,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Dear Bob, Carol,</p>\n<p>This is regarding: Meeting agenda draft for board review</p>\n\n<p>Best regards,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Ee70057eb0fa36ace6bc86d66",
+      "threadId": "T4c83c9790765dae2",
+      "scenarioId": "flagged-answered",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Urgent contract review needed",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true,
+          "$flagged": true,
+          "$answered": true
+        },
+        "messageId": [
+          "ec50f0af015e0053b483ae16.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: Urgent contract review needed\n\nThanks,\nBob Jones",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: Urgent contract review needed\n\nThanks,\nBob Jones",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Urgent contract review needed</p>\n\n<p>Thanks,<br/>\nBob Jones</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E616a1e5e869e6c6acb6c3b8b",
+      "threadId": "T427e040987b52558",
+      "scenarioId": "forwarded-info",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "subject": "FW: Vendor pricing information",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true,
+          "$forwarded": true
+        },
+        "messageId": [
+          "135996fe706da8a6d4fe4394.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi David,\n\nThis is regarding: FW: Vendor pricing information\n\nThanks,\nCarol Davis",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi David,</p>\n<p>This is regarding: FW: Vendor pricing information</p>\n\n<p>Thanks,<br/>\nCarol Davis</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi David,\n\nThis is regarding: FW: Vendor pricing information\n\nThanks,\nCarol Davis",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi David,</p>\n<p>This is regarding: FW: Vendor pricing information</p>\n\n<p>Thanks,<br/>\nCarol Davis</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Ec242c4603c52a7f398b8765e",
+      "threadId": "Td958309597d64d44",
+      "scenarioId": "custom-labeled",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "High priority client feedback",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true,
+          "$flagged": true,
+          "important": true,
+          "client-feedback": true
+        },
+        "messageId": [
+          "3821f7ec33bd9dcd190bbb30.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: High priority client feedback\n\nThanks,\nEve Martinez",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: High priority client feedback\n\nThanks,\nEve Martinez",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: High priority client feedback</p>\n\n<p>Thanks,<br/>\nEve Martinez</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E5ab9b666c829f7d9b801bd56",
+      "threadId": "T17013951477f2d64",
+      "scenarioId": "old-archive",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_ARCHIVE": true
+        },
+        "from": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          },
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "Archived project closure summary",
+        "sentAt": "2025-12-23T21:29:30.298Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "a6b16537f8173f303683d609.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice, Bob,\n\nThis is regarding: Archived project closure summary\n\nThanks,\nDavid Wilson",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice, Bob,\n\nThis is regarding: Archived project closure summary\n\nThanks,\nDavid Wilson",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob,</p>\n<p>This is regarding: Archived project closure summary</p>\n\n<p>Thanks,<br/>\nDavid Wilson</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Ec91d34629972f95197f9940c",
+      "threadId": "Tbf5fd80c10fb9a01",
+      "scenarioId": "empty-body",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Quick ping",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {},
+        "messageId": [
+          "29de9ae6ea7a8f65c59a91f3.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice,\n\nThis is regarding: Quick ping\n\nCheers,\nBob Jones",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: Quick ping\n\nCheers,\nBob Jones",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Quick ping</p>\n\n<p>Cheers,<br/>\nBob Jones</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Ede2eafedf5ca566b02fead40",
+      "threadId": "T858f919651ca6825",
+      "scenarioId": "long-subject",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "This is an extremely long email subject line that exceeds the typical display limits and tests how the system handles lengthy subject lines in various contexts including mobile views desktop clients and web interfaces when rendering email lists",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "0ba70b16011c00205b9def0f.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob,\n\nThis is regarding: This is an extremely long email subject line that exceeds the typical display limits and tests how the system handles lengthy subject lines in various contexts including mobile views desktop clients and web interfaces when rendering email lists\n\nThanks,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Bob,\n\nThis is regarding: This is an extremely long email subject line that exceeds the typical display limits and tests how the system handles lengthy subject lines in various contexts including mobile views desktop clients and web interfaces when rendering email lists\n\nThanks,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: This is an extremely long email subject line that exceeds the typical display limits and tests how the system handles lengthy subject lines in various contexts including mobile views desktop clients and web interfaces when rendering email lists</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E4e92c794c2e23e4dea7d8474",
+      "threadId": "Tbcf4b5ede64fbafb",
+      "scenarioId": "emoji-subject",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "🎉 Congratulations on the promotion! 🚀 You did amazing! 🌟",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true,
+          "$flagged": true
+        },
+        "messageId": [
+          "9ac7c55a65726c7c2e3ed976.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/html"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Congratulations on the promotion!</p>\n\n<p>Thanks,<br/>\nCarol Davis</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: Congratulations on the promotion!\n\nThanks,\nCarol Davis",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Congratulations on the promotion!</p>\n\n<p>Thanks,<br/>\nCarol Davis</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Ee2fc430bc0d5c6e611a56048",
+      "threadId": "Taccf232076dc4f0d",
+      "scenarioId": "many-recipients",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "David Wilson",
+            "email": "david@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          },
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          },
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "subject": "All-hands meeting reminder",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "af793a19b4fb9bdc6356279c.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Alice, Bob, Carol, Eve,\n\nThis is regarding: All-hands meeting reminder\n\nThanks,\nDavid Wilson",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob, Carol, Eve,</p>\n<p>This is regarding: All-hands meeting reminder</p>\n\n<p>Thanks,<br/>\nDavid Wilson</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        },
+        "cc": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          },
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          },
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          },
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "bcc": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ]
+      },
+      "rawContent": {
+        "text": "Hi Alice, Bob, Carol, Eve,\n\nThis is regarding: All-hands meeting reminder\n\nThanks,\nDavid Wilson",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice, Bob, Carol, Eve,</p>\n<p>This is regarding: All-hands meeting reminder</p>\n\n<p>Thanks,<br/>\nDavid Wilson</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "Ed34d2ea3a22e37753e4f4e64",
+      "threadId": "T637bfd9b533575e1",
+      "scenarioId": "tiny-email",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_INBOX": true
+        },
+        "from": [
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "OK",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "6b5b1f85e2d3290bd60f98fd.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Got it.",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Got it.",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: OK</p>\n\n<p>Cheers,<br/>\nEve Martinez</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E3cd79bbbb02bfb1c3414d85d",
+      "threadId": "T945008a49323a087",
+      "scenarioId": "sent-confirmation",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_SENT": true
+        },
+        "from": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "Order confirmation sent to vendor",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "137536fa2f7dca06b5b8007c.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/plain"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Hi Bob,\n\nThis is regarding: Order confirmation sent to vendor\n\nThanks,\nAlice Smith",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Bob,\n\nThis is regarding: Order confirmation sent to vendor\n\nThanks,\nAlice Smith",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: Order confirmation sent to vendor</p>\n\n<p>Thanks,<br/>\nAlice Smith</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E2bbe7959125a96c6a16e0f24",
+      "threadId": "Tf8324bf019c200fa",
+      "scenarioId": "trashed-spam",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_TRASH": true
+        },
+        "from": [
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Win a free vacation!!!",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {
+          "$seen": true
+        },
+        "messageId": [
+          "847a10552e5a2ee41f1f0e96.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/html"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Win a free vacation!!!</p>\n\n<p>Cheers,<br/>\nEve Martinez</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Alice,\n\nThis is regarding: Win a free vacation!!!\n\nCheers,\nEve Martinez",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Alice,</p>\n<p>This is regarding: Win a free vacation!!!</p>\n\n<p>Cheers,<br/>\nEve Martinez</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E57560fc4f82d2cc988965331",
+      "threadId": "Td17a764f1d859d5d",
+      "scenarioId": "junk-offer",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_JUNK": true
+        },
+        "from": [
+          {
+            "name": "Eve Martinez",
+            "email": "eve@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Bob Jones",
+            "email": "bob@test.local"
+          }
+        ],
+        "subject": "Limited time offer - Act now!",
+        "sentAt": "2026-01-22T08:29:30.298Z",
+        "keywords": {},
+        "messageId": [
+          "92ec07f503976dde18cbf2ca.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "partId": "1",
+          "type": "text/html"
+        },
+        "bodyValues": {
+          "1": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: Limited time offer - Act now!</p>\n\n<p>Cheers,<br/>\nEve Martinez</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        }
+      },
+      "rawContent": {
+        "text": "Hi Bob,\n\nThis is regarding: Limited time offer - Act now!\n\nCheers,\nEve Martinez",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Hi Bob,</p>\n<p>This is regarding: Limited time offer - Act now!</p>\n\n<p>Cheers,<br/>\nEve Martinez</p>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "E2f9e05a519f86a246743bab1",
+      "threadId": "T5e2e91fa774753f9",
+      "scenarioId": "archived-important",
+      "emailIndex": 0,
+      "create": {
+        "mailboxIds": {
+          "MAILBOX_ARCHIVE": true
+        },
+        "from": [
+          {
+            "name": "Carol Davis",
+            "email": "carol@test.local"
+          }
+        ],
+        "to": [
+          {
+            "name": "Alice Smith",
+            "email": "alice@test.local"
+          }
+        ],
+        "subject": "Completed contract signed copy",
+        "sentAt": "2025-12-23T21:29:30.298Z",
+        "keywords": {
+          "$seen": true,
+          "$flagged": true
+        },
+        "messageId": [
+          "469cf17204b16528e556fb6a.0@test.local"
+        ],
+        "inReplyTo": null,
+        "references": null,
+        "bodyStructure": {
+          "type": "multipart/alternative",
+          "subParts": [
+            {
+              "partId": "1",
+              "type": "text/plain"
+            },
+            {
+              "partId": "2",
+              "type": "text/html"
+            }
+          ]
+        },
+        "bodyValues": {
+          "1": {
+            "value": "Dear Alice,\n\nThis is regarding: Completed contract signed copy\n\nPlease find the attached file(s): signed-contract.pdf.\n\nBest regards,\nCarol Davis",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          },
+          "2": {
+            "value": "<!DOCTYPE html>\n<html>\n<body>\n<p>Dear Alice,</p>\n<p>This is regarding: Completed contract signed copy</p>\n<p>Please find the attached file(s): signed-contract.pdf.</p>\n<p>Best regards,<br/>\nCarol Davis</p>\n</body>\n</html>",
+            "isEncodingProblem": false,
+            "isTruncated": false
+          }
+        },
+        "attachments": [
+          {
+            "blobId": "Bd1a61d2d367f13450cb3e71bec353020",
+            "type": "application/pdf",
+            "name": "signed-contract.pdf",
+            "size": 307200,
+            "cid": null,
+            "disposition": "attachment",
+            "isInline": false
+          }
+        ]
+      },
+      "rawContent": {
+        "text": "Dear Alice,\n\nThis is regarding: Completed contract signed copy\n\nPlease find the attached file(s): signed-contract.pdf.\n\nBest regards,\nCarol Davis",
+        "html": "<!DOCTYPE html>\n<html>\n<body>\n<p>Dear Alice,</p>\n<p>This is regarding: Completed contract signed copy</p>\n<p>Please find the attached file(s): signed-contract.pdf.</p>\n<p>Best regards,<br/>\nCarol Davis</p>\n</body>\n</html>"
+      }
+    }
+  ],
+  "threads": {
+    "T3bb2f3b059bb2633": [
+      "E24fd2140f6cdd9d742450a66",
+      "E9c1ab0d5572ed95f12a1c873",
+      "E0b0e17366fcc4069d5d84ab1"
+    ],
+    "T73aeee5b8224902e": [
+      "E5799391c1b03717133574b89",
+      "E5734a7ac1777f891e5908df5",
+      "Edaa20b1aae59086c737d4d3c",
+      "E4e8afaec158a0b954fde3f23",
+      "E2b29d9e3d4a2d4fa8817c1ff"
+    ],
+    "Tc0d55a8963b85052": [
+      "Eeb055cb7a3ff55ff2d229f56",
+      "E80f1023fa39684945904b362",
+      "E10b27e06cc40fe501c93fe5e",
+      "E1bc874c1afb4cb96ac10d2e4",
+      "E8fe722687f6a79b398b72a30"
+    ],
+    "Tfbfc9821220342bb": [
+      "E491d90ee354692a7cc3a345d"
+    ],
+    "T91d0aebaf3c4e823": [
+      "E808265b090682ad6b2664974"
+    ],
+    "Ta50270f16af12386": [
+      "Ebfcebef35d643563c8dde2c9"
+    ],
+    "T628e535b0d00f3f6": [
+      "E34c6385e4b7aa18dbacc8159"
+    ],
+    "T2293a5b3f6d42bd3": [
+      "E10bb159e0aaeefd831320c4b"
+    ],
+    "Tc250e68a00da628c": [
+      "E8a256ab9ab183857fd7f0f82"
+    ],
+    "Tca98078c8126cd08": [
+      "E6ff5068ac78a088a205c5e27"
+    ],
+    "Tfe42325a13072d1a": [
+      "E953069c0e6ffe7eedcc75716"
+    ],
+    "T84c3c0658b6051fa": [
+      "E42e7e132afca4a0d2b242040"
+    ],
+    "T4c83c9790765dae2": [
+      "Ee70057eb0fa36ace6bc86d66"
+    ],
+    "T427e040987b52558": [
+      "E616a1e5e869e6c6acb6c3b8b"
+    ],
+    "Td958309597d64d44": [
+      "Ec242c4603c52a7f398b8765e"
+    ],
+    "T17013951477f2d64": [
+      "E5ab9b666c829f7d9b801bd56"
+    ],
+    "Tbf5fd80c10fb9a01": [
+      "Ec91d34629972f95197f9940c"
+    ],
+    "T858f919651ca6825": [
+      "Ede2eafedf5ca566b02fead40"
+    ],
+    "Tbcf4b5ede64fbafb": [
+      "E4e92c794c2e23e4dea7d8474"
+    ],
+    "Taccf232076dc4f0d": [
+      "Ee2fc430bc0d5c6e611a56048"
+    ],
+    "T637bfd9b533575e1": [
+      "Ed34d2ea3a22e37753e4f4e64"
+    ],
+    "T945008a49323a087": [
+      "E3cd79bbbb02bfb1c3414d85d"
+    ],
+    "Tf8324bf019c200fa": [
+      "E2bbe7959125a96c6a16e0f24"
+    ],
+    "Td17a764f1d859d5d": [
+      "E57560fc4f82d2cc988965331"
+    ],
+    "T5e2e91fa774753f9": [
+      "E2f9e05a519f86a246743bab1"
+    ]
+  },
+  "mailboxes": [
+    "sent",
+    "inbox",
+    "drafts",
+    "archive",
+    "trash",
+    "junk"
+  ],
+  "personas": [
+    {
+      "key": "alice",
+      "email": "alice@test.local",
+      "name": "Alice Smith"
+    },
+    {
+      "key": "bob",
+      "email": "bob@test.local",
+      "name": "Bob Jones"
+    },
+    {
+      "key": "carol",
+      "email": "carol@test.local",
+      "name": "Carol Davis"
+    },
+    {
+      "key": "david",
+      "email": "david@test.local",
+      "name": "David Wilson"
+    },
+    {
+      "key": "eve",
+      "email": "eve@test.local",
+      "name": "Eve Martinez"
+    }
+  ]
+}
