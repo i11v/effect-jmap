@@ -1,0 +1,419 @@
+# Test Email Scenarios for JMAP RFC 8621 Functional Testing
+#
+# This file defines declarative email scenarios that the generator
+# transforms into realistic test data using AI content generation.
+
+personas:
+  alice:
+    email: alice@test.local
+    name: Alice Smith
+  bob:
+    email: bob@test.local
+    name: Bob Jones
+  carol:
+    email: carol@test.local
+    name: Carol Davis
+  david:
+    email: david@test.local
+    name: David Wilson
+  eve:
+    email: eve@test.local
+    name: Eve Martinez
+
+scenarios:
+  # ============================================================
+  # THREADING SCENARIOS
+  # ============================================================
+
+  # Simple 3-email reply chain
+  - id: project-discussion
+    type: thread
+    topic: "Q1 project planning and budget allocation"
+    tone: professional
+    participants: [alice, bob, carol]
+    emails:
+      - from: alice
+        to: [bob, carol]
+        mailbox: sent
+        keywords: [$seen]
+      - from: bob
+        reply_to: 0
+        mailbox: inbox
+        keywords: [$seen, $flagged]
+      - from: carol
+        reply_to: 1
+        mailbox: inbox
+        keywords: []  # unread
+
+  # Longer 5-email conversation
+  - id: feature-request
+    type: thread
+    topic: "New dashboard feature request for analytics module"
+    tone: professional
+    participants: [bob, alice, david]
+    emails:
+      - from: bob
+        to: [alice]
+        cc: [david]
+        mailbox: inbox
+        keywords: [$seen]
+      - from: alice
+        reply_to: 0
+        mailbox: sent
+        keywords: [$seen, $answered]
+      - from: bob
+        reply_to: 1
+        mailbox: inbox
+        keywords: [$seen]
+      - from: david
+        reply_to: 2
+        mailbox: inbox
+        keywords: [$seen]
+      - from: alice
+        reply_to: 3
+        mailbox: sent
+        keywords: [$seen]
+
+  # Branching conversation (fork from email 1)
+  - id: meeting-scheduling
+    type: thread
+    topic: "Team meeting scheduling for next week"
+    tone: casual
+    participants: [carol, alice, bob, david]
+    emails:
+      - from: carol
+        to: [alice, bob, david]
+        mailbox: inbox
+        keywords: [$seen]
+      - from: alice
+        reply_to: 0
+        mailbox: sent
+        keywords: [$seen]
+      - from: bob
+        reply_to: 0  # Replies to original, not Alice's reply
+        mailbox: inbox
+        keywords: [$seen]
+      - from: david
+        reply_to: 0  # Also replies to original
+        mailbox: inbox
+        keywords: []
+      - from: carol
+        reply_to: 1
+        mailbox: sent
+        keywords: [$seen]
+
+  # ============================================================
+  # SINGLE EMAIL SCENARIOS - Various content types
+  # ============================================================
+
+  # Plain text email
+  - id: plain-text-welcome
+    type: single
+    topic: "Welcome to the team introduction"
+    tone: friendly
+    from: alice
+    to: [bob]
+    mailbox: inbox
+    keywords: [$seen]
+    body_type: text/plain
+
+  # HTML-only email
+  - id: html-newsletter
+    type: single
+    topic: "Monthly company newsletter with updates"
+    tone: professional
+    from: carol
+    to: [alice, bob, david]
+    mailbox: inbox
+    keywords: []
+    body_type: text/html
+
+  # Multipart alternative (text + HTML)
+  - id: multipart-announcement
+    type: single
+    topic: "Important policy update announcement"
+    tone: formal
+    from: david
+    to: [alice, bob, carol, eve]
+    mailbox: inbox
+    keywords: [$flagged]
+    body_type: multipart/alternative
+
+  # ============================================================
+  # ATTACHMENT SCENARIOS
+  # ============================================================
+
+  # PDF attachment
+  - id: quarterly-report
+    type: single
+    topic: "Q4 financial report with detailed analysis"
+    tone: professional
+    from: bob
+    to: [alice]
+    mailbox: inbox
+    keywords: [$seen]
+    body_type: multipart/mixed
+    attachments:
+      - type: application/pdf
+        name: Q4-Financial-Report.pdf
+        size: 500KB
+
+  # Multiple attachments
+  - id: project-files
+    type: single
+    topic: "Project documentation and resource files"
+    tone: professional
+    from: alice
+    to: [bob, carol]
+    mailbox: sent
+    keywords: [$seen]
+    body_type: multipart/mixed
+    attachments:
+      - type: application/pdf
+        name: project-spec.pdf
+        size: 250KB
+      - type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        name: budget.xlsx
+        size: 100KB
+      - type: image/png
+        name: architecture-diagram.png
+        size: 150KB
+
+  # Large attachment (>1MB for size filtering tests)
+  - id: photo-album
+    type: single
+    topic: "Team event photos from the annual retreat"
+    tone: casual
+    from: carol
+    to: [alice, bob, david, eve]
+    mailbox: inbox
+    keywords: []
+    body_type: multipart/mixed
+    attachments:
+      - type: image/jpeg
+        name: team-photo-1.jpg
+        size: 2MB
+      - type: image/jpeg
+        name: team-photo-2.jpg
+        size: 1.5MB
+
+  # Many attachments (5+)
+  - id: design-assets
+    type: single
+    topic: "Design assets for the new marketing campaign"
+    tone: professional
+    from: eve
+    to: [alice]
+    mailbox: inbox
+    keywords: [$seen, $flagged]
+    body_type: multipart/mixed
+    attachments:
+      - type: image/png
+        name: logo-variant-1.png
+        size: 200KB
+      - type: image/png
+        name: logo-variant-2.png
+        size: 180KB
+      - type: image/png
+        name: banner-design.png
+        size: 350KB
+      - type: application/pdf
+        name: brand-guidelines.pdf
+        size: 400KB
+      - type: image/svg+xml
+        name: icon-set.svg
+        size: 50KB
+      - type: application/zip
+        name: source-files.zip
+        size: 800KB
+
+  # Inline images
+  - id: inline-images-demo
+    type: single
+    topic: "Product screenshots for documentation"
+    tone: professional
+    from: david
+    to: [bob]
+    mailbox: inbox
+    keywords: [$seen]
+    body_type: text/html
+    inline_images: 3
+
+  # ============================================================
+  # KEYWORD/FLAG SCENARIOS
+  # ============================================================
+
+  # Draft email
+  - id: unsent-draft
+    type: single
+    topic: "Meeting agenda draft for board review"
+    tone: formal
+    from: alice
+    to: [bob, carol]
+    mailbox: drafts
+    keywords: [$draft]
+    body_type: text/plain
+
+  # Flagged and answered
+  - id: flagged-answered
+    type: single
+    topic: "Urgent contract review needed"
+    tone: urgent
+    from: bob
+    to: [alice]
+    mailbox: inbox
+    keywords: [$seen, $flagged, $answered]
+    body_type: text/plain
+
+  # Forwarded email
+  - id: forwarded-info
+    type: single
+    topic: "FW: Vendor pricing information"
+    tone: professional
+    from: carol
+    to: [david]
+    mailbox: sent
+    keywords: [$seen, $forwarded]
+    body_type: multipart/alternative
+
+  # Custom keyword (label)
+  - id: custom-labeled
+    type: single
+    topic: "High priority client feedback"
+    tone: professional
+    from: eve
+    to: [alice]
+    mailbox: inbox
+    keywords: [$seen, $flagged, important, client-feedback]
+    body_type: text/plain
+
+  # ============================================================
+  # DATE/SEARCH SCENARIOS
+  # ============================================================
+
+  # Old email (will be set to 30+ days ago)
+  - id: old-archive
+    type: single
+    topic: "Archived project closure summary"
+    tone: professional
+    from: david
+    to: [alice, bob]
+    mailbox: archive
+    keywords: [$seen]
+    body_type: text/plain
+
+  # ============================================================
+  # EDGE CASE SCENARIOS
+  # ============================================================
+
+  # Empty body
+  - id: empty-body
+    type: single
+    topic: "Quick ping"
+    tone: casual
+    from: bob
+    to: [alice]
+    mailbox: inbox
+    keywords: []
+    body_type: text/plain
+    empty_body: true
+
+  # Very long subject (>200 chars)
+  - id: long-subject
+    type: single
+    topic: "This is an extremely long email subject line that exceeds the typical display limits and tests how the system handles lengthy subject lines in various contexts including mobile views desktop clients and web interfaces when rendering email lists"
+    tone: professional
+    from: alice
+    to: [bob]
+    mailbox: inbox
+    keywords: [$seen]
+    body_type: text/plain
+
+  # Unicode/emoji in subject
+  - id: emoji-subject
+    type: single
+    topic: "Congratulations on the promotion!"
+    subject_override: "🎉 Congratulations on the promotion! 🚀 You did amazing! 🌟"
+    tone: friendly
+    from: carol
+    to: [alice]
+    mailbox: inbox
+    keywords: [$seen, $flagged]
+    body_type: text/html
+
+  # Many recipients (10+ To/Cc)
+  - id: many-recipients
+    type: single
+    topic: "All-hands meeting reminder"
+    tone: professional
+    from: david
+    to: [alice, bob, carol, eve]
+    cc: [alice, bob, carol, eve]
+    bcc: [alice]
+    mailbox: sent
+    keywords: [$seen]
+    body_type: multipart/alternative
+
+  # Tiny email (<1KB)
+  - id: tiny-email
+    type: single
+    topic: "OK"
+    body_override: "Got it."
+    tone: casual
+    from: eve
+    to: [bob]
+    mailbox: inbox
+    keywords: [$seen]
+    body_type: text/plain
+
+  # ============================================================
+  # MAILBOX VARIETY
+  # ============================================================
+
+  # Sent mail
+  - id: sent-confirmation
+    type: single
+    topic: "Order confirmation sent to vendor"
+    tone: professional
+    from: alice
+    to: [bob]
+    mailbox: sent
+    keywords: [$seen]
+    body_type: text/plain
+
+  # Trash
+  - id: trashed-spam
+    type: single
+    topic: "Win a free vacation!!!"
+    tone: casual
+    from: eve
+    to: [alice]
+    mailbox: trash
+    keywords: [$seen]
+    body_type: text/html
+
+  # Junk/Spam
+  - id: junk-offer
+    type: single
+    topic: "Limited time offer - Act now!"
+    tone: casual
+    from: eve
+    to: [bob]
+    mailbox: junk
+    keywords: []
+    body_type: text/html
+
+  # Archive
+  - id: archived-important
+    type: single
+    topic: "Completed contract signed copy"
+    tone: formal
+    from: carol
+    to: [alice]
+    mailbox: archive
+    keywords: [$seen, $flagged]
+    body_type: multipart/mixed
+    attachments:
+      - type: application/pdf
+        name: signed-contract.pdf
+        size: 300KB
