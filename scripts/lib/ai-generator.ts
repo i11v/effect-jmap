@@ -11,15 +11,6 @@ import { anthropic } from "@ai-sdk/anthropic"
 import type { ResolvedPersona } from "./scenario-parser.js"
 
 /**
- * Generated email content
- */
-export interface GeneratedContent {
-  subject: string
-  textBody: string
-  htmlBody: string
-}
-
-/**
  * Schema for parsing AI response
  */
 const GeneratedContentSchema = Schema.Struct({
@@ -27,6 +18,11 @@ const GeneratedContentSchema = Schema.Struct({
   textBody: Schema.String,
   htmlBody: Schema.String,
 })
+
+/**
+ * Generated email content
+ */
+export type GeneratedContent = Schema.Schema.Type<typeof GeneratedContentSchema>
 
 /**
  * Email generation parameters
