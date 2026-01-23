@@ -134,6 +134,8 @@ jobs:
     name: Spec Coverage
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -158,9 +160,9 @@ jobs:
         id: coverage
         run: |
           {
-            echo 'report<<EOF'
+            echo 'report<<COVERAGE_EOF'
             pnpm coverage:spec --by-type
-            echo 'EOF'
+            echo 'COVERAGE_EOF'
           } >> "$GITHUB_OUTPUT"
 
       - name: Post coverage comment

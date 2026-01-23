@@ -20,10 +20,16 @@ ${report}
 \`\`\`
 `;
 
+  const prNumber = context.payload.pull_request?.number;
+  if (!prNumber) {
+    console.log('Not a pull request context, skipping comment');
+    return;
+  }
+
   await github.rest.issues.createComment({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    issue_number: context.issue.number,
+    issue_number: prNumber,
     body
   });
 
