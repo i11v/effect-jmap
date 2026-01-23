@@ -171,5 +171,5 @@ jobs:
           COVERAGE_REPORT: ${{ steps.coverage.outputs.report }}
         with:
           script: |
-            const script = require('./.github/scripts/post-coverage.js')
+            const script = require('./.github/scripts/post-coverage.cjs')
             await script({ github, context })
