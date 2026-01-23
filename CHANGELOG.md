@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/i11v/effect-jmap/compare/v0.5.0...v0.6.0) (2026-01-23)
+
+
+### Features
+
+* Add spec-based test coverage with capability tracking ([#12](https://github.com/i11v/effect-jmap/issues/12)) ([fe5641a](https://github.com/i11v/effect-jmap/commit/fe5641af56ed384352a343af2200e99ed4c6a9e1))
+
 # [0.5.0](https://github.com/i11v/effect-jmap/compare/v0.4.3...v0.5.0) (2026-01-22)
 
 
