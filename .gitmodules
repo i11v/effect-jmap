@@ -1,0 +1,3 @@
+[submodule "jmap-spec"]
+	path = jmap-spec
+	url = git@github.com:i11v/jmap-spec.git
