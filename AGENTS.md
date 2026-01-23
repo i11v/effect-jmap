@@ -24,3 +24,16 @@ A TypeScript library implementing RFC 8621 JMAP for Mail using Effect-TS.
 
 - **Sentence-case** subjects: `fix: Correct the return type` (not `fix: correct...`)
 - No "Generated with" banners or co-author attributions
+
+## Implementing JMAP Methods
+
+Before implementing any JMAP method:
+
+1. **Check `tests/config/capabilities.ts`** - See if the method is already marked as implemented
+2. **Search spec tests** - Run `grep -r "methodName" tests/spec/` to see existing coverage
+3. **Understand the testing structure**:
+   - `tests/spec/` - Auto-generated RFC compliance tests (run via capability flags)
+   - `tests/unit/` - Service implementation tests with mocks
+   - `tests/functional/` - Integration tests against real Stalwart server
+
+JMAP operations like `create`, `update`, `destroy` are parameters of `/set` methods, not separate methods. Check if the parent method (e.g., `Email/set`) is already implemented before adding new functionality.
