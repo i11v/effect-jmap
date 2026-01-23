@@ -21,6 +21,7 @@ import {
 interface CliArgs {
   json: boolean
   byType: boolean
+  markdown: boolean
   help: boolean
 }
 
@@ -29,6 +30,7 @@ function parseArgs(): CliArgs {
   return {
     json: args.includes('--json'),
     byType: args.includes('--by-type'),
+    markdown: args.includes('--markdown'),
     help: args.includes('--help') || args.includes('-h')
   }
 }
@@ -45,12 +47,14 @@ Usage:
 Options:
   --json      Output as JSON
   --by-type   Group coverage by object type
+  --markdown  Output as GitHub-flavored markdown table
   --help, -h  Show this help message
 
 Examples:
   pnpm coverage:spec           # Show coverage table
   pnpm coverage:spec --by-type # Show coverage grouped by type
   pnpm coverage:spec --json    # Output as JSON for CI/scripts
+  pnpm coverage:spec --markdown # Output markdown for PR comments
 `)
 }
 
@@ -145,6 +149,31 @@ function printJson() {
   console.log(JSON.stringify(result, null, 2))
 }
 
+function printMarkdown() {
+  const byType = getCompletenessByType()
+  const completeness = getCompleteness()
+
+  // Header with overall progress
+  console.log(`**Overall: ${completeness.implemented}/${completeness.total} methods (${completeness.percentage.toFixed(1)}%)**`)
+  console.log('')
+
+  // Table for each object type
+  for (const [type, data] of Object.entries(byType).sort((a, b) => a[0].localeCompare(b[0]))) {
+    console.log(`### ${type} (${data.implemented}/${data.total})`)
+    console.log('')
+    console.log('| Method | Status |')
+    console.log('|--------|--------|')
+
+    for (const method of data.methods) {
+      const name = method.name.split('/')[1]
+      const status = method.implemented ? '✅' : '⬚'
+      console.log(`| ${name} | ${status} |`)
+    }
+
+    console.log('')
+  }
+}
+
 function main() {
   const args = parseArgs()
 
@@ -155,6 +184,11 @@ function main() {
 
   if (args.json) {
     printJson()
+    return
+  }
+
+  if (args.markdown) {
+    printMarkdown()
     return
   }
 
