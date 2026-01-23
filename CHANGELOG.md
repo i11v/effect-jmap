@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/i11v/effect-jmap/compare/v0.6.0...v0.7.0) (2026-01-23)
+
+
+### Features
+
+* Add spec coverage reporting to PRs ([#13](https://github.com/i11v/effect-jmap/issues/13)) ([34ac9eb](https://github.com/i11v/effect-jmap/commit/34ac9ebd08c696b95b7a174eee7e248dfa93a3e9))
+
 # [0.6.0](https://github.com/i11v/effect-jmap/compare/v0.5.0...v0.6.0) (2026-01-23)
 
 
