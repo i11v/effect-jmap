@@ -163,6 +163,33 @@ describe('Email Service', () => {
     })
   })
 
+  describe('destroy method', () => {
+    it('should permanently destroy emails', () => {
+      const result = runTest(
+        Effect.gen(function* () {
+          const service = yield* EmailService
+          return yield* service.destroy(
+            'test-account',
+            [Common.createId('email1'), Common.createId('email2')]
+          )
+        })
+      )
+
+      expect(result).toEqual([Common.createId('email1'), Common.createId('email2')])
+    })
+
+    it('should return empty array when no emails to destroy', () => {
+      const result = runTest(
+        Effect.gen(function* () {
+          const service = yield* EmailService
+          return yield* service.destroy('test-account', [])
+        })
+      )
+
+      expect(result).toEqual([])
+    })
+  })
+
   describe('query method', () => {
     it('should query emails with filters', () => {
       const result = runTest(
@@ -489,5 +516,15 @@ describe('EmailOperations', () => {
       )
     )
     expect(result).toBeDefined()
+  })
+
+  it('should permanently destroy emails', () => {
+    const result = runTest(
+      EmailOperations.destroyEmails(
+        'test-account',
+        [Common.createId('email1'), Common.createId('email2')]
+      )
+    )
+    expect(result).toEqual([Common.createId('email1'), Common.createId('email2')])
   })
 })

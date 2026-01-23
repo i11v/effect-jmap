@@ -232,6 +232,19 @@ export interface EmailServiceInterface {
       JMAPMethodError | NetworkError | AuthenticationError | SessionError,
       JMAPClientService | HttpClient.HttpClient | IdGenerator
     >;
+
+    /**
+     * Permanently destroy/delete emails
+     * This removes emails from the server entirely (not recoverable)
+     */
+    readonly destroy: (
+      accountId: string,
+      emailIds: Id[],
+    ) => Effect.Effect<
+      readonly Id[],
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
 }
 
 /**
@@ -619,6 +632,31 @@ const makeEmailServiceLive = (): EmailServiceInterface => {
       return emails[0] || null;
     });
 
+  /**
+   * Permanently destroy/delete emails
+   */
+  const destroy: EmailServiceInterface["destroy"] = (accountId, emailIds) =>
+    Effect.gen(function* () {
+      const result = yield* set({
+        accountId,
+        destroy: emailIds,
+      });
+
+      // Check for errors
+      const notDestroyed = result.notDestroyed;
+      if (notDestroyed) {
+        const errorIds = Object.keys(notDestroyed);
+        if (errorIds.length > 0) {
+          const firstError = notDestroyed[errorIds[0] as Id];
+          yield* Effect.fail(
+            JMAPMethodError.fromMethodError(firstError, `destroy-${errorIds[0]}`),
+          );
+        }
+      }
+
+      return result.destroyed || [];
+    });
+
   return {
     get,
     set,
@@ -635,6 +673,7 @@ const makeEmailServiceLive = (): EmailServiceInterface => {
     updateKeywords,
     getWithContent,
     getEmailContent,
+    destroy,
   };
 };
 
@@ -852,5 +891,15 @@ export const EmailOperations = {
       }
 
       return updatedEmails;
+    }),
+
+  /**
+   * Permanently destroy emails (not recoverable)
+   * Unlike deleteEmails which moves to trash, this permanently removes emails from the server.
+   */
+  destroyEmails: (accountId: string, emailIds: Id[]) =>
+    Effect.gen(function* () {
+      const service = yield* EmailService;
+      return yield* service.destroy(accountId, emailIds);
     }),
 };
