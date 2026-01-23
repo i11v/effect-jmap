@@ -157,21 +157,20 @@ function printMarkdown() {
   console.log(`**Overall: ${completeness.implemented}/${completeness.total} methods (${completeness.percentage.toFixed(1)}%)**`)
   console.log('')
 
-  // Table header
-  console.log('| Object Type | Coverage | Methods |')
-  console.log('|-------------|----------|---------|')
-
-  // Table rows by type
+  // Table for each object type
   for (const [type, data] of Object.entries(byType).sort((a, b) => a[0].localeCompare(b[0]))) {
-    const methodList = data.methods
-      .map(m => {
-        const name = m.name.split('/')[1]
-        return m.implemented ? `✅ ${name}` : `⬚ ${name}`
-      })
-      .join(', ')
+    console.log(`### ${type} (${data.implemented}/${data.total})`)
+    console.log('')
+    console.log('| Method | Status |')
+    console.log('|--------|--------|')
 
-    const coverage = `${data.implemented}/${data.total} (${data.percentage.toFixed(0)}%)`
-    console.log(`| ${type} | ${coverage} | ${methodList} |`)
+    for (const method of data.methods) {
+      const name = method.name.split('/')[1]
+      const status = method.implemented ? '✅' : '⬚'
+      console.log(`| ${name} | ${status} |`)
+    }
+
+    console.log('')
   }
 }
 
