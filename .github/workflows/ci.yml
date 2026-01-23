@@ -161,7 +161,7 @@ jobs:
         run: |
           {
             echo 'report<<COVERAGE_EOF'
-            pnpm coverage:spec --by-type
+            pnpm coverage:spec --markdown
             echo 'COVERAGE_EOF'
           } >> "$GITHUB_OUTPUT"
 

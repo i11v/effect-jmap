@@ -15,9 +15,7 @@ module.exports = async ({ github, context }) => {
 
   const body = `## JMAP Spec Coverage
 
-\`\`\`
 ${report}
-\`\`\`
 `;
 
   const prNumber = context.payload.pull_request?.number;
