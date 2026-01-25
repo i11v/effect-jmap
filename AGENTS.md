@@ -20,11 +20,18 @@ A TypeScript library implementing RFC 8621 JMAP for Mail using Effect-TS.
 - ES modules with `.js` extensions in imports (for Node ESM compatibility)
 - Errors use `Data.TaggedError` pattern
 
+## Git Workflow
+
+- **Never push directly to main** - Always use feature branches and pull requests
+- Create a branch for your changes: `git checkout -b feature/description`
+- Push the branch and create a PR via `gh pr create`
+- Wait for CI checks and review before merging
+
 ## Commit Messages
 
 - **Sentence-case** subjects: `fix: Correct the return type` (not `fix: correct...`)
 - No "Generated with" banners or co-author attributions
 
-## Implementing New JMAP Methods
+## Implementing JMAP Methods
 
 See [docs/implementing-spec-features.md](docs/implementing-spec-features.md) for the workflow.
