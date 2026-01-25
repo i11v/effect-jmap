@@ -24,3 +24,7 @@ A TypeScript library implementing RFC 8621 JMAP for Mail using Effect-TS.
 
 - **Sentence-case** subjects: `fix: Correct the return type` (not `fix: correct...`)
 - No "Generated with" banners or co-author attributions
+
+## Implementing New JMAP Methods
+
+See [docs/implementing-spec-features.md](docs/implementing-spec-features.md) for the workflow.
