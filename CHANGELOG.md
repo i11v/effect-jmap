@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/i11v/effect-jmap/compare/v0.7.0...v0.8.0) (2026-01-25)
+
+
+### Features
+
+* Add email destruction support via Email/set destroy ([0b9fba0](https://github.com/i11v/effect-jmap/commit/0b9fba0e27d8b9931620b7a457c177b67fbee683))
+
 # [0.7.0](https://github.com/i11v/effect-jmap/compare/v0.6.0...v0.7.0) (2026-01-23)
 
 
