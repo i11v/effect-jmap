@@ -464,6 +464,121 @@ export const EmailImportResponse = Schema.Struct({
 export type EmailImportResponse = Schema.Schema.Type<typeof EmailImportResponse>
 
 /**
+ * Arguments for Email/changes method
+ * Per RFC 8621 Section 4.6: Standard /changes method for tracking email state changes
+ */
+export const EmailChangesArguments = Schema.Struct({
+  accountId: Schema.String,
+  sinceState: Schema.String,
+  maxChanges: Schema.optional(UnsignedInt)
+})
+
+export type EmailChangesArguments = Schema.Schema.Type<typeof EmailChangesArguments>
+
+/**
+ * Response for Email/changes method
+ * Per RFC 8621: Returns lists of created, updated, and destroyed email IDs
+ */
+export const EmailChangesResponse = Schema.Struct({
+  accountId: Schema.String,
+  oldState: Schema.String,
+  newState: Schema.String,
+  hasMoreChanges: Schema.Boolean,
+  created: Schema.Array(Id),
+  updated: Schema.Array(Id),
+  destroyed: Schema.Array(Id)
+})
+
+export type EmailChangesResponse = Schema.Schema.Type<typeof EmailChangesResponse>
+
+/**
+ * Arguments for Email/parse method
+ * Per RFC 8621 Section 4.8: Parse blob data as RFC 5322 messages
+ */
+export const EmailParseArguments = Schema.Struct({
+  accountId: Schema.String,
+  blobIds: Schema.Array(Schema.String),
+  properties: Schema.optional(Schema.Array(Schema.String)),
+  bodyProperties: Schema.optional(Schema.Array(Schema.String)),
+  fetchTextBodyValues: Schema.optional(Schema.Boolean),
+  fetchHTMLBodyValues: Schema.optional(Schema.Boolean),
+  fetchAllBodyValues: Schema.optional(Schema.Boolean),
+  maxBodyValueBytes: Schema.optional(UnsignedInt)
+})
+
+export type EmailParseArguments = Schema.Schema.Type<typeof EmailParseArguments>
+
+/**
+ * Parsed email object returned by Email/parse
+ * This is similar to Email but with some differences:
+ * - id is the blobId that was parsed (not a real email ID)
+ * - Some server-computed fields may be missing
+ * Per RFC 8621: All nullable fields follow the same pattern as Email
+ */
+export const ParsedEmail = Schema.Struct({
+  // The blobId that was parsed
+  blobId: Schema.optional(Schema.String),
+  // Size of the raw message
+  size: Schema.optional(UnsignedInt),
+  // Headers
+  headers: Schema.optional(Schema.Array(EmailHeader)),
+  // Message-ID header
+  messageId: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  // In-Reply-To header
+  inReplyTo: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  // References header
+  references: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  // Sender header
+  sender: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  // From header
+  from: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  // To header
+  to: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  // Cc header
+  cc: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  // Bcc header
+  bcc: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  // Reply-To header
+  replyTo: Schema.optional(Schema.NullOr(Schema.Array(EmailAddress))),
+  // Subject header
+  subject: Schema.optional(Schema.NullOr(Schema.String)),
+  // Date header parsed as date
+  sentAt: Schema.optional(Schema.NullOr(JMAPDate)),
+  // Body structure
+  bodyStructure: Schema.optional(EmailBodyPart),
+  // Text body parts
+  textBody: Schema.optional(Schema.Array(EmailBodyPart)),
+  // HTML body parts
+  htmlBody: Schema.optional(Schema.Array(EmailBodyPart)),
+  // Attachments
+  attachments: Schema.optional(Schema.Array(EmailAttachment)),
+  // Has attachment flag
+  hasAttachment: Schema.optional(Schema.Boolean),
+  // Preview text
+  preview: Schema.optional(Schema.String),
+  // Body values (content)
+  bodyValues: Schema.optional(EmailBodyValues)
+})
+
+export type ParsedEmail = Schema.Schema.Type<typeof ParsedEmail>
+
+/**
+ * Response for Email/parse method
+ * Per RFC 8621: Returns parsed email objects keyed by blob ID
+ */
+export const EmailParseResponse = Schema.Struct({
+  accountId: Schema.String,
+  parsed: Schema.optional(Schema.NullOr(Schema.Record({
+    key: Schema.String,
+    value: ParsedEmail
+  }))),
+  notParsable: Schema.optional(Schema.NullOr(Schema.Array(Schema.String))),
+  notFound: Schema.optional(Schema.NullOr(Schema.Array(Schema.String)))
+})
+
+export type EmailParseResponse = Schema.Schema.Type<typeof EmailParseResponse>
+
+/**
  * Standard email properties for convenience
  */
 export const StandardProperties = {
