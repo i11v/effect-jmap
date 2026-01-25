@@ -2,6 +2,12 @@
 
 How to implement a new JMAP method (e.g., `Thread/get`).
 
+## Before You Start
+
+1. **Check `tests/config/capabilities.ts`** - The method may already be implemented
+2. **Search `tests/spec/`** - Run `grep -r "methodName" tests/spec/` to see existing coverage
+3. **Understand `/set` operations** - `create`, `update`, `destroy` are parameters of `/set` methods, not separate methods. If `Email/set` is implemented, destroy is already available.
+
 ## Steps
 
 ### 1. Enable the capability
