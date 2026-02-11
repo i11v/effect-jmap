@@ -292,10 +292,7 @@ const buildClient = async (
 
   // Fetch session upfront — validates credentials and discovers account ID
   const session = await run(
-    Effect.gen(function* () {
-      const client = yield* JMAPClientService
-      return yield* client.getSession
-    }),
+    Effect.flatMap(JMAPClientService, client => client.getSession),
   )
 
   const accountId =
@@ -308,203 +305,90 @@ const buildClient = async (
 
   // Low-level batch
   const batch = (methodCalls: ReadonlyArray<Invocation>, using?: ReadonlyArray<string>): Promise<Response> =>
-    run(
-      Effect.gen(function* () {
-        const client = yield* JMAPClientService
-        return yield* client.batch(methodCalls, using)
-      }),
-    )
+    run(Effect.flatMap(JMAPClientService, client => client.batch(methodCalls, using)))
 
   // --- Mailbox namespace ---
   const mailbox: MailboxNamespace = {
     get: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.get(args)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.get(args))),
     set: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.set(args)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.set(args))),
     query: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.query(args)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.query(args))),
     queryChanges: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.queryChanges(args)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.queryChanges(args))),
     getAll: (acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.getAll(acct ?? accountId)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.getAll(acct ?? accountId))),
     findByRole: (role, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.findByRole(acct ?? accountId, role)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.findByRole(acct ?? accountId, role))),
     getHierarchy: (parentId?, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.getHierarchy(acct ?? accountId, parentId)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.getHierarchy(acct ?? accountId, parentId))),
     create: (mailboxData, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.create(acct ?? accountId, mailboxData)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.create(acct ?? accountId, mailboxData))),
     update: (mailboxId, updates, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.update(acct ?? accountId, mailboxId, updates)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.update(acct ?? accountId, mailboxId, updates))),
     destroy: (mailboxIds, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* MailboxService
-        return yield* svc.destroy(acct ?? accountId, mailboxIds)
-      })),
+      run(Effect.flatMap(MailboxService, svc => svc.destroy(acct ?? accountId, mailboxIds))),
   }
 
   // --- Email namespace ---
   const email: EmailNamespace = {
     get: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.get(args)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.get(args))),
     set: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.set(args)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.set(args))),
     query: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.query(args)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.query(args))),
     queryChanges: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.queryChanges(args)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.queryChanges(args))),
     copy: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.copy(args)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.copy(args))),
     import: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.import(args)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.import(args))),
     getByMailbox: (mailboxId, options?, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.getByMailbox(acct ?? accountId, mailboxId, options)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.getByMailbox(acct ?? accountId, mailboxId, options))),
     search: (searchQuery, options?, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.search(acct ?? accountId, searchQuery, options)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.search(acct ?? accountId, searchQuery, options))),
     getUnread: (mailboxId?, limit?, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.getUnread(acct ?? accountId, mailboxId, limit)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.getUnread(acct ?? accountId, mailboxId, limit))),
     markRead: (emailIds, read, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.markRead(acct ?? accountId, emailIds, read)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.markRead(acct ?? accountId, emailIds, read))),
     flag: (emailIds, flagged, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.flag(acct ?? accountId, emailIds, flagged)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.flag(acct ?? accountId, emailIds, flagged))),
     move: (emailIds, fromMailboxId, toMailboxId, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.move(acct ?? accountId, emailIds, fromMailboxId, toMailboxId)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.move(acct ?? accountId, emailIds, fromMailboxId, toMailboxId))),
     updateKeywords: (emailIds, keywordsToAdd, keywordsToRemove, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.updateKeywords(acct ?? accountId, emailIds, keywordsToAdd, keywordsToRemove)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.updateKeywords(acct ?? accountId, emailIds, keywordsToAdd, keywordsToRemove))),
     getWithContent: (emailIds, maxBodyValueBytes?, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.getWithContent(acct ?? accountId, emailIds, maxBodyValueBytes)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.getWithContent(acct ?? accountId, emailIds, maxBodyValueBytes))),
     getEmailContent: (emailId, maxBodyValueBytes?, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.getEmailContent(acct ?? accountId, emailId, maxBodyValueBytes)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.getEmailContent(acct ?? accountId, emailId, maxBodyValueBytes))),
     destroy: (emailIds, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailService
-        return yield* svc.destroy(acct ?? accountId, emailIds)
-      })),
+      run(Effect.flatMap(EmailService, svc => svc.destroy(acct ?? accountId, emailIds))),
   }
 
   // --- Submission namespace ---
   const submission: SubmissionNamespace = {
     get: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.get(args)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.get(args))),
     set: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.set(args)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.set(args))),
     query: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.query(args)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.query(args))),
     queryChanges: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.queryChanges(args)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.queryChanges(args))),
     changes: (args) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.changes(args)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.changes(args))),
     send: (identityId, emailId, options?, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.send(acct ?? accountId, identityId, emailId, options)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.send(acct ?? accountId, identityId, emailId, options))),
     getDeliveryStatus: (submissionId, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.getDeliveryStatus(acct ?? accountId, submissionId)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.getDeliveryStatus(acct ?? accountId, submissionId))),
     cancelScheduled: (submissionId, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.cancelScheduled(acct ?? accountId, submissionId)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.cancelScheduled(acct ?? accountId, submissionId))),
     getByEmailId: (emailId, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.getByEmailId(acct ?? accountId, emailId)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.getByEmailId(acct ?? accountId, emailId))),
     getRecent: (limit?, acct?) =>
-      run(Effect.gen(function* () {
-        const svc = yield* EmailSubmissionService
-        return yield* svc.getRecent(acct ?? accountId, limit)
-      })),
+      run(Effect.flatMap(EmailSubmissionService, svc => svc.getRecent(acct ?? accountId, limit))),
   }
 
   return {
