@@ -49,10 +49,7 @@ jobs:
           echo "tag=pr-${PR_NUMBER}" >> "$GITHUB_OUTPUT"
 
       - name: Publish preview package
-        run: npm publish --tag ${{ steps.version.outputs.tag }} --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+        run: npm publish --tag ${{ steps.version.outputs.tag }} --access public --provenance
 
       - name: Comment on PR
         uses: actions/github-script@v7
