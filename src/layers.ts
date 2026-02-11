@@ -4,6 +4,7 @@ import { JMAPClientLive as JMAPClientLiveImpl, defaultConfig, type JMAPClientCon
 import { MailboxServiceLive } from './mailbox/service.ts'
 import { EmailServiceLive } from './email/service.ts'
 import { EmailSubmissionServiceLive } from './submission/service.ts'
+import { IdentityServiceLive } from './identity/service.ts'
 import { IdGeneratorLive } from './shared/id-generator.ts'
 
 export * from './client/live.ts'
@@ -16,7 +17,7 @@ export * from './client/test.ts'
  * This layer includes:
  * - HTTP client (NodeHttpClient.layerUndici)
  * - JMAP client with default configuration
- * - All JMAP services (Mailbox, Email, EmailSubmission)
+ * - All JMAP services (Mailbox, Email, EmailSubmission, Identity)
  * - ID generator
  *
  * @param sessionUrl - JMAP session URL (e.g., 'https://api.fastmail.com/jmap/session')
@@ -55,6 +56,7 @@ export const JMAPLive = (
       MailboxServiceLive,
       EmailServiceLive,
       EmailSubmissionServiceLive,
+      IdentityServiceLive,
       IdGeneratorLive
     ),
     NodeHttpClient.layer
@@ -95,6 +97,7 @@ export const JMAPLiveWithConfig = (
       MailboxServiceLive,
       EmailServiceLive,
       EmailSubmissionServiceLive,
+      IdentityServiceLive,
       IdGeneratorLive
     ),
     NodeHttpClient.layer

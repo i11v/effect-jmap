@@ -44,9 +44,9 @@ export const JMAPCapabilities = {
   'SearchSnippet/get': false,
 
   // Identity methods (RFC 8621 Section 6)
-  'Identity/get': false,
-  'Identity/set': false,
-  'Identity/changes': false,
+  'Identity/get': true,
+  'Identity/set': true,
+  'Identity/changes': true,
 
   // EmailSubmission methods (RFC 8621 Section 7)
   'EmailSubmission/get': true,
