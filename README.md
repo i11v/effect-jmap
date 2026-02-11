@@ -15,7 +15,34 @@ pnpm add effect-jmap
 
 ## Quick Start
 
-The easiest way to get started is with the `JMAPLive` function, which includes everything you need:
+The simplest way to use effect-jmap is with the Promise-based client — no Effect knowledge required:
+
+```typescript
+import { createJMAPClient } from 'effect-jmap'
+
+const client = await createJMAPClient(
+  'https://api.fastmail.com/jmap/session',
+  'your-bearer-token-here'
+)
+
+// Account ID is auto-discovered
+const mailboxes = await client.mailbox.getAll()
+console.log(`Found ${mailboxes.length} mailboxes`)
+
+// Query emails
+const emails = await client.email.query({
+  accountId: client.accountId,
+  filter: { inMailbox: 'inbox-id' },
+  limit: 10,
+})
+
+// Clean up when done
+await client.dispose()
+```
+
+## Using with Effect
+
+For full control using Effect-TS layers and services:
 
 ```typescript
 import { Effect } from 'effect'
@@ -27,25 +54,21 @@ import {
 
 // Create a complete layer with one function call
 const mainLayer = JMAPLive(
-  'https://api.fastmail.com/jmap/session',  // Your JMAP session URL
-  'your-bearer-token-here'                   // Your authentication token
+  'https://api.fastmail.com/jmap/session',
+  'your-bearer-token-here'
 )
 
-// Use the services
 const program = Effect.gen(function* () {
-  // Get session to find account ID
   const jmapClient = yield* JMAPClientService
   const sessionInfo = yield* jmapClient.getSession
   const accountId = Object.keys(sessionInfo.accounts)[0]
 
-  // Use mailbox service
   const mailboxService = yield* MailboxService
   const mailboxes = yield* mailboxService.getAll(accountId)
 
   console.log(`Found ${mailboxes.length} mailboxes`)
 })
 
-// Run the program
 Effect.runPromise(program.pipe(Effect.provide(mainLayer)))
 ```
 
@@ -57,7 +80,7 @@ For fine-grained control over the HTTP client, JMAP client configuration, or spe
 import { Effect, Layer } from 'effect'
 import { NodeHttpClient } from '@effect/platform-node'
 import {
-  createJMAPClient,
+  createJMAPClientLayer,
   defaultConfig,
   AppLive,
   MailboxService,
@@ -67,7 +90,7 @@ import {
 // Option 1: Manual layer composition
 const mainLayer = Layer.mergeAll(
   NodeHttpClient.layerUndici,
-  createJMAPClient(sessionUrl, bearerToken),
+  createJMAPClientLayer(sessionUrl, bearerToken),
   AppLive  // Includes all services + IdGenerator
 )
 
@@ -81,7 +104,7 @@ const customConfig = {
 
 const customLayer = Layer.mergeAll(
   NodeHttpClient.layerUndici,
-  createJMAPClientWithConfig(customConfig),
+  createJMAPClientLayerWithConfig(customConfig),
   AppLive
 )
 

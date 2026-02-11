@@ -20,11 +20,11 @@ export type { JMAPClientConfig }
 /**
  * Convenience function to create a live JMAP client layer with default config
  */
-export const createJMAPClient = (sessionUrl: string, bearerToken: string): Layer.Layer<JMAPClientService, never, HttpClient.HttpClient> =>
+export const createJMAPClientLayer = (sessionUrl: string, bearerToken: string): Layer.Layer<JMAPClientService, never, HttpClient.HttpClient> =>
   JMAPClientLiveImpl(defaultConfig(sessionUrl, bearerToken))
 
 /**
  * Convenience function to create a live JMAP client layer with custom config
  */
-export const createJMAPClientWithConfig = (config: JMAPClientConfig): Layer.Layer<JMAPClientService, never, HttpClient.HttpClient> =>
+export const createJMAPClientLayerWithConfig = (config: JMAPClientConfig): Layer.Layer<JMAPClientService, never, HttpClient.HttpClient> =>
   JMAPClientLiveImpl(config)
