@@ -217,6 +217,7 @@ export interface JMAPClientWrapper {
  *
  * @param sessionUrl - JMAP session URL (e.g., 'https://api.fastmail.com/jmap/session')
  * @param bearerToken - API token for authentication
+ * @param options - Optional settings (e.g., pass a cached `session` to skip the initial HTTP fetch)
  * @returns A Promise-based JMAP client
  * @throws {AuthenticationError} If the bearer token is invalid
  * @throws {NetworkError} If the session endpoint is unreachable
@@ -235,9 +236,10 @@ export interface JMAPClientWrapper {
 export const createJMAPClient = async (
   sessionUrl: string,
   bearerToken: string,
+  options?: { session?: Session },
 ): Promise<JMAPClientWrapper> => {
-  const layer = JMAPLive(sessionUrl, bearerToken)
-  return buildClient(layer)
+  const layer = JMAPLive(sessionUrl, bearerToken, options?.session)
+  return buildClient(layer, options?.session)
 }
 
 /**
@@ -261,7 +263,7 @@ export const createJMAPClientWithConfig = async (
   config: JMAPClientConfig,
 ): Promise<JMAPClientWrapper> => {
   const layer = JMAPLiveWithConfig(config)
-  return buildClient(layer)
+  return buildClient(layer, config.initialSession)
 }
 
 /**
@@ -281,17 +283,19 @@ export const createJMAPClientFromLayer = async (
 
 /**
  * Internal: build the client wrapper from a fully-constructed layer.
+ * When `cachedSession` is provided, it is used directly (skipping the HTTP fetch).
  */
 const buildClient = async (
   layer: ReturnType<typeof JMAPLive>,
+  cachedSession?: Session,
 ): Promise<JMAPClientWrapper> => {
   const runtime = ManagedRuntime.make(layer)
 
   const run = <A, E>(effect: Effect.Effect<A, E, any>): Promise<A> =>
     runtime.runPromise(effect) as Promise<A>
 
-  // Fetch session upfront — validates credentials and discovers account ID
-  const session = await run(
+  // Use cached session or fetch from server (validates credentials and discovers account ID)
+  const session = cachedSession ?? await run(
     Effect.flatMap(JMAPClientService, client => client.getSession),
   )
 

@@ -16,6 +16,8 @@ export interface JMAPClientConfig {
   readonly retryDelay?: number
   readonly maxBatchSize?: number
   readonly enableRequestLogging?: boolean
+  /** Pre-fetched session to avoid the initial HTTP round-trip to the session endpoint. */
+  readonly initialSession?: Session
 }
 
 /**
@@ -70,7 +72,9 @@ interface SessionState {
  * Live implementation of JMAP Client
  */
 const makeJMAPClientLive = (config: JMAPClientConfig): JMAPClientInterface => {
-  let sessionState: SessionState | null = null
+  let sessionState: SessionState | null = config.initialSession
+    ? { session: config.initialSession, lastUpdated: new Date() }
+    : null
 
   const defaultHeaders = {
     'Content-Type': 'application/json',

@@ -43,11 +43,15 @@ export * from './client/test.ts'
  */
 export const JMAPLive = (
   sessionUrl: string,
-  bearerToken: string
+  bearerToken: string,
+  initialSession?: import('./client/types.ts').Session,
 ) => {
+  const config = initialSession
+    ? { ...defaultConfig(sessionUrl, bearerToken), initialSession }
+    : defaultConfig(sessionUrl, bearerToken)
   return Layer.provideMerge(
     Layer.mergeAll(
-      JMAPClientLiveImpl(defaultConfig(sessionUrl, bearerToken)),
+      JMAPClientLiveImpl(config),
       MailboxServiceLive,
       EmailServiceLive,
       EmailSubmissionServiceLive,
