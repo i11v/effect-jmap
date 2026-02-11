@@ -1,3 +1,10 @@
+# [0.9.0](https://github.com/i11v/effect-jmap/compare/v0.8.0...v0.9.0) (2026-02-11)
+
+
+### Features
+
+* Add Promise-based JMAP client wrapper (createJMAPClient) ([#18](https://github.com/i11v/effect-jmap/issues/18)) ([76ae8d0](https://github.com/i11v/effect-jmap/commit/76ae8d0a6b0e63de234168d754eac0243dd9075a)), closes [hi#level](https://github.com/hi/issues/level)
+
 # [0.8.0](https://github.com/i11v/effect-jmap/compare/v0.7.0...v0.8.0) (2026-01-25)
 
 
