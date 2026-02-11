@@ -4,6 +4,7 @@ import type { Session, Response, Invocation } from './types.ts'
 import { MailboxService } from '../mailbox/service.ts'
 import { EmailService } from '../email/service.ts'
 import { EmailSubmissionService } from '../submission/service.ts'
+import { IdentityService } from '../identity/service.ts'
 import { JMAPLive, JMAPLiveWithConfig } from '../layers.ts'
 import type { Id } from '../shared/common.ts'
 import type {
@@ -54,6 +55,15 @@ import type {
   EmailSubmissionChangesArguments,
   EmailSubmissionChangesResponse,
 } from '../submission/schema.ts'
+import type {
+  IdentityObject as IdentityObjectSchema,
+  IdentityGetArguments,
+  IdentityGetResponse,
+  IdentitySetArguments,
+  IdentitySetResponse,
+  IdentityChangesArguments,
+  IdentityChangesResponse,
+} from '../identity/schema.ts'
 
 // Infer the actual TypeScript types from Schema types
 type Mailbox = Schema.Schema.Type<typeof MailboxSchema>
@@ -71,6 +81,10 @@ type EmailSubmissionSetResponseResult = Schema.Schema.Type<typeof EmailSubmissio
 type EmailSubmissionQueryResult = Schema.Schema.Type<typeof EmailSubmissionQueryResponse>
 type EmailSubmissionQueryChangesResult = Schema.Schema.Type<typeof EmailSubmissionQueryChangesResponse>
 type EmailSubmissionChangesResult = Schema.Schema.Type<typeof EmailSubmissionChangesResponse>
+type IdentityObject = Schema.Schema.Type<typeof IdentityObjectSchema>
+type IdentityGetResult = Schema.Schema.Type<typeof IdentityGetResponse>
+type IdentitySetResult = Schema.Schema.Type<typeof IdentitySetResponse>
+type IdentityChangesResult = Schema.Schema.Type<typeof IdentityChangesResponse>
 
 /**
  * Promise-based Mailbox namespace.
@@ -162,6 +176,20 @@ export interface SubmissionNamespace {
 }
 
 /**
+ * Promise-based Identity namespace.
+ *
+ * Core JMAP methods accept their full argument objects.
+ * Convenience methods accept an optional `accountId` override.
+ */
+export interface IdentityNamespace {
+  readonly get: (args: IdentityGetArguments) => Promise<IdentityGetResult>
+  readonly set: (args: IdentitySetArguments) => Promise<IdentitySetResult>
+  readonly changes: (args: IdentityChangesArguments) => Promise<IdentityChangesResult>
+  readonly getAll: (accountId?: string) => Promise<readonly IdentityObject[]>
+  readonly getDefault: (accountId?: string) => Promise<IdentityObject>
+}
+
+/**
  * Promise-based JMAP client that hides Effect internals.
  *
  * Created via {@link createJMAPClient} or {@link createJMAPClientWithConfig}.
@@ -204,6 +232,8 @@ export interface JMAPClientWrapper {
   readonly email: EmailNamespace
   /** Email submission (sending) operations */
   readonly submission: SubmissionNamespace
+  /** Identity operations */
+  readonly identity: IdentityNamespace
   /** Dispose the underlying runtime and release resources */
   readonly dispose: () => Promise<void>
 }
@@ -395,6 +425,20 @@ const buildClient = async (
       run(Effect.flatMap(EmailSubmissionService, svc => svc.getRecent(acct ?? accountId, limit))),
   }
 
+  // --- Identity namespace ---
+  const identity: IdentityNamespace = {
+    get: (args) =>
+      run(Effect.flatMap(IdentityService, svc => svc.get(args))),
+    set: (args) =>
+      run(Effect.flatMap(IdentityService, svc => svc.set(args))),
+    changes: (args) =>
+      run(Effect.flatMap(IdentityService, svc => svc.changes(args))),
+    getAll: (acct?) =>
+      run(Effect.flatMap(IdentityService, svc => svc.getAll(acct ?? accountId))),
+    getDefault: (acct?) =>
+      run(Effect.flatMap(IdentityService, svc => svc.getDefault(acct ?? accountId))),
+  }
+
   return {
     accountId,
     session,
@@ -402,6 +446,7 @@ const buildClient = async (
     mailbox,
     email,
     submission,
+    identity,
     dispose: () => runtime.dispose(),
   }
 }
