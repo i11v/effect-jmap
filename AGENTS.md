@@ -11,7 +11,9 @@ A TypeScript library implementing RFC 8621 JMAP for Mail using Effect-TS.
 
 1. **Services via Context.Tag**: Services are defined using `Context.Tag`
 2. **Layers for dependency injection**: Services are provided via `Layer`
-3. **Effect generators**: Use `Effect.gen(function* () { ... })` for async operations
+3. **Effect.gen vs Effect.flatMap/pipe**:
+   - Use `Effect.gen(function* () { ... })` for complex flows with intermediate values or multiple steps
+   - Use `Effect.flatMap` / `.pipe()` for simple one-step service calls (e.g., `Effect.flatMap(Service, svc => svc.method(args))`)
 4. **Schema validation**: Effect Schema for type-safe parsing
 5. **Branded types**: Use `Schema.brand()` for type safety (e.g., `Id`, `State`)
 

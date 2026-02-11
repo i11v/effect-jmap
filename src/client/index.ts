@@ -11,8 +11,8 @@ export {
 // Live layer factory
 export {
   JMAPClientLive as JMAPClientLiveImpl,
-  createJMAPClient,
-  createJMAPClientWithConfig,
+  createJMAPClientLayer,
+  createJMAPClientLayerWithConfig,
   type JMAPClientConfig as JMAPConfig,
 } from './live.ts'
 
@@ -52,3 +52,14 @@ export { JMAP_CAPABILITIES, CAPABILITY_SETS, type JMAPCapability, type Capabilit
 
 // Response utilities
 export { extractMethodResponse } from './response-utils.ts'
+
+// Promise-based client wrapper
+export {
+  createJMAPClient,
+  createJMAPClientWithConfig,
+  createJMAPClientFromLayer,
+  type JMAPClientWrapper,
+  type MailboxNamespace,
+  type EmailNamespace,
+  type SubmissionNamespace,
+} from './wrapper.ts'
