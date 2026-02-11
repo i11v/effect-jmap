@@ -32,6 +32,13 @@ A TypeScript library implementing RFC 8621 JMAP for Mail using Effect-TS.
 - **Sentence-case** subjects: `fix: Correct the return type` (not `fix: correct...`)
 - No "Generated with" banners or co-author attributions
 
+## Publishing
+
+- Both release and preview publishing live in `publish.yml` to share a single npm OIDC trusted publisher
+- Release (push to main): uses `semantic-release` with OIDC token exchange
+- Preview (pull requests): publishes `0.0.0-pr.<number>.<sha>` versions via `npm publish --provenance` with OIDC
+- Do not create separate publishing workflow files — npm only allows one trusted publisher per package
+
 ## Implementing JMAP Methods
 
 See [docs/implementing-spec-features.md](docs/implementing-spec-features.md) for the workflow.
