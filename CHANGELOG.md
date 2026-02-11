@@ -1,3 +1,10 @@
+# [0.10.0](https://github.com/i11v/effect-jmap/compare/v0.9.0...v0.10.0) (2026-02-11)
+
+
+### Features
+
+* Add Identity service (Identity/get, Identity/set, Identity/changes) ([#20](https://github.com/i11v/effect-jmap/issues/20)) ([8fe2ca5](https://github.com/i11v/effect-jmap/commit/8fe2ca5e53dde5f3ca8bb3f10562aef6003c0098))
+
 # [0.9.0](https://github.com/i11v/effect-jmap/compare/v0.8.0...v0.9.0) (2026-02-11)
 
 
