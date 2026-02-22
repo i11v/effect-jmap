@@ -24,10 +24,14 @@ import {
   EmailQueryResponse,
   EmailQueryChangesArguments,
   EmailQueryChangesResponse,
+  EmailChangesArguments,
+  EmailChangesResponse,
   EmailCopyArguments,
   EmailCopyResponse,
   EmailImportArguments,
   EmailImportResponse,
+  EmailParseArguments,
+  EmailParseResponse,
   EmailMutable,
   EmailFilterCondition,
   EmailHelpers,
@@ -102,6 +106,30 @@ export interface EmailServiceInterface {
       args: EmailImportArguments,
     ) => Effect.Effect<
       EmailImportResponse,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
+
+    /**
+     * Get changes to emails since a state
+     * Per RFC 8621 Section 4.6: Standard /changes method
+     */
+    readonly changes: (
+      args: EmailChangesArguments,
+    ) => Effect.Effect<
+      Schema.Schema.Type<typeof EmailChangesResponse>,
+      JMAPMethodError | NetworkError | AuthenticationError | SessionError,
+      JMAPClientService | HttpClient.HttpClient | IdGenerator
+    >;
+
+    /**
+     * Parse blob data as RFC 5322 messages
+     * Per RFC 8621 Section 4.8: Email/parse method
+     */
+    readonly parse: (
+      args: EmailParseArguments,
+    ) => Effect.Effect<
+      EmailParseResponse,
       JMAPMethodError | NetworkError | AuthenticationError | SessionError,
       JMAPClientService | HttpClient.HttpClient | IdGenerator
     >;
@@ -364,6 +392,42 @@ const makeEmailServiceLive = (): EmailServiceInterface => {
         "Email/import",
         callId,
         EmailImportResponse,
+      );
+    });
+
+  const changes: EmailServiceInterface["changes"] = (args) =>
+    Effect.gen(function* () {
+      const client = yield* JMAPClientService;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `email-changes-${id}`;
+
+      const methodCall: Invocation = ["Email/changes", args, callId];
+
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL]);
+      return yield* extractMethodResponse(
+        response,
+        "Email/changes",
+        callId,
+        EmailChangesResponse,
+      );
+    });
+
+  const parse: EmailServiceInterface["parse"] = (args) =>
+    Effect.gen(function* () {
+      const client = yield* JMAPClientService;
+      const idGenerator = yield* IdGenerator;
+      const id = yield* idGenerator.generate;
+      const callId = `email-parse-${id}`;
+
+      const methodCall: Invocation = ["Email/parse", args, callId];
+
+      const response = yield* client.batch([methodCall], [...CAPABILITY_SETS.MAIL]);
+      return yield* extractMethodResponse(
+        response,
+        "Email/parse",
+        callId,
+        EmailParseResponse,
       );
     });
 
@@ -662,8 +726,10 @@ const makeEmailServiceLive = (): EmailServiceInterface => {
     set,
     query,
     queryChanges,
+    changes,
     copy,
     import: emailImport,
+    parse,
     getByMailbox,
     search,
     getUnread,

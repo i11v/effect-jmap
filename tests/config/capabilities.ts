@@ -35,10 +35,10 @@ export const JMAPCapabilities = {
   'Email/set': true,
   'Email/query': true,
   'Email/queryChanges': true,
-  'Email/changes': false,
+  'Email/changes': true,
   'Email/copy': true,
   'Email/import': true,
-  'Email/parse': false,
+  'Email/parse': true,
 
   // SearchSnippet methods (RFC 8621 Section 5)
   'SearchSnippet/get': false,
